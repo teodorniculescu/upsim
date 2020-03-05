@@ -1,5 +1,10 @@
+import TimePeriod
+
+
 def main():
-    print("Hello World!")
+    fp = "tests/test1"
+    fi = TimePeriod.FileInterpreter(fp)
+    fi.parse()
 
 
 if __name__ == "__main__":
