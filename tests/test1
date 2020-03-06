@@ -13,7 +13,7 @@ sc or_0_i_0
 and_0_o_0 or_0_i_1
 or_0_o_0 sd
 end
-initial conditions
+initial_conditions
 sa 0
 sb 0
 sc 0
@@ -33,3 +33,4 @@ sa 1
 sb 0
 n
 sb 1
+end

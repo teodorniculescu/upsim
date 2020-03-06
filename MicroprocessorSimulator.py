@@ -1,9 +1,9 @@
-import TimePeriod
+from TimePeriod import *
 
 
 def main():
     fp = "tests/test1"
-    fi = TimePeriod.FileInterpreter(fp)
+    fi = FileInterpreter(fp)
     fi.parse()
 
 
