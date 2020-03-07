@@ -1,0 +1,36 @@
+nodes
+s sa
+s sb
+s sc
+s sd
+l and
+l or
+end
+edges
+sa and_0_i_0
+sb and_0_i_1
+sc or_0_i_0
+and_0_o_0 or_0_i_1
+or_0_o_0 sd
+end
+initial_conditions
+sa 0
+sb 0
+sc 0
+n
+sb 1
+n
+sa 1
+sb 0
+n
+sb 1
+n
+sa 0
+sb 0
+sc 1
+n
+sa 1
+sb 0
+n
+sb 1
+end

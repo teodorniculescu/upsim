@@ -1,8 +1,10 @@
+from values.BaseValue import BaseValue
+
 HIGH: int = 1
 LOW: int = 0
 
 
-class LogicalValue:
+class LogicalValue(BaseValue):
     value: int
     name: str
 

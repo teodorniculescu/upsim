@@ -1,4 +1,4 @@
-from TimePeriod import *
+from FileInterpreter import FileInterpreter
 
 
 def main():
