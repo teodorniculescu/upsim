@@ -1,37 +1,30 @@
 INSERT BLOCKS
-    STATE sa out
-    STATE sb out
-    STATE sc out
-    STATE sd in
-    AND2 and0 in0 in1 out
+    STATE sa out,
+    STATE sb out,
+    STATE sc out,
+    STATE sd in,
+    AND2 and0 in0 in1 out,
     AND2 and1 in0 in1 out;
 
 INSERT EDGES
-    BETWEEN sa.out AND and0.in0
-    BETWEEN sb.out AND and0.in1
-    BETWEEN and0.out AND and1.in0
-    BETWEEN sc.out AND and1.in1
+    BETWEEN sa.out AND and0.in0,
+    BETWEEN sb.out AND and0.in1,
+    BETWEEN and0.out AND and1.in0,
+    BETWEEN sc.out AND and1.in1,
     BETWEEN and1.out AND sd.in;
 
-INSERT INITIAL_CONDITIONS
-    sa.value=0
-    sb.value=0
-    sc.value=0
-    NEXT_TIME_STEP
-    sc.value=1
-    NEXT_TIME_STEP
-    sb.value=1
-    sc.value=0
-    NEXT_TIME_STEP
-    sc.value=1
-    NEXT_TIME_STEP
-    sa.value=1
-    sb.value=0
-    sc.value=0
-    NEXT_TIME_STEP
-    sc.value=1
-    NEXT_TIME_STEP
-    sb.value=1
-    sc.value=0
-    NEXT_TIME_STEP
-    sc.value=1;
+INSERT INITIAL CONDITIONS
+    (sa.value=0,
+    sb.value=0,
+    sc.value=0),
+    (sc.value=1),
+    (sb.value=1,
+    sc.value=0),
+    (sc.value=1),
+    (sa.value=1,
+    sb.value=0,
+    sc.value=0),
+    (sc.value=1),
+    (sb.value=1,
+    sc.value=0),
+    (sc.value=1);
