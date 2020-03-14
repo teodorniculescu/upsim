@@ -24,18 +24,38 @@ class FileSyntaxVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by FileSyntaxParser#block.
-    def visitBlock(self, ctx:FileSyntaxParser.BlockContext):
+    # Visit a parse tree produced by FileSyntaxParser#create_block.
+    def visitCreate_block(self, ctx:FileSyntaxParser.Create_blockContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by FileSyntaxParser#and2_block.
-    def visitAnd2_block(self, ctx:FileSyntaxParser.And2_blockContext):
+    # Visit a parse tree produced by FileSyntaxParser#create_and2_block.
+    def visitCreate_and2_block(self, ctx:FileSyntaxParser.Create_and2_blockContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by FileSyntaxParser#state_block.
-    def visitState_block(self, ctx:FileSyntaxParser.State_blockContext):
+    # Visit a parse tree produced by FileSyntaxParser#create_state_block.
+    def visitCreate_state_block(self, ctx:FileSyntaxParser.Create_state_blockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#block_name.
+    def visitBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#input_pin_name.
+    def visitInput_pin_name(self, ctx:FileSyntaxParser.Input_pin_nameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#output_pin_name.
+    def visitOutput_pin_name(self, ctx:FileSyntaxParser.Output_pin_nameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#io_pin_name.
+    def visitIo_pin_name(self, ctx:FileSyntaxParser.Io_pin_nameContext):
         return self.visitChildren(ctx)
 
 
@@ -44,8 +64,8 @@ class FileSyntaxVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by FileSyntaxParser#edge.
-    def visitEdge(self, ctx:FileSyntaxParser.EdgeContext):
+    # Visit a parse tree produced by FileSyntaxParser#create_edge.
+    def visitCreate_edge(self, ctx:FileSyntaxParser.Create_edgeContext):
         return self.visitChildren(ctx)
 
 

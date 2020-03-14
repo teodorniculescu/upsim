@@ -35,30 +35,66 @@ class FileSyntaxListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by FileSyntaxParser#block.
-    def enterBlock(self, ctx:FileSyntaxParser.BlockContext):
+    # Enter a parse tree produced by FileSyntaxParser#create_block.
+    def enterCreate_block(self, ctx:FileSyntaxParser.Create_blockContext):
         pass
 
-    # Exit a parse tree produced by FileSyntaxParser#block.
-    def exitBlock(self, ctx:FileSyntaxParser.BlockContext):
-        pass
-
-
-    # Enter a parse tree produced by FileSyntaxParser#and2_block.
-    def enterAnd2_block(self, ctx:FileSyntaxParser.And2_blockContext):
-        pass
-
-    # Exit a parse tree produced by FileSyntaxParser#and2_block.
-    def exitAnd2_block(self, ctx:FileSyntaxParser.And2_blockContext):
+    # Exit a parse tree produced by FileSyntaxParser#create_block.
+    def exitCreate_block(self, ctx:FileSyntaxParser.Create_blockContext):
         pass
 
 
-    # Enter a parse tree produced by FileSyntaxParser#state_block.
-    def enterState_block(self, ctx:FileSyntaxParser.State_blockContext):
+    # Enter a parse tree produced by FileSyntaxParser#create_and2_block.
+    def enterCreate_and2_block(self, ctx:FileSyntaxParser.Create_and2_blockContext):
         pass
 
-    # Exit a parse tree produced by FileSyntaxParser#state_block.
-    def exitState_block(self, ctx:FileSyntaxParser.State_blockContext):
+    # Exit a parse tree produced by FileSyntaxParser#create_and2_block.
+    def exitCreate_and2_block(self, ctx:FileSyntaxParser.Create_and2_blockContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#create_state_block.
+    def enterCreate_state_block(self, ctx:FileSyntaxParser.Create_state_blockContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#create_state_block.
+    def exitCreate_state_block(self, ctx:FileSyntaxParser.Create_state_blockContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#block_name.
+    def enterBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#block_name.
+    def exitBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#input_pin_name.
+    def enterInput_pin_name(self, ctx:FileSyntaxParser.Input_pin_nameContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#input_pin_name.
+    def exitInput_pin_name(self, ctx:FileSyntaxParser.Input_pin_nameContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#output_pin_name.
+    def enterOutput_pin_name(self, ctx:FileSyntaxParser.Output_pin_nameContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#output_pin_name.
+    def exitOutput_pin_name(self, ctx:FileSyntaxParser.Output_pin_nameContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#io_pin_name.
+    def enterIo_pin_name(self, ctx:FileSyntaxParser.Io_pin_nameContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#io_pin_name.
+    def exitIo_pin_name(self, ctx:FileSyntaxParser.Io_pin_nameContext):
         pass
 
 
@@ -71,12 +107,12 @@ class FileSyntaxListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by FileSyntaxParser#edge.
-    def enterEdge(self, ctx:FileSyntaxParser.EdgeContext):
+    # Enter a parse tree produced by FileSyntaxParser#create_edge.
+    def enterCreate_edge(self, ctx:FileSyntaxParser.Create_edgeContext):
         pass
 
-    # Exit a parse tree produced by FileSyntaxParser#edge.
-    def exitEdge(self, ctx:FileSyntaxParser.EdgeContext):
+    # Exit a parse tree produced by FileSyntaxParser#create_edge.
+    def exitCreate_edge(self, ctx:FileSyntaxParser.Create_edgeContext):
         pass
 
 

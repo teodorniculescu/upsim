@@ -1,0 +1,5 @@
+INSERT BLOCKS
+    STATE sa out,
+    STATE sb out,
+    STATE same out,
+    STATE same in;

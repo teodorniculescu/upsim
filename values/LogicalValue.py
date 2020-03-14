@@ -10,7 +10,9 @@ class LogicalValue(BaseValue):
 
     def __init__(self, name: str, value: int = None):
         self.set_name(name)
-        if value is not None:
+        if value is None:
+            self.value = None
+        else:
             self.set_value(value)
 
     def set_value(self, value: int) -> None:

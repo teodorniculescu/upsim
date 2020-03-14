@@ -8,14 +8,19 @@ filesyntax : (insert)* EOF;
 
 insert : INSERT_KWD (insert_blocks | insert_edges | insert_initial_conditions) ';';
 
-insert_blocks : BLOCK_KWD block (',' block)* ;
-block : state_block | and2_block;
+insert_blocks : BLOCK_KWD create_block (',' create_block)* ;
+create_block : create_state_block | create_and2_block;
 
-and2_block : AND2_KWD NAME NAME NAME NAME;
-state_block : STATE_KWD NAME NAME;
+create_and2_block : AND2_KWD block_name input_pin_name input_pin_name output_pin_name;
+create_state_block : STATE_KWD block_name io_pin_name;
 
-insert_edges : EDGE_KWD edge (',' edge)*;
-edge : BETWEEN_KWD node AND_KWD node;
+block_name : NAME;
+input_pin_name : NAME;
+output_pin_name : NAME;
+io_pin_name : NAME;
+
+insert_edges : EDGE_KWD create_edge (',' create_edge)*;
+create_edge : BETWEEN_KWD node AND_KWD node;
 node : NAME '.' NAME;
 
 insert_initial_conditions : INITIAL_CONDITIONS_KWD initial_condition (',' initial_condition)+;
