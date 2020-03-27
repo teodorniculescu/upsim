@@ -1,14 +1,27 @@
-from blocks.LogicalBlock import LogicalBlock
-from values.LogicalValue import LogicalValue
+from blocks.BasicBlock import *
+from blocks.LogicalBlock import *
+from values.BaseValue import *
 
 
 class AND2(LogicalBlock):
     def __init__(self, block_name: str, input_names: list, output_names: list):
-        input0 = LogicalValue(input_names[0])
-        input1 = LogicalValue(input_names[1])
-        output0 = LogicalValue(output_names[0])
+        input0 = BaseValue(input_names[0], self)
+        input1 = BaseValue(input_names[1], self)
+        output0 = BaseValue(output_names[0], self)
         super().__init__(block_name)
-        super().add_input_pin(input0)
-        super().add_input_pin(input1)
-        super().add_output_pin(output0)
+        super().add_pin(input0, PIN_TYPE_INPUT)
+        super().add_pin(input1, PIN_TYPE_INPUT)
+        super().add_pin(output0, PIN_TYPE_OUTPUT)
+
+    def calculate(self):
+        i0: BaseValue
+        i1: BaseValue
+        o0: BaseValue
+        [i0, i1] = self.get_all_pins(PIN_TYPE_INPUT)
+        [o0] = self.get_all_pins(PIN_TYPE_OUTPUT)
+        if i0.is_high() and i1.is_high():
+            o0.set_value(HIGH)
+        elif i0.is_low() or i0.is_low():
+            o0.set_value(LOW)
+
 

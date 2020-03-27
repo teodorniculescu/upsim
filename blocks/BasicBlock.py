@@ -1,5 +1,10 @@
 from values.BaseValue import BaseValue
 
+PIN_TYPE_INPUT = 0
+PIN_TYPE_OUTPUT = 1
+PIN_TYPE_IO = 2
+
+
 """
 This is the base class which MUST be used by any saved block. Its an interface which implements all the basic methods
 which will be used for analysing the circuit behaviour.
@@ -7,9 +12,9 @@ which will be used for analysing the circuit behaviour.
 
 
 class BasicBlock:
-    __input_pins: list
-    __output_pins: list
-    __io_pins: list
+    __input_pins: list # of BaseValues
+    __output_pins: list # of BaseValues
+    __io_pins: list # of BaseValues
     __name: str
 
     def __init__(self, name: str):
@@ -22,31 +27,80 @@ class BasicBlock:
         self.__name = name
         print(self.__name + " created!")
 
-    def add_input_pin(self, pin: BaseValue) -> None:
+    def add_pin(self, pin: BaseValue, pin_type: int) -> None:
+        # Check if the parameters are correct
         if not isinstance(pin, BaseValue):
-            raise Exception(str(type(pin)) + " is not BaseValue")
-        self.__input_pins.append(pin)
+            raise Exception("pin is type " + str(type(pin)) + " instead of BaseValue")
+        if not isinstance(pin_type, int):
+            raise Exception("pin_type is type " + str(type(pin_type)) + " instead of int")
 
-    def get_input_pin(self, index: int) -> BaseValue:
-        return self.__input_pins[index]
+        # Check all types of pins
+        if pin_type == PIN_TYPE_INPUT:
+            self.__input_pins.append(pin)
+        elif pin_type == PIN_TYPE_OUTPUT:
+            self.__output_pins.append(pin)
+        elif pin_type == PIN_TYPE_IO:
+            self.__io_pins.append(pin)
+        else:
+            raise Exception("Unknown pin type " + str(pin_type))
 
-    def add_output_pin(self, pin: BaseValue) -> None:
-        if not isinstance(pin, BaseValue):
-            raise Exception(str(type(pin)) + " is not BaseValue")
-        self.__output_pins.append(pin)
+    def get_all_pins(self, pin_type: int) -> list:
+        # Check if the parameters are correct
+        if not isinstance(pin_type, int):
+            raise Exception("pin_type is type " + str(type(pin_type)) + " instead of int")
 
-    def get_output_pin(self, index: int) -> BaseValue:
-        return self.__output_pins[index]
+        # Check all types of pins
+        if pin_type == PIN_TYPE_INPUT:
+            result = self.__input_pins
+        elif pin_type == PIN_TYPE_OUTPUT:
+            result = self.__output_pins
+        elif pin_type == PIN_TYPE_IO:
+            result = self.__io_pins
+        else:
+            raise Exception("Unknown pin type " + str(pin_type))
+        return result
 
-    def add_io_pin(self, pin: BaseValue) -> None:
-        if not isinstance(pin, BaseValue):
-            raise Exception(str(type(pin)) + " is not BaseValue")
-        self.__io_pins.append(pin)
+    def get_name(self) -> str:
+        return self.__name
 
-    def get_io_pin(self, index: int) -> BaseValue:
-        return self.__io_pins[index]
+    def get_pin(self, index: int, pin_type: int) -> BaseValue:
+        return self.get_all_pins(pin_type)[index]
+
+    def get_pin_with_name(self, pin_name: str) -> BaseValue:
+        pin: BaseValue
+        for pin in self.__input_pins:
+            if pin.get_name() == pin_name:
+                return pin
+        for pin in self.__output_pins:
+            if pin.get_name() == pin_name:
+                return pin
+        for pin in self.__io_pins:
+            if pin.get_name() == pin_name:
+                return pin
+        raise Exception("Pin " + pin_name + " does not exist.")
 
     """Specifies the internal behaviour of the block, how the inputs are used in order to obtain the outputs."""
 
     def calculate(self):
         raise Exception(type(self), ' ', __name__, ' is not implemented')
+
+    def read_stage(self):
+        input_pin: BaseValue
+        connected_pin: BaseValue
+        for input_pin in self.__input_pins:
+            connected_pin = input_pin.get_connected_pin()
+            value = connected_pin.get_value()
+            input_pin.set_value(value)
+
+    def show_state(self):
+        pin: BaseValue
+        print(self.__name)
+        print("input")
+        for pin in self.__input_pins:
+            pin.show_state()
+        print("output")
+        for pin in self.__output_pins:
+            pin.show_state()
+        print("io")
+        for pin in self.__io_pins:
+            pin.show_state()

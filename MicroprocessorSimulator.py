@@ -3,9 +3,10 @@ from Simulation import Simulation
 
 
 def main():
-    fp = "tests/test1"
+    file_in = "tests/test1"
+    file_out = ""
     sim = Simulation()
-    FileInterpreter(fp, sim).parse()
+    FileInterpreter(file_in, file_out, sim).parse()
     sim.run()
 
 

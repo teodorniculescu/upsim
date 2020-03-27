@@ -39,11 +39,6 @@ class FileSyntaxVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by FileSyntaxParser#block_name.
-    def visitBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by FileSyntaxParser#input_pin_name.
     def visitInput_pin_name(self, ctx:FileSyntaxParser.Input_pin_nameContext):
         return self.visitChildren(ctx)
@@ -69,11 +64,6 @@ class FileSyntaxVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by FileSyntaxParser#node.
-    def visitNode(self, ctx:FileSyntaxParser.NodeContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by FileSyntaxParser#insert_initial_conditions.
     def visitInsert_initial_conditions(self, ctx:FileSyntaxParser.Insert_initial_conditionsContext):
         return self.visitChildren(ctx)
@@ -86,6 +76,31 @@ class FileSyntaxVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by FileSyntaxParser#condition.
     def visitCondition(self, ctx:FileSyntaxParser.ConditionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#node.
+    def visitNode(self, ctx:FileSyntaxParser.NodeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#block_name.
+    def visitBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#pin_name.
+    def visitPin_name(self, ctx:FileSyntaxParser.Pin_nameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#node_value.
+    def visitNode_value(self, ctx:FileSyntaxParser.Node_valueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by FileSyntaxParser#run.
+    def visitRun(self, ctx:FileSyntaxParser.RunContext):
         return self.visitChildren(ctx)
 
 

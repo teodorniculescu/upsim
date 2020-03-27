@@ -14,17 +14,19 @@ INSERT EDGES
     BETWEEN and1.out AND sd.in;
 
 INSERT INITIAL CONDITIONS
-    (sa.value=0,
-    sb.value=0,
-    sc.value=0),
-    (sc.value=1),
-    (sb.value=1,
-    sc.value=0),
-    (sc.value=1),
-    (sa.value=1,
-    sb.value=0,
-    sc.value=0),
-    (sc.value=1),
-    (sb.value=1,
-    sc.value=0),
-    (sc.value=1);
+    (sa.out=0,
+    sb.out=0,
+    sc.out=0),
+    (sc.out=1),
+    (sb.out=1,
+    sc.out=0),
+    (sc.out=1),
+    (sa.out=1,
+    sb.out=0,
+    sc.out=0),
+    (sc.out=1),
+    (sb.out=1,
+    sc.out=0),
+    (sc.out=1);
+
+RUN

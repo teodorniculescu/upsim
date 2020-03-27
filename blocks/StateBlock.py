@@ -1,10 +1,10 @@
-from blocks.BasicBlock import BasicBlock
-from values.LogicalValue import LogicalValue
+from blocks.BasicBlock import *
+from values.BaseValue import BaseValue
 
 
 class StateBlock(BasicBlock):
     def __init__(self, name: str, io_name: str):
-        io = LogicalValue(io_name)
+        io = BaseValue(io_name, self)
         super().__init__(name)
-        super().add_io_pin(io)
+        super().add_pin(io, PIN_TYPE_IO)
 

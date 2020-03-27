@@ -62,15 +62,6 @@ class FileSyntaxListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by FileSyntaxParser#block_name.
-    def enterBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
-        pass
-
-    # Exit a parse tree produced by FileSyntaxParser#block_name.
-    def exitBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
-        pass
-
-
     # Enter a parse tree produced by FileSyntaxParser#input_pin_name.
     def enterInput_pin_name(self, ctx:FileSyntaxParser.Input_pin_nameContext):
         pass
@@ -116,15 +107,6 @@ class FileSyntaxListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by FileSyntaxParser#node.
-    def enterNode(self, ctx:FileSyntaxParser.NodeContext):
-        pass
-
-    # Exit a parse tree produced by FileSyntaxParser#node.
-    def exitNode(self, ctx:FileSyntaxParser.NodeContext):
-        pass
-
-
     # Enter a parse tree produced by FileSyntaxParser#insert_initial_conditions.
     def enterInsert_initial_conditions(self, ctx:FileSyntaxParser.Insert_initial_conditionsContext):
         pass
@@ -149,6 +131,51 @@ class FileSyntaxListener(ParseTreeListener):
 
     # Exit a parse tree produced by FileSyntaxParser#condition.
     def exitCondition(self, ctx:FileSyntaxParser.ConditionContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#node.
+    def enterNode(self, ctx:FileSyntaxParser.NodeContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#node.
+    def exitNode(self, ctx:FileSyntaxParser.NodeContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#block_name.
+    def enterBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#block_name.
+    def exitBlock_name(self, ctx:FileSyntaxParser.Block_nameContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#pin_name.
+    def enterPin_name(self, ctx:FileSyntaxParser.Pin_nameContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#pin_name.
+    def exitPin_name(self, ctx:FileSyntaxParser.Pin_nameContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#node_value.
+    def enterNode_value(self, ctx:FileSyntaxParser.Node_valueContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#node_value.
+    def exitNode_value(self, ctx:FileSyntaxParser.Node_valueContext):
+        pass
+
+
+    # Enter a parse tree produced by FileSyntaxParser#run.
+    def enterRun(self, ctx:FileSyntaxParser.RunContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#run.
+    def exitRun(self, ctx:FileSyntaxParser.RunContext):
         pass
 
 
