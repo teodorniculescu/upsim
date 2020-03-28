@@ -1,4 +1,5 @@
 from values.BaseValue import BaseValue
+import itertools
 
 PIN_TYPE_INPUT = 0
 PIN_TYPE_OUTPUT = 1
@@ -44,7 +45,7 @@ class BasicBlock:
         else:
             raise Exception("Unknown pin type " + str(pin_type))
 
-    def get_all_pins(self, pin_type: int) -> list:
+    def get_all_pins_with_type(self, pin_type: int) -> list:
         # Check if the parameters are correct
         if not isinstance(pin_type, int):
             raise Exception("pin_type is type " + str(type(pin_type)) + " instead of int")
@@ -64,7 +65,7 @@ class BasicBlock:
         return self.__name
 
     def get_pin(self, index: int, pin_type: int) -> BaseValue:
-        return self.get_all_pins(pin_type)[index]
+        return self.get_all_pins_with_type(pin_type)[index]
 
     def get_pin_with_name(self, pin_name: str) -> BaseValue:
         pin: BaseValue
@@ -100,3 +101,18 @@ class BasicBlock:
             print(self.__name + "::" + "output" + "::" + pin.get_pin_state())
         for pin in self.__io_pins:
             print(self.__name + "::" + "io" + "::" + pin.get_pin_state())
+
+    def get_all_pins(self):
+        return list(itertools.chain(self.__input_pins, self.__output_pins, self.__io_pins))
+
+    def reset(self):
+        pin: BaseValue
+        for pin in self.get_all_pins():
+            pin.reset()
+
+    def output_changed_state(self):
+        pin: BaseValue
+        for pin in self.__output_pins:
+            if pin.changed_state_from_last_time_step():
+                return True
+        return False
