@@ -1,5 +1,3 @@
-import blocks.BasicBlock as BB
-
 HIGH: int = 1
 LOW: int = 0
 
@@ -41,3 +39,7 @@ class BaseValue:
         if self.__value is not None and self.__value == HIGH:
             return True
         return False
+
+    def get_pin_state(self) -> str:
+        return self.__name + "=" + str(self.__value)
+

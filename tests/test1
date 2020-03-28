@@ -1,8 +1,8 @@
 INSERT BLOCKS
-    STATE sa out,
-    STATE sb out,
-    STATE sc out,
-    STATE sd in,
+    STATE OUT sa out,
+    STATE OUT sb out,
+    STATE OUT sc out,
+    STATE IN sd in,
     AND2 and0 in0 in1 out,
     AND2 and1 in0 in1 out;
 

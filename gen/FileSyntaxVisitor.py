@@ -39,6 +39,11 @@ class FileSyntaxVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by FileSyntaxParser#pin_type.
+    def visitPin_type(self, ctx:FileSyntaxParser.Pin_typeContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by FileSyntaxParser#input_pin_name.
     def visitInput_pin_name(self, ctx:FileSyntaxParser.Input_pin_nameContext):
         return self.visitChildren(ctx)

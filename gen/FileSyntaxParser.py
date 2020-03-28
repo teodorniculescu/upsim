@@ -11,47 +11,49 @@ else:
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\33")
-        buf.write("\u0088\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\32")
+        buf.write("\u008d\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
-        buf.write("\4\24\t\24\3\2\3\2\7\2+\n\2\f\2\16\2.\13\2\3\2\3\2\3\3")
-        buf.write("\3\3\3\3\3\3\5\3\66\n\3\3\3\3\3\3\4\3\4\3\4\3\4\7\4>\n")
-        buf.write("\4\f\4\16\4A\13\4\3\5\3\5\5\5E\n\5\3\6\3\6\3\6\3\6\3\6")
-        buf.write("\3\6\3\7\3\7\3\7\3\7\3\b\3\b\3\t\3\t\3\n\3\n\3\13\3\13")
-        buf.write("\3\13\3\13\7\13[\n\13\f\13\16\13^\13\13\3\f\3\f\3\f\3")
-        buf.write("\f\3\f\3\r\3\r\3\r\3\r\6\ri\n\r\r\r\16\rj\3\16\3\16\3")
-        buf.write("\16\3\16\7\16q\n\16\f\16\16\16t\13\16\3\16\3\16\3\17\3")
-        buf.write("\17\3\17\3\17\3\20\3\20\3\20\3\20\3\21\3\21\3\22\3\22")
-        buf.write("\3\23\3\23\3\24\3\24\3\24\2\2\25\2\4\6\b\n\f\16\20\22")
-        buf.write("\24\26\30\32\34\36 \"$&\2\2\2}\2,\3\2\2\2\4\61\3\2\2\2")
-        buf.write("\69\3\2\2\2\bD\3\2\2\2\nF\3\2\2\2\fL\3\2\2\2\16P\3\2\2")
-        buf.write("\2\20R\3\2\2\2\22T\3\2\2\2\24V\3\2\2\2\26_\3\2\2\2\30")
-        buf.write("d\3\2\2\2\32l\3\2\2\2\34w\3\2\2\2\36{\3\2\2\2 \177\3\2")
-        buf.write("\2\2\"\u0081\3\2\2\2$\u0083\3\2\2\2&\u0085\3\2\2\2(+\5")
-        buf.write("\4\3\2)+\5&\24\2*(\3\2\2\2*)\3\2\2\2+.\3\2\2\2,*\3\2\2")
-        buf.write("\2,-\3\2\2\2-/\3\2\2\2.,\3\2\2\2/\60\7\2\2\3\60\3\3\2")
-        buf.write("\2\2\61\65\7\20\2\2\62\66\5\6\4\2\63\66\5\24\13\2\64\66")
-        buf.write("\5\30\r\2\65\62\3\2\2\2\65\63\3\2\2\2\65\64\3\2\2\2\66")
-        buf.write("\67\3\2\2\2\678\7\3\2\28\5\3\2\2\29:\7\r\2\2:?\5\b\5\2")
-        buf.write(";<\7\4\2\2<>\5\b\5\2=;\3\2\2\2>A\3\2\2\2?=\3\2\2\2?@\3")
-        buf.write("\2\2\2@\7\3\2\2\2A?\3\2\2\2BE\5\f\7\2CE\5\n\6\2DB\3\2")
-        buf.write("\2\2DC\3\2\2\2E\t\3\2\2\2FG\7\21\2\2GH\5 \21\2HI\5\16")
-        buf.write("\b\2IJ\5\16\b\2JK\5\20\t\2K\13\3\2\2\2LM\7\f\2\2MN\5 ")
-        buf.write("\21\2NO\5\22\n\2O\r\3\2\2\2PQ\7\27\2\2Q\17\3\2\2\2RS\7")
-        buf.write("\27\2\2S\21\3\2\2\2TU\7\27\2\2U\23\3\2\2\2VW\7\16\2\2")
-        buf.write("W\\\5\26\f\2XY\7\4\2\2Y[\5\26\f\2ZX\3\2\2\2[^\3\2\2\2")
-        buf.write("\\Z\3\2\2\2\\]\3\2\2\2]\25\3\2\2\2^\\\3\2\2\2_`\7\22\2")
-        buf.write("\2`a\5\36\20\2ab\7\23\2\2bc\5\36\20\2c\27\3\2\2\2de\7")
-        buf.write("\17\2\2eh\5\32\16\2fg\7\4\2\2gi\5\32\16\2hf\3\2\2\2ij")
-        buf.write("\3\2\2\2jh\3\2\2\2jk\3\2\2\2k\31\3\2\2\2lm\7\5\2\2mr\5")
-        buf.write("\34\17\2no\7\4\2\2oq\5\34\17\2pn\3\2\2\2qt\3\2\2\2rp\3")
-        buf.write("\2\2\2rs\3\2\2\2su\3\2\2\2tr\3\2\2\2uv\7\6\2\2v\33\3\2")
-        buf.write("\2\2wx\5\36\20\2xy\7\7\2\2yz\5$\23\2z\35\3\2\2\2{|\5 ")
-        buf.write("\21\2|}\7\b\2\2}~\5\"\22\2~\37\3\2\2\2\177\u0080\7\27")
-        buf.write("\2\2\u0080!\3\2\2\2\u0081\u0082\7\27\2\2\u0082#\3\2\2")
-        buf.write("\2\u0083\u0084\7\26\2\2\u0084%\3\2\2\2\u0085\u0086\7\24")
-        buf.write("\2\2\u0086\'\3\2\2\2\n*,\65?D\\jr")
+        buf.write("\4\24\t\24\4\25\t\25\3\2\3\2\7\2-\n\2\f\2\16\2\60\13\2")
+        buf.write("\3\2\3\2\3\3\3\3\3\3\3\3\5\38\n\3\3\3\3\3\3\4\3\4\3\4")
+        buf.write("\3\4\7\4@\n\4\f\4\16\4C\13\4\3\5\3\5\5\5G\n\5\3\6\3\6")
+        buf.write("\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\t\3\t\3")
+        buf.write("\n\3\n\3\13\3\13\3\f\3\f\3\f\3\f\7\f`\n\f\f\f\16\fc\13")
+        buf.write("\f\3\r\3\r\3\r\3\r\3\r\3\16\3\16\3\16\3\16\6\16n\n\16")
+        buf.write("\r\16\16\16o\3\17\3\17\3\17\3\17\7\17v\n\17\f\17\16\17")
+        buf.write("y\13\17\3\17\3\17\3\20\3\20\3\20\3\20\3\21\3\21\3\21\3")
+        buf.write("\21\3\22\3\22\3\23\3\23\3\24\3\24\3\25\3\25\3\25\2\2\26")
+        buf.write("\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(\2\3\3\2")
+        buf.write("\t\13\2\u0081\2.\3\2\2\2\4\63\3\2\2\2\6;\3\2\2\2\bF\3")
+        buf.write("\2\2\2\nH\3\2\2\2\fN\3\2\2\2\16S\3\2\2\2\20U\3\2\2\2\22")
+        buf.write("W\3\2\2\2\24Y\3\2\2\2\26[\3\2\2\2\30d\3\2\2\2\32i\3\2")
+        buf.write("\2\2\34q\3\2\2\2\36|\3\2\2\2 \u0080\3\2\2\2\"\u0084\3")
+        buf.write("\2\2\2$\u0086\3\2\2\2&\u0088\3\2\2\2(\u008a\3\2\2\2*-")
+        buf.write("\5\4\3\2+-\5(\25\2,*\3\2\2\2,+\3\2\2\2-\60\3\2\2\2.,\3")
+        buf.write("\2\2\2./\3\2\2\2/\61\3\2\2\2\60.\3\2\2\2\61\62\7\2\2\3")
+        buf.write("\62\3\3\2\2\2\63\67\7\20\2\2\648\5\6\4\2\658\5\26\f\2")
+        buf.write("\668\5\32\16\2\67\64\3\2\2\2\67\65\3\2\2\2\67\66\3\2\2")
+        buf.write("\289\3\2\2\29:\7\3\2\2:\5\3\2\2\2;<\7\r\2\2<A\5\b\5\2")
+        buf.write("=>\7\4\2\2>@\5\b\5\2?=\3\2\2\2@C\3\2\2\2A?\3\2\2\2AB\3")
+        buf.write("\2\2\2B\7\3\2\2\2CA\3\2\2\2DG\5\f\7\2EG\5\n\6\2FD\3\2")
+        buf.write("\2\2FE\3\2\2\2G\t\3\2\2\2HI\7\21\2\2IJ\5\"\22\2JK\5\20")
+        buf.write("\t\2KL\5\20\t\2LM\5\22\n\2M\13\3\2\2\2NO\7\f\2\2OP\5\16")
+        buf.write("\b\2PQ\5\"\22\2QR\5\24\13\2R\r\3\2\2\2ST\t\2\2\2T\17\3")
+        buf.write("\2\2\2UV\7\26\2\2V\21\3\2\2\2WX\7\26\2\2X\23\3\2\2\2Y")
+        buf.write("Z\7\26\2\2Z\25\3\2\2\2[\\\7\16\2\2\\a\5\30\r\2]^\7\4\2")
+        buf.write("\2^`\5\30\r\2_]\3\2\2\2`c\3\2\2\2a_\3\2\2\2ab\3\2\2\2")
+        buf.write("b\27\3\2\2\2ca\3\2\2\2de\7\22\2\2ef\5 \21\2fg\7\23\2\2")
+        buf.write("gh\5 \21\2h\31\3\2\2\2ij\7\17\2\2jm\5\34\17\2kl\7\4\2")
+        buf.write("\2ln\5\34\17\2mk\3\2\2\2no\3\2\2\2om\3\2\2\2op\3\2\2\2")
+        buf.write("p\33\3\2\2\2qr\7\5\2\2rw\5\36\20\2st\7\4\2\2tv\5\36\20")
+        buf.write("\2us\3\2\2\2vy\3\2\2\2wu\3\2\2\2wx\3\2\2\2xz\3\2\2\2y")
+        buf.write("w\3\2\2\2z{\7\6\2\2{\35\3\2\2\2|}\5 \21\2}~\7\7\2\2~\177")
+        buf.write("\5&\24\2\177\37\3\2\2\2\u0080\u0081\5\"\22\2\u0081\u0082")
+        buf.write("\7\b\2\2\u0082\u0083\5$\23\2\u0083!\3\2\2\2\u0084\u0085")
+        buf.write("\7\26\2\2\u0085#\3\2\2\2\u0086\u0087\7\26\2\2\u0087%\3")
+        buf.write("\2\2\2\u0088\u0089\7\25\2\2\u0089\'\3\2\2\2\u008a\u008b")
+        buf.write("\7\24\2\2\u008b)\3\2\2\2\n,.\67AFaow")
         return buf.getvalue()
 
 
@@ -74,9 +76,8 @@ class FileSyntaxParser ( Parser ):
                       "<INVALID>", "<INVALID>", "<INVALID>", "OUTPUT_KWD", 
                       "INPUT_KWD", "INPUT_OUTPUT_KWD", "STATE_KWD", "BLOCK_KWD", 
                       "EDGE_KWD", "INITIAL_CONDITIONS_KWD", "INSERT_KWD", 
-                      "AND2_KWD", "BETWEEN_KWD", "AND_KWD", "RUN_KWD", "PIN_TYPE", 
-                      "INTEGER", "NAME", "COMMENT", "WHITESPACE", "NEWLINE", 
-                      "ANY" ]
+                      "AND2_KWD", "BETWEEN_KWD", "AND_KWD", "RUN_KWD", "INTEGER", 
+                      "NAME", "COMMENT", "WHITESPACE", "NEWLINE", "ANY" ]
 
     RULE_filesyntax = 0
     RULE_insert = 1
@@ -84,25 +85,27 @@ class FileSyntaxParser ( Parser ):
     RULE_create_block = 3
     RULE_create_and2_block = 4
     RULE_create_state_block = 5
-    RULE_input_pin_name = 6
-    RULE_output_pin_name = 7
-    RULE_io_pin_name = 8
-    RULE_insert_edges = 9
-    RULE_create_edge = 10
-    RULE_insert_initial_conditions = 11
-    RULE_initial_condition = 12
-    RULE_condition = 13
-    RULE_node = 14
-    RULE_block_name = 15
-    RULE_pin_name = 16
-    RULE_node_value = 17
-    RULE_run = 18
+    RULE_pin_type = 6
+    RULE_input_pin_name = 7
+    RULE_output_pin_name = 8
+    RULE_io_pin_name = 9
+    RULE_insert_edges = 10
+    RULE_create_edge = 11
+    RULE_insert_initial_conditions = 12
+    RULE_initial_condition = 13
+    RULE_condition = 14
+    RULE_node = 15
+    RULE_block_name = 16
+    RULE_pin_name = 17
+    RULE_node_value = 18
+    RULE_run = 19
 
     ruleNames =  [ "filesyntax", "insert", "insert_blocks", "create_block", 
-                   "create_and2_block", "create_state_block", "input_pin_name", 
-                   "output_pin_name", "io_pin_name", "insert_edges", "create_edge", 
-                   "insert_initial_conditions", "initial_condition", "condition", 
-                   "node", "block_name", "pin_name", "node_value", "run" ]
+                   "create_and2_block", "create_state_block", "pin_type", 
+                   "input_pin_name", "output_pin_name", "io_pin_name", "insert_edges", 
+                   "create_edge", "insert_initial_conditions", "initial_condition", 
+                   "condition", "node", "block_name", "pin_name", "node_value", 
+                   "run" ]
 
     EOF = Token.EOF
     T__0=1
@@ -123,13 +126,12 @@ class FileSyntaxParser ( Parser ):
     BETWEEN_KWD=16
     AND_KWD=17
     RUN_KWD=18
-    PIN_TYPE=19
-    INTEGER=20
-    NAME=21
-    COMMENT=22
-    WHITESPACE=23
-    NEWLINE=24
-    ANY=25
+    INTEGER=19
+    NAME=20
+    COMMENT=21
+    WHITESPACE=22
+    NEWLINE=23
+    ANY=24
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -190,29 +192,29 @@ class FileSyntaxParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 42
+            self.state = 44
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==FileSyntaxParser.INSERT_KWD or _la==FileSyntaxParser.RUN_KWD:
-                self.state = 40
+                self.state = 42
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
                 if token in [FileSyntaxParser.INSERT_KWD]:
-                    self.state = 38
+                    self.state = 40
                     self.insert()
                     pass
                 elif token in [FileSyntaxParser.RUN_KWD]:
-                    self.state = 39
+                    self.state = 41
                     self.run()
                     pass
                 else:
                     raise NoViableAltException(self)
 
-                self.state = 44
+                self.state = 46
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 45
+            self.state = 47
             self.match(FileSyntaxParser.EOF)
         except RecognitionException as re:
             localctx.exception = re
@@ -270,27 +272,27 @@ class FileSyntaxParser ( Parser ):
         self.enterRule(localctx, 2, self.RULE_insert)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 47
+            self.state = 49
             self.match(FileSyntaxParser.INSERT_KWD)
-            self.state = 51
+            self.state = 53
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [FileSyntaxParser.BLOCK_KWD]:
-                self.state = 48
+                self.state = 50
                 self.insert_blocks()
                 pass
             elif token in [FileSyntaxParser.EDGE_KWD]:
-                self.state = 49
+                self.state = 51
                 self.insert_edges()
                 pass
             elif token in [FileSyntaxParser.INITIAL_CONDITIONS_KWD]:
-                self.state = 50
+                self.state = 52
                 self.insert_initial_conditions()
                 pass
             else:
                 raise NoViableAltException(self)
 
-            self.state = 53
+            self.state = 55
             self.match(FileSyntaxParser.T__0)
         except RecognitionException as re:
             localctx.exception = re
@@ -344,19 +346,19 @@ class FileSyntaxParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 55
+            self.state = 57
             self.match(FileSyntaxParser.BLOCK_KWD)
-            self.state = 56
+            self.state = 58
             self.create_block()
-            self.state = 61
+            self.state = 63
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==FileSyntaxParser.T__1:
-                self.state = 57
+                self.state = 59
                 self.match(FileSyntaxParser.T__1)
-                self.state = 58
+                self.state = 60
                 self.create_block()
-                self.state = 63
+                self.state = 65
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -408,17 +410,17 @@ class FileSyntaxParser ( Parser ):
         localctx = FileSyntaxParser.Create_blockContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_create_block)
         try:
-            self.state = 66
+            self.state = 68
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [FileSyntaxParser.STATE_KWD]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 64
+                self.state = 66
                 self.create_state_block()
                 pass
             elif token in [FileSyntaxParser.AND2_KWD]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 65
+                self.state = 67
                 self.create_and2_block()
                 pass
             else:
@@ -483,15 +485,15 @@ class FileSyntaxParser ( Parser ):
         self.enterRule(localctx, 8, self.RULE_create_and2_block)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 68
-            self.match(FileSyntaxParser.AND2_KWD)
-            self.state = 69
-            self.block_name()
             self.state = 70
-            self.input_pin_name()
+            self.match(FileSyntaxParser.AND2_KWD)
             self.state = 71
-            self.input_pin_name()
+            self.block_name()
             self.state = 72
+            self.input_pin_name()
+            self.state = 73
+            self.input_pin_name()
+            self.state = 74
             self.output_pin_name()
         except RecognitionException as re:
             localctx.exception = re
@@ -510,6 +512,10 @@ class FileSyntaxParser ( Parser ):
 
         def STATE_KWD(self):
             return self.getToken(FileSyntaxParser.STATE_KWD, 0)
+
+        def pin_type(self):
+            return self.getTypedRuleContext(FileSyntaxParser.Pin_typeContext,0)
+
 
         def block_name(self):
             return self.getTypedRuleContext(FileSyntaxParser.Block_nameContext,0)
@@ -545,12 +551,72 @@ class FileSyntaxParser ( Parser ):
         self.enterRule(localctx, 10, self.RULE_create_state_block)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 74
-            self.match(FileSyntaxParser.STATE_KWD)
-            self.state = 75
-            self.block_name()
             self.state = 76
+            self.match(FileSyntaxParser.STATE_KWD)
+            self.state = 77
+            self.pin_type()
+            self.state = 78
+            self.block_name()
+            self.state = 79
             self.io_pin_name()
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class Pin_typeContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def INPUT_KWD(self):
+            return self.getToken(FileSyntaxParser.INPUT_KWD, 0)
+
+        def OUTPUT_KWD(self):
+            return self.getToken(FileSyntaxParser.OUTPUT_KWD, 0)
+
+        def INPUT_OUTPUT_KWD(self):
+            return self.getToken(FileSyntaxParser.INPUT_OUTPUT_KWD, 0)
+
+        def getRuleIndex(self):
+            return FileSyntaxParser.RULE_pin_type
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPin_type" ):
+                listener.enterPin_type(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPin_type" ):
+                listener.exitPin_type(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitPin_type" ):
+                return visitor.visitPin_type(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def pin_type(self):
+
+        localctx = FileSyntaxParser.Pin_typeContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 12, self.RULE_pin_type)
+        self._la = 0 # Token type
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 81
+            _la = self._input.LA(1)
+            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << FileSyntaxParser.OUTPUT_KWD) | (1 << FileSyntaxParser.INPUT_KWD) | (1 << FileSyntaxParser.INPUT_OUTPUT_KWD))) != 0)):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -592,10 +658,10 @@ class FileSyntaxParser ( Parser ):
     def input_pin_name(self):
 
         localctx = FileSyntaxParser.Input_pin_nameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 12, self.RULE_input_pin_name)
+        self.enterRule(localctx, 14, self.RULE_input_pin_name)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 78
+            self.state = 83
             self.match(FileSyntaxParser.NAME)
         except RecognitionException as re:
             localctx.exception = re
@@ -638,10 +704,10 @@ class FileSyntaxParser ( Parser ):
     def output_pin_name(self):
 
         localctx = FileSyntaxParser.Output_pin_nameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 14, self.RULE_output_pin_name)
+        self.enterRule(localctx, 16, self.RULE_output_pin_name)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 80
+            self.state = 85
             self.match(FileSyntaxParser.NAME)
         except RecognitionException as re:
             localctx.exception = re
@@ -684,10 +750,10 @@ class FileSyntaxParser ( Parser ):
     def io_pin_name(self):
 
         localctx = FileSyntaxParser.Io_pin_nameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 16, self.RULE_io_pin_name)
+        self.enterRule(localctx, 18, self.RULE_io_pin_name)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 82
+            self.state = 87
             self.match(FileSyntaxParser.NAME)
         except RecognitionException as re:
             localctx.exception = re
@@ -737,23 +803,23 @@ class FileSyntaxParser ( Parser ):
     def insert_edges(self):
 
         localctx = FileSyntaxParser.Insert_edgesContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 18, self.RULE_insert_edges)
+        self.enterRule(localctx, 20, self.RULE_insert_edges)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 84
+            self.state = 89
             self.match(FileSyntaxParser.EDGE_KWD)
-            self.state = 85
-            self.create_edge()
             self.state = 90
+            self.create_edge()
+            self.state = 95
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==FileSyntaxParser.T__1:
-                self.state = 86
+                self.state = 91
                 self.match(FileSyntaxParser.T__1)
-                self.state = 87
-                self.create_edge()
                 self.state = 92
+                self.create_edge()
+                self.state = 97
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -808,16 +874,16 @@ class FileSyntaxParser ( Parser ):
     def create_edge(self):
 
         localctx = FileSyntaxParser.Create_edgeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 20, self.RULE_create_edge)
+        self.enterRule(localctx, 22, self.RULE_create_edge)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 93
+            self.state = 98
             self.match(FileSyntaxParser.BETWEEN_KWD)
-            self.state = 94
+            self.state = 99
             self.node()
-            self.state = 95
+            self.state = 100
             self.match(FileSyntaxParser.AND_KWD)
-            self.state = 96
+            self.state = 101
             self.node()
         except RecognitionException as re:
             localctx.exception = re
@@ -867,23 +933,23 @@ class FileSyntaxParser ( Parser ):
     def insert_initial_conditions(self):
 
         localctx = FileSyntaxParser.Insert_initial_conditionsContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 22, self.RULE_insert_initial_conditions)
+        self.enterRule(localctx, 24, self.RULE_insert_initial_conditions)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 98
+            self.state = 103
             self.match(FileSyntaxParser.INITIAL_CONDITIONS_KWD)
-            self.state = 99
+            self.state = 104
             self.initial_condition()
-            self.state = 102 
+            self.state = 107 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 100
+                self.state = 105
                 self.match(FileSyntaxParser.T__1)
-                self.state = 101
+                self.state = 106
                 self.initial_condition()
-                self.state = 104 
+                self.state = 109 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==FileSyntaxParser.T__1):
@@ -934,27 +1000,27 @@ class FileSyntaxParser ( Parser ):
     def initial_condition(self):
 
         localctx = FileSyntaxParser.Initial_conditionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 24, self.RULE_initial_condition)
+        self.enterRule(localctx, 26, self.RULE_initial_condition)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 106
+            self.state = 111
             self.match(FileSyntaxParser.T__2)
-            self.state = 107
-            self.condition()
             self.state = 112
+            self.condition()
+            self.state = 117
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==FileSyntaxParser.T__1:
-                self.state = 108
+                self.state = 113
                 self.match(FileSyntaxParser.T__1)
-                self.state = 109
-                self.condition()
                 self.state = 114
+                self.condition()
+                self.state = 119
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 115
+            self.state = 120
             self.match(FileSyntaxParser.T__3)
         except RecognitionException as re:
             localctx.exception = re
@@ -1002,14 +1068,14 @@ class FileSyntaxParser ( Parser ):
     def condition(self):
 
         localctx = FileSyntaxParser.ConditionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 26, self.RULE_condition)
+        self.enterRule(localctx, 28, self.RULE_condition)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 117
+            self.state = 122
             self.node()
-            self.state = 118
+            self.state = 123
             self.match(FileSyntaxParser.T__4)
-            self.state = 119
+            self.state = 124
             self.node_value()
         except RecognitionException as re:
             localctx.exception = re
@@ -1057,14 +1123,14 @@ class FileSyntaxParser ( Parser ):
     def node(self):
 
         localctx = FileSyntaxParser.NodeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 28, self.RULE_node)
+        self.enterRule(localctx, 30, self.RULE_node)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 121
+            self.state = 126
             self.block_name()
-            self.state = 122
+            self.state = 127
             self.match(FileSyntaxParser.T__5)
-            self.state = 123
+            self.state = 128
             self.pin_name()
         except RecognitionException as re:
             localctx.exception = re
@@ -1107,10 +1173,10 @@ class FileSyntaxParser ( Parser ):
     def block_name(self):
 
         localctx = FileSyntaxParser.Block_nameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 30, self.RULE_block_name)
+        self.enterRule(localctx, 32, self.RULE_block_name)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 125
+            self.state = 130
             self.match(FileSyntaxParser.NAME)
         except RecognitionException as re:
             localctx.exception = re
@@ -1153,10 +1219,10 @@ class FileSyntaxParser ( Parser ):
     def pin_name(self):
 
         localctx = FileSyntaxParser.Pin_nameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 32, self.RULE_pin_name)
+        self.enterRule(localctx, 34, self.RULE_pin_name)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 127
+            self.state = 132
             self.match(FileSyntaxParser.NAME)
         except RecognitionException as re:
             localctx.exception = re
@@ -1199,10 +1265,10 @@ class FileSyntaxParser ( Parser ):
     def node_value(self):
 
         localctx = FileSyntaxParser.Node_valueContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 34, self.RULE_node_value)
+        self.enterRule(localctx, 36, self.RULE_node_value)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 129
+            self.state = 134
             self.match(FileSyntaxParser.INTEGER)
         except RecognitionException as re:
             localctx.exception = re
@@ -1245,10 +1311,10 @@ class FileSyntaxParser ( Parser ):
     def run(self):
 
         localctx = FileSyntaxParser.RunContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 36, self.RULE_run)
+        self.enterRule(localctx, 38, self.RULE_run)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 131
+            self.state = 136
             self.match(FileSyntaxParser.RUN_KWD)
         except RecognitionException as re:
             localctx.exception = re

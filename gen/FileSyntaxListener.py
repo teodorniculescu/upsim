@@ -62,6 +62,15 @@ class FileSyntaxListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by FileSyntaxParser#pin_type.
+    def enterPin_type(self, ctx:FileSyntaxParser.Pin_typeContext):
+        pass
+
+    # Exit a parse tree produced by FileSyntaxParser#pin_type.
+    def exitPin_type(self, ctx:FileSyntaxParser.Pin_typeContext):
+        pass
+
+
     # Enter a parse tree produced by FileSyntaxParser#input_pin_name.
     def enterInput_pin_name(self, ctx:FileSyntaxParser.Input_pin_nameContext):
         pass

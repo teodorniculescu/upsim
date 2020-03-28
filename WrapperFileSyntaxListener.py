@@ -1,5 +1,6 @@
 import sys
 from blocks.StateBlock import StateBlock
+from blocks.BasicBlock import *
 from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from Simulation import Simulation
@@ -23,9 +24,10 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         self.__sim.add_logical_block(block)
 
     def exitCreate_state_block(self, ctx: FileSyntaxParser.Create_state_blockContext):
+        pin_type = ctx.pin_type().pin_type
         block_name = ctx.block_name().text
         io_name = ctx.io_pin_name().text
-        block = StateBlock(block_name, io_name)
+        block = StateBlock(block_name, pin_type, io_name)
         self.__sim.add_state_block(block)
 
     def exitBlock_name(self, ctx: FileSyntaxParser.Block_nameContext):
@@ -61,10 +63,21 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         ctx.number = ctx.node_value().number
 
     def exitInitial_condition(self, ctx: FileSyntaxParser.Initial_conditionContext):
-        condition_list = []
-        for condition in ctx.condition():
-            condition_list.append((condition.node, condition.number))
-        self.__sim.add_condition(condition_list)
+        conditions: dict
+        conditions = {}
+        for cond in ctx.condition():
+            conditions[cond.node] = cond.number
+        self.__sim.add_condition(conditions)
 
     def exitRun(self, ctx: FileSyntaxParser.RunContext):
         self.__sim.run()
+
+    def exitPin_type(self, ctx: FileSyntaxParser.Pin_typeContext):
+        if ctx.getText() == str(ctx.INPUT_KWD()):
+            ctx.pin_type = PIN_TYPE_INPUT
+        elif ctx.getText() == str(ctx.OUTPUT_KWD()):
+            ctx.pin_type = PIN_TYPE_OUTPUT
+        elif ctx.getText() == str(ctx.INPUT_OUTPUT_KWD()):
+            ctx.pin_type = PIN_TYPE_IO
+        else:
+            raise Exception("Invalid KWD on pin_type.")

@@ -94,13 +94,9 @@ class BasicBlock:
 
     def show_state(self):
         pin: BaseValue
-        print(self.__name)
-        print("input")
         for pin in self.__input_pins:
-            pin.show_state()
-        print("output")
+            print(self.__name + "::" + "input" + "::" + pin.get_pin_state())
         for pin in self.__output_pins:
-            pin.show_state()
-        print("io")
+            print(self.__name + "::" + "output" + "::" + pin.get_pin_state())
         for pin in self.__io_pins:
-            pin.show_state()
+            print(self.__name + "::" + "io" + "::" + pin.get_pin_state())
