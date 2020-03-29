@@ -84,14 +84,6 @@ class BasicBlock:
     def calculate(self):
         raise Exception(type(self), ' ', __name__, ' is not implemented')
 
-    def read_stage(self):
-        input_pin: BaseValue
-        connected_pin: BaseValue
-        for input_pin in self.__input_pins:
-            connected_pin = input_pin.get_connected_pin()
-            value = connected_pin.get_value()
-            input_pin.set_value(value)
-
     def show_state(self) -> str:
         pin: BaseValue
         state_string: str = self.__name + "("

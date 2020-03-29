@@ -9,7 +9,6 @@ from Simulation import Simulation
 
 class FileInterpreter:
     __input_file_path: str
-    __output_file_path: str
     __sim: Simulation
     # Output file wrapper - handles to write either to a file or to the standard output
     __out_fw: type(sys.stdout)
@@ -19,14 +18,13 @@ class FileInterpreter:
             raise Exception(input_file_path + " is not a valid INPUT file!")
         self.__input_file_path = input_file_path
 
-        # If the output file path is not specified, write to stdout
         if output_file_path == "":
+            # If the output file path is not specified, write to stdout
             self.__out_fw = sys.stdout
         else:
             # the "w" parameter overwrites the content of the output_file_path
             self.__out_fw = open(output_file_path, "w")
 
-        self.__output_file_path = output_file_path
         self.__sim = sim
         self.__sim.add_output_wrapper(self.__out_fw)
 
