@@ -6,15 +6,15 @@ import sys
 class Simulation:
     __logical_blocks: dict = {}
     __state_blocks: dict = {}
-    # A list of dictionaries
+    " A list of dictionaries "
     __initial_conditions: list = []
     __number_init_cond: int = 0
     __ic: dict = {}
     __edges: dict = {}
     __changed_state: bool
-    # Output wrapper which is by default stdout but can be replaced by a file
+    " Output wrapper which is by default stdout but can be replaced by a file "
     __out_fw: type(sys.stdout) = sys.stdout
-    # The number of times show stage state was called
+    " The number of times show stage state was called "
     __num_sss: int = 0
 
     def __init__(self):
@@ -34,8 +34,11 @@ class Simulation:
                 input_vertex = block.get_name() + '.' + input_pin.get_name()
                 if input_vertex in self.__edges:
                     connected_vertex = self.__edges[input_vertex]
-                    [connected_block_name, connected_pin_name] = connected_vertex.split('.')
-                    connected_pin = self.get_block_with_name(connected_block_name).get_pin_with_name(connected_pin_name)
+                    [connected_block_name, connected_pin_name] =\
+                        connected_vertex.split('.')
+                    connected_pin =\
+                        self.get_block_with_name(connected_block_name)\
+                            .get_pin_with_name(connected_pin_name)
                     if connected_pin.is_set():
                         input_pin.set_value(connected_pin.get_value())
                         if input_pin.changed_state_from_last_time_step():
@@ -62,7 +65,7 @@ class Simulation:
             raise Exception("Exceeded length of __initial_conditions.")
         ic_curr: dict = self.__initial_conditions[self.__number_init_cond]
         self.__ic.update(ic_curr)
-        # now __ic contains the initial conditions of this current time frame
+        " now __ic contains the initial conditions of this current time frame "
         block: BasicBlock
         for block in self.__get_all_blocks().values():
             block.reset()
@@ -73,8 +76,9 @@ class Simulation:
         for vertex_name, vertex_value_str in self.__ic.items():
             [block_name, pin_name] = vertex_name.split('.')
             vertex_value: int = int(vertex_value_str)
-            self.get_block_with_name(block_name).get_pin_with_name(pin_name).set_value(vertex_value)
-        # continue to the next initial condition
+            self.get_block_with_name(block_name).get_pin_with_name(pin_name)\
+                .set_value(vertex_value)
+        " continue to the next initial condition "
         self.__number_init_cond += 1
 
     def __finished_all_init_cond(self) -> bool:
@@ -109,7 +113,8 @@ class Simulation:
 
     def get_block_with_name(self, block_name: str) -> BasicBlock:
         """
-        Searches all types of saved blocks for the one which has the specified name
+        Searches all types of saved blocks for the one which has the specified
+        name
         :param block_name: The name of the block that is searched
         :return: The block with the specified name
         """
@@ -137,14 +142,16 @@ class Simulation:
     def add_condition(self, conditions: dict) -> None:
         """
         Adds to the list of initial conditions a new dictionary of conditions
-        :param conditions: A dictionary containing {key - the vertex name : value - the vertex value}
+        :param conditions: A dictionary containing {key - the vertex name :
+        value - the vertex value}
         :return: None
         """
         self.__initial_conditions.append(conditions)
 
     def add_output_wrapper(self, out_fw: type(sys.stdout)) -> None:
         """
-        Adds the wrapper that handles the output to the file or sys.stdout to write to console output
+        Adds the wrapper that handles the output to the file or sys.stdout
+        to write to console output
         :param out_fw: The IO Wrapper used for outputting string to the file
         :return: None
         """

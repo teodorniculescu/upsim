@@ -5,17 +5,17 @@ LOW: int = 0
 class BaseValue:
     __name: str
     __value: int
-    __value_is_set: bool
-    __changed_state: bool
+    __value_is_set: bool = False
+    __changed_state: bool = False
 
     def __init__(self, name: str, block, value: int = None):
         self.__set_name(name)
-        # The value is not initialized yet but will probably be initialized later.
-        if value is None:
-            self.__value_is_set = False
-        else:
+        if value is not None:
+            """
+            The value is not initialized yet, but will probably be
+            initialized later during the read or calculate stages
+            """
             self.set_value(value)
-        self.__changed_state = False
 
     def __set_name(self, name: str) -> None:
         if name is None:
@@ -27,7 +27,9 @@ class BaseValue:
 
     def set_value(self, value: int) -> None:
         if value != HIGH and value != LOW:
-            raise Exception('the value must be either HIGH:{:d} or LOW:{:d}.'.format(HIGH, LOW) + "Received value: " + str(value) + ".")
+            raise Exception('the value must be either HIGH:{:d} or'
+                            'LOW:{:d}.'.format(HIGH, LOW)
+                            + "Received value: " + str(value) + ".")
         if (not self.__value_is_set) or (self.__value != value):
             self.__changed_state = True
         else:

@@ -1,0 +1,54 @@
+#0 - Improve coding style - DONE
+Set PyCharm line indent to 80.
+Format all files in order to satisfy this criteria.
+
+#1 - Switch .result to CSV format - TODO
+Change the way .result files are represented to a CSV style.
+
+#2 Generate tables from .result files - TODO
+Use a python library to generate a table from the .csv results, similar to how
+SQL databases do it.
+
+#3 Start SYNTAX description in README file - TODO
+Define syntactically correct inputs in README.
+
+#4 Errors for incorrect inputs - TODO
+Create / Modify a wrapper in order to raise Exceptions if incorrect inputs are
+inserted.
+
+#5 Tests for incorrect inputs - TODO
+Create tests that
+
+#6 Compare .result files to .answer files - TODO
+Each result will be compare to an .answer file which contains the result which
+is expected to be the correct one. If the files differ, then it means that
+something is not correct in the code (either newly added code somehow breaks old
+code results or something else happened)
+
+#7 Add all possible logic gates simple logic gates - TODO
+Add 1 input and 1 output (1I1O) logic gate: NOT
+Add 2 input and 1 output (2I1O) logic gates: AND / OR / NAND / NOR / XOR / XNOR
+Create tests for these logic gates.
+
+#8 Logic gates with indefinite amounts of inputs - TODO
+Create and test simple logic gates that can take as many inputs as possible
+without hard coding the number of inputs.
+n input 1 output logic gates - AND / OR / etc same as in #7
+
+#9 Combinational logic circuits - TODO
+Implement and test multiplexers and adders (half and full).
+1st implementation: without logic gates - with code
+2nd implementation: with logic gates - the module is created not by code which
+is executed in the calc function but by executing individual logic gates which
+are inside the module
+
+#10 Sequential logic circuits - TODO
+Implement and test SR Latch and JK Bistable
+same as in #9, with and without logic gates
+
+#11 Implement configurable logic block - TODO
+Implement and test a CLB
+
+
+
+

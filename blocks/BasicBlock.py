@@ -6,33 +6,34 @@ PIN_TYPE_OUTPUT = 1
 PIN_TYPE_IO = 2
 
 
-"""
-This is the base class which MUST be used by any saved block. Its an interface which implements all the basic methods
-which will be used for analysing the circuit behaviour.
-"""
-
-
 class BasicBlock:
-    __input_pins: list # of BaseValues
-    __output_pins: list # of BaseValues
-    __io_pins: list # of BaseValues
+    """
+    This is the base class which MUST be used by any saved block. Its an
+    interface which implements all the basic methods which will be used for
+    analysing the circuit behaviour.
+    """
+    "List of BaseValues"
+    __input_pins: list = []
+    "List of BaseValues"
+    __output_pins: list = []
+    "List of BaseValues"
+    __io_pins: list = []
     __name: str
 
     def __init__(self, name: str):
         if type(name) is not str:
-            raise Exception("invalid name \'" + str(name) + "\' is type " + str(type(name))
-                            + " instead of str")
-        self.__input_pins = []
-        self.__output_pins = []
-        self.__io_pins = []
+            raise Exception("invalid name \'" + str(name) + "\' is type "
+                            + str(type(name)) + " instead of str")
         self.__name = name
 
     def add_pin(self, pin: BaseValue, pin_type: int) -> None:
         # Check if the parameters are correct
         if not isinstance(pin, BaseValue):
-            raise Exception("pin is type " + str(type(pin)) + " instead of BaseValue")
+            raise Exception("pin is type " + str(type(pin))
+                            + " instead of BaseValue")
         if not isinstance(pin_type, int):
-            raise Exception("pin_type is type " + str(type(pin_type)) + " instead of int")
+            raise Exception("pin_type is type " + str(type(pin_type))
+                            + " instead of int")
 
         # Check all types of pins
         if pin_type == PIN_TYPE_INPUT:
@@ -47,7 +48,8 @@ class BasicBlock:
     def get_all_pins_with_type(self, pin_type: int) -> list:
         # Check if the parameters are correct
         if not isinstance(pin_type, int):
-            raise Exception("pin_type is type " + str(type(pin_type)) + " instead of int")
+            raise Exception("pin_type is type " + str(type(pin_type))
+                            + " instead of int")
 
         # Check all types of pins
         if pin_type == PIN_TYPE_INPUT:
@@ -79,9 +81,14 @@ class BasicBlock:
                 return pin
         raise Exception("Pin " + pin_name + " does not exist.")
 
-    """Specifies the internal behaviour of the block, how the inputs are used in order to obtain the outputs."""
-
     def calculate(self):
+        """
+        Specifies the internal behaviour of the block, how the inputs are used
+        in order to obtain the outputs
+        This function must be implemented by each newly added logical block in
+        order for the simulation to function correctly,
+        :return: None
+        """
         raise Exception(type(self), ' ', __name__, ' is not implemented')
 
     def show_state(self) -> str:
@@ -94,7 +101,8 @@ class BasicBlock:
         return state_string
 
     def get_all_pins(self):
-        return list(itertools.chain(self.__input_pins, self.__output_pins, self.__io_pins))
+        return list(itertools.chain(self.__input_pins, self.__output_pins,
+                                    self.__io_pins))
 
     def reset(self):
         pin: BaseValue
