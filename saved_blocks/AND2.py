@@ -21,7 +21,7 @@ class AND2(LogicalBlock):
         [o0] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT)
         if i0.is_high() and i1.is_high():
             o0.set_value(HIGH)
-        elif i0.is_low() or i0.is_low():
+        elif i0.is_low() or i1.is_low():
             o0.set_value(LOW)
 
 

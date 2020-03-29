@@ -1,0 +1,268 @@
+START-INIT COND 1
+NUM ITER 0
+and0(in0=None, in1=None, out=None);
+and1(in0=None, in1=None, out=None);
+sa(out=0);
+sb(out=0);
+sc(out=0);
+soutput(in=None);
+NUM ITER 1
+and0(in0=0, in1=0, out=0);
+and1(in0=None, in1=0, out=0);
+sa(out=0);
+sb(out=0);
+sc(out=0);
+soutput(in=None);
+NUM ITER 2
+and0(in0=0, in1=0, out=0);
+and1(in0=0, in1=0, out=0);
+sa(out=0);
+sb(out=0);
+sc(out=0);
+soutput(in=0);
+NUM ITER 3
+and0(in0=0, in1=0, out=0);
+and1(in0=0, in1=0, out=0);
+sa(out=0);
+sb(out=0);
+sc(out=0);
+soutput(in=0);
+END-INIT COND 1
+START-INIT COND 2
+NUM ITER 0
+and0(in0=None, in1=None, out=None);
+and1(in0=None, in1=None, out=None);
+sa(out=0);
+sb(out=0);
+sc(out=1);
+soutput(in=None);
+NUM ITER 1
+and0(in0=0, in1=0, out=0);
+and1(in0=None, in1=1, out=None);
+sa(out=0);
+sb(out=0);
+sc(out=1);
+soutput(in=None);
+NUM ITER 2
+and0(in0=0, in1=0, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=0);
+sb(out=0);
+sc(out=1);
+soutput(in=None);
+NUM ITER 3
+and0(in0=0, in1=0, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=0);
+sb(out=0);
+sc(out=1);
+soutput(in=0);
+NUM ITER 4
+and0(in0=0, in1=0, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=0);
+sb(out=0);
+sc(out=1);
+soutput(in=0);
+END-INIT COND 2
+START-INIT COND 3
+NUM ITER 0
+and0(in0=None, in1=None, out=None);
+and1(in0=None, in1=None, out=None);
+sa(out=0);
+sb(out=1);
+sc(out=0);
+soutput(in=None);
+NUM ITER 1
+and0(in0=0, in1=1, out=0);
+and1(in0=None, in1=0, out=0);
+sa(out=0);
+sb(out=1);
+sc(out=0);
+soutput(in=None);
+NUM ITER 2
+and0(in0=0, in1=1, out=0);
+and1(in0=0, in1=0, out=0);
+sa(out=0);
+sb(out=1);
+sc(out=0);
+soutput(in=0);
+NUM ITER 3
+and0(in0=0, in1=1, out=0);
+and1(in0=0, in1=0, out=0);
+sa(out=0);
+sb(out=1);
+sc(out=0);
+soutput(in=0);
+END-INIT COND 3
+START-INIT COND 4
+NUM ITER 0
+and0(in0=None, in1=None, out=None);
+and1(in0=None, in1=None, out=None);
+sa(out=0);
+sb(out=1);
+sc(out=1);
+soutput(in=None);
+NUM ITER 1
+and0(in0=0, in1=1, out=0);
+and1(in0=None, in1=1, out=None);
+sa(out=0);
+sb(out=1);
+sc(out=1);
+soutput(in=None);
+NUM ITER 2
+and0(in0=0, in1=1, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=0);
+sb(out=1);
+sc(out=1);
+soutput(in=None);
+NUM ITER 3
+and0(in0=0, in1=1, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=0);
+sb(out=1);
+sc(out=1);
+soutput(in=0);
+NUM ITER 4
+and0(in0=0, in1=1, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=0);
+sb(out=1);
+sc(out=1);
+soutput(in=0);
+END-INIT COND 4
+START-INIT COND 5
+NUM ITER 0
+and0(in0=None, in1=None, out=None);
+and1(in0=None, in1=None, out=None);
+sa(out=1);
+sb(out=0);
+sc(out=0);
+soutput(in=None);
+NUM ITER 1
+and0(in0=1, in1=0, out=0);
+and1(in0=None, in1=0, out=0);
+sa(out=1);
+sb(out=0);
+sc(out=0);
+soutput(in=None);
+NUM ITER 2
+and0(in0=1, in1=0, out=0);
+and1(in0=0, in1=0, out=0);
+sa(out=1);
+sb(out=0);
+sc(out=0);
+soutput(in=0);
+NUM ITER 3
+and0(in0=1, in1=0, out=0);
+and1(in0=0, in1=0, out=0);
+sa(out=1);
+sb(out=0);
+sc(out=0);
+soutput(in=0);
+END-INIT COND 5
+START-INIT COND 6
+NUM ITER 0
+and0(in0=None, in1=None, out=None);
+and1(in0=None, in1=None, out=None);
+sa(out=1);
+sb(out=0);
+sc(out=1);
+soutput(in=None);
+NUM ITER 1
+and0(in0=1, in1=0, out=0);
+and1(in0=None, in1=1, out=None);
+sa(out=1);
+sb(out=0);
+sc(out=1);
+soutput(in=None);
+NUM ITER 2
+and0(in0=1, in1=0, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=1);
+sb(out=0);
+sc(out=1);
+soutput(in=None);
+NUM ITER 3
+and0(in0=1, in1=0, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=1);
+sb(out=0);
+sc(out=1);
+soutput(in=0);
+NUM ITER 4
+and0(in0=1, in1=0, out=0);
+and1(in0=0, in1=1, out=0);
+sa(out=1);
+sb(out=0);
+sc(out=1);
+soutput(in=0);
+END-INIT COND 6
+START-INIT COND 7
+NUM ITER 0
+and0(in0=None, in1=None, out=None);
+and1(in0=None, in1=None, out=None);
+sa(out=1);
+sb(out=1);
+sc(out=0);
+soutput(in=None);
+NUM ITER 1
+and0(in0=1, in1=1, out=1);
+and1(in0=None, in1=0, out=0);
+sa(out=1);
+sb(out=1);
+sc(out=0);
+soutput(in=None);
+NUM ITER 2
+and0(in0=1, in1=1, out=1);
+and1(in0=1, in1=0, out=0);
+sa(out=1);
+sb(out=1);
+sc(out=0);
+soutput(in=0);
+NUM ITER 3
+and0(in0=1, in1=1, out=1);
+and1(in0=1, in1=0, out=0);
+sa(out=1);
+sb(out=1);
+sc(out=0);
+soutput(in=0);
+END-INIT COND 7
+START-INIT COND 8
+NUM ITER 0
+and0(in0=None, in1=None, out=None);
+and1(in0=None, in1=None, out=None);
+sa(out=1);
+sb(out=1);
+sc(out=1);
+soutput(in=None);
+NUM ITER 1
+and0(in0=1, in1=1, out=1);
+and1(in0=None, in1=1, out=None);
+sa(out=1);
+sb(out=1);
+sc(out=1);
+soutput(in=None);
+NUM ITER 2
+and0(in0=1, in1=1, out=1);
+and1(in0=1, in1=1, out=1);
+sa(out=1);
+sb(out=1);
+sc(out=1);
+soutput(in=None);
+NUM ITER 3
+and0(in0=1, in1=1, out=1);
+and1(in0=1, in1=1, out=1);
+sa(out=1);
+sb(out=1);
+sc(out=1);
+soutput(in=1);
+NUM ITER 4
+and0(in0=1, in1=1, out=1);
+and1(in0=1, in1=1, out=1);
+sa(out=1);
+sb(out=1);
+sc(out=1);
+soutput(in=1);
+END-INIT COND 8

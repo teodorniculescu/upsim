@@ -2,7 +2,7 @@ INSERT BLOCKS
     STATE OUT sa out,
     STATE OUT sb out,
     STATE OUT sc out,
-    STATE IN sd in,
+    STATE IN soutput in,
     AND2 and0 in0 in1 out,
     AND2 and1 in0 in1 out;
 
@@ -11,7 +11,7 @@ INSERT EDGES
     BETWEEN sb.out AND and0.in1,
     BETWEEN and0.out AND and1.in0,
     BETWEEN sc.out AND and1.in1,
-    BETWEEN and1.out AND sd.in;
+    BETWEEN and1.out AND soutput.in;
 
 INSERT INITIAL CONDITIONS
     (sa.out=0,

@@ -1,4 +1,5 @@
 import sys
+import os
 from antlr4 import *
 from gen.FileSyntaxLexer import FileSyntaxLexer
 from gen.FileSyntaxParser import FileSyntaxParser
@@ -10,19 +11,24 @@ class FileInterpreter:
     __input_file_path: str
     __output_file_path: str
     __sim: Simulation
-    __output: type(sys.stdout)
+    # Output file wrapper - handles to write either to a file or to the standard output
+    __out_fw: type(sys.stdout)
 
     def __init__(self, input_file_path: str, output_file_path: str, sim: Simulation):
+        if not os.path.isfile(input_file_path):
+            raise Exception(input_file_path + " is not a valid INPUT file!")
         self.__input_file_path = input_file_path
 
         # If the output file path is not specified, write to stdout
         if output_file_path == "":
-            self.__output = sys.stdout
+            self.__out_fw = sys.stdout
         else:
-            self.__output = open(output_file_path)
+            # the "w" parameter overwrites the content of the output_file_path
+            self.__out_fw = open(output_file_path, "w")
 
         self.__output_file_path = output_file_path
         self.__sim = sim
+        self.__sim.add_output_wrapper(self.__out_fw)
 
     def parse(self):
         input_stream = FileStream(self.__input_file_path)
@@ -34,11 +40,11 @@ class FileInterpreter:
         tree = parser.filesyntax()
 
         # Set the wrapper which will utilise the behaviour desired in the instructions.
-        wrapper_file_syntax = WrapperFileSyntaxListener(self.__sim, self.__output)
+        wrapper_file_syntax = WrapperFileSyntaxListener(self.__sim, self.__out_fw)
         walker = ParseTreeWalker()
         walker.walk(wrapper_file_syntax, tree)
 
         # If the output was written to a file, close the file at the end of the execution.
-        if self.__output != sys.stdout:
-            self.__output.close()
+        if self.__out_fw != sys.stdout:
+            self.__out_fw.close()
 

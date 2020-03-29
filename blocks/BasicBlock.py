@@ -26,7 +26,6 @@ class BasicBlock:
         self.__output_pins = []
         self.__io_pins = []
         self.__name = name
-        print(self.__name + " created!")
 
     def add_pin(self, pin: BaseValue, pin_type: int) -> None:
         # Check if the parameters are correct
@@ -93,14 +92,14 @@ class BasicBlock:
             value = connected_pin.get_value()
             input_pin.set_value(value)
 
-    def show_state(self):
+    def show_state(self) -> str:
         pin: BaseValue
-        for pin in self.__input_pins:
-            print(self.__name + "::" + "input" + "::" + pin.get_pin_state())
-        for pin in self.__output_pins:
-            print(self.__name + "::" + "output" + "::" + pin.get_pin_state())
-        for pin in self.__io_pins:
-            print(self.__name + "::" + "io" + "::" + pin.get_pin_state())
+        state_string: str = self.__name + "("
+        for pin in self.get_all_pins():
+            state_string += pin.get_pin_state() + ", "
+        state_string = state_string[:-2]
+        state_string += ");\n"
+        return state_string
 
     def get_all_pins(self):
         return list(itertools.chain(self.__input_pins, self.__output_pins, self.__io_pins))
