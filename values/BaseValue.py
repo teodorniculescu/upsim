@@ -5,8 +5,8 @@ LOW: int = 0
 class BaseValue:
     __name: str
     __value: int
-    __value_is_set: bool = False
-    __changed_state: bool = False
+    __value_is_set: bool
+    __changed_state: bool
 
     def __init__(self, name: str, block, value: int = None):
         self.__set_name(name)
@@ -16,6 +16,8 @@ class BaseValue:
             initialized later during the read or calculate stages
             """
             self.set_value(value)
+        self.__value_is_set = False
+        self.__changed_state = False
 
     def __set_name(self, name: str) -> None:
         if name is None:

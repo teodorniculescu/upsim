@@ -1,8 +1,8 @@
-#0 - Improve coding style - DONE
+#0 Improve coding style - DONE
 Set PyCharm line indent to 80.
 Format all files in order to satisfy this criteria.
 
-#1 - Switch .result to CSV format - TODO
+#1 Switch .result to CSV format - DONE
 Change the way .result files are represented to a CSV style.
 
 #2 Generate tables from .result files - TODO
@@ -48,6 +48,11 @@ same as in #9, with and without logic gates
 
 #11 Implement configurable logic block - TODO
 Implement and test a CLB
+
+#12 RUN syntax toggle each step - TODO
+Specify in the RUN command syntax if you either want to see each step in the
+simulation which includes the SSN steps or only the main steps when the output
+is determined.
 
 
 

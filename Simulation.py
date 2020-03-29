@@ -4,21 +4,28 @@ import sys
 
 
 class Simulation:
-    __logical_blocks: dict = {}
-    __state_blocks: dict = {}
+    __logical_blocks: dict
+    __state_blocks: dict
     " A list of dictionaries "
-    __initial_conditions: list = []
-    __number_init_cond: int = 0
-    __ic: dict = {}
-    __edges: dict = {}
+    __initial_conditions: list
+    __number_init_cond: int
+    __ic: dict
+    __edges: dict
     __changed_state: bool
     " Output wrapper which is by default stdout but can be replaced by a file "
-    __out_fw: type(sys.stdout) = sys.stdout
+    __out_fw: type(sys.stdout)
     " The number of times show stage state was called "
-    __num_sss: int = 0
+    __num_sss: int
 
     def __init__(self):
-        pass
+        self.__logical_blocks = {}
+        self.__state_blocks = {}
+        self.__initial_conditions = []
+        self.__number_init_cond = 0
+        self.__ic = {}
+        self.__edges = {}
+        self.__out_fw = sys.stdout
+        self.__num_sss = 0
 
     def __get_all_blocks(self) -> dict:
         return {**self.__logical_blocks, **self.__state_blocks}
@@ -44,6 +51,9 @@ class Simulation:
                         if input_pin.changed_state_from_last_time_step():
                             self.__changed_state = True
                 else:
+                    print(input_pin.get_name())
+                    print(input_vertex)
+                    print(self.__edges)
                     raise Exception(input_vertex + " is not connected.")
 
     def __calculate_stage(self) -> None:
@@ -52,13 +62,6 @@ class Simulation:
             block.calculate()
             if block.output_changed_state():
                 self.__changed_state = True
-
-    def __show_stage_state(self) -> None:
-        block: BasicBlock
-        self.write("NUM ITER " + str(self.__num_sss) + "\n")
-        for block in self.__get_all_blocks().values():
-            self.write(block.show_state())
-        self.__num_sss += 1
 
     def __init_stage(self) -> None:
         if self.__finished_all_init_cond():
@@ -89,21 +92,50 @@ class Simulation:
     def __has_simulation_changed_state(self) -> bool:
         return self.__changed_state
 
+    def __get_vertex_names_csv(self) -> str:
+        result: str = ""
+        block: BasicBlock
+        for block in self.__get_all_blocks().values():
+            result += block.get_vertex_names_csv()
+        result += "\n"
+        return result
+
+    def __get_vertex_values_csv(self) -> str:
+        result: str = str(self.__number_init_cond) + ',' + str(self.__num_sss)
+        block: BasicBlock
+        for block in self.__get_all_blocks().values():
+            result += block.get_vertex_values_csv()
+        result += '\n'
+        return result
+
     def run(self) -> None:
+        """
+        Creates a CSV with the following fields:
+        - Initial Condition Number - ICN
+        - State Stage Num - SSN
+        - The names of each pin from the schematic
+        :return: None
+        """
+        field_names: str
+        field_names = "ICN,SSN"
+        field_names += self.__get_vertex_names_csv()
+        self.write(field_names)
         while not self.__finished_all_init_cond():
             self.__init_stage()
             self.__changed_state = True
             # Used for showing the number of times the stage state was displayed
             self.__num_sss = 0
-            self.write("START-INIT COND " + str(self.__number_init_cond) + "\n")
             # Shows the state after initializing with the initial conditions
-            self.__show_stage_state()
-            while self.__has_simulation_changed_state():
+            self.write(self.__get_vertex_values_csv())
+            while True:
+                self.__num_sss += 1
                 self.__changed_state = False
                 self.__read_stage()
                 self.__calculate_stage()
-                self.__show_stage_state()
-            self.write("END-INIT COND " + str(self.__number_init_cond) + "\n")
+                if self.__has_simulation_changed_state():
+                    self.write(self.__get_vertex_values_csv())
+                else:
+                    break
 
     def add_logical_block(self, block: BasicBlock) -> None:
         self.__logical_blocks[block.get_name()] = block

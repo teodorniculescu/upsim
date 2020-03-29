@@ -10,10 +10,8 @@ from Simulation import Simulation
 class FileInterpreter:
     __input_file_path: str
     __sim: Simulation
-    """
-    Output file wrapper - handles writing either to a file or to the console 
-    """
-    __out_fw: type(sys.stdout) = sys.stdout
+    " Output file wrapper - handles writing either to a file or to the console "
+    __out_fw: type(sys.stdout)
 
     def __init__(self, input_file_path: str, output_file_path: str,
                  sim: Simulation):
@@ -21,7 +19,9 @@ class FileInterpreter:
             raise Exception(input_file_path + " is not a valid INPUT file!")
         self.__input_file_path = input_file_path
 
-        if output_file_path != "":
+        if output_file_path == "":
+            self.__out_fw = sys.stdout
+        else:
             "the w parameter overwrites the content of the output_file_path"
 
             self.__out_fw = open(output_file_path, "w")

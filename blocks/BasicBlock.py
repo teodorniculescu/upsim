@@ -13,17 +13,20 @@ class BasicBlock:
     analysing the circuit behaviour.
     """
     "List of BaseValues"
-    __input_pins: list = []
+    __input_pins: list
     "List of BaseValues"
-    __output_pins: list = []
+    __output_pins: list
     "List of BaseValues"
-    __io_pins: list = []
+    __io_pins: list
     __name: str
 
     def __init__(self, name: str):
         if type(name) is not str:
             raise Exception("invalid name \'" + str(name) + "\' is type "
                             + str(type(name)) + " instead of str")
+        self.__input_pins = []
+        self.__output_pins = []
+        self.__io_pins = []
         self.__name = name
 
     def add_pin(self, pin: BaseValue, pin_type: int) -> None:
@@ -115,3 +118,23 @@ class BasicBlock:
             if pin.changed_state_from_last_time_step():
                 return True
         return False
+
+    def get_vertex_names_csv(self) -> str:
+        pin: BaseValue
+        result: str = ""
+        for pin in self.get_all_pins():
+            result += "," + self.__name + "." + pin.get_name()
+        return result
+
+    def get_vertex_values_csv(self) -> str:
+        pin: BaseValue
+        result: str = ""
+        pin_value: str
+        for pin in self.get_all_pins():
+            if pin.is_set():
+                pin_value = str(pin.get_value())
+            else:
+                pin_value = "None"
+            result += ',' + pin_value
+        return result
+
