@@ -92,4 +92,4 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         elif ctx.getText() == str(ctx.INPUT_OUTPUT_KWD()):
             ctx.pin_type = PIN_TYPE_IO
         else:
-            raise Exception("Invalid KWD on pin_type.")
+            raise Exception("Invalid KWD \"" + ctx.getText() + "\" on pin_type.")

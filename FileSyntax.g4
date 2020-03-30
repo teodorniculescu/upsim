@@ -14,7 +14,7 @@ create_block : create_state_block | create_and2_block;
 create_and2_block : AND2_KWD block_name input_pin_name input_pin_name output_pin_name;
 create_state_block : STATE_KWD pin_type block_name io_pin_name;
 
-pin_type : INPUT_KWD | OUTPUT_KWD | INPUT_OUTPUT_KWD;
+pin_type : (INPUT_KWD | OUTPUT_KWD | INPUT_OUTPUT_KWD);
 
 input_pin_name : NAME;
 output_pin_name : NAME
