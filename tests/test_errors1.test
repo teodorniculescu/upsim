@@ -1,0 +1,31 @@
+INSERT BLOCKS
+    STATE OUT state1 out,
+    STATE OUT state2 out,
+    STATE OUT state2 qwer;
+SHOW ALL BLOCKS;
+
+INSERT BLOCKS
+    STATE IN state2 in;
+SHOW ALL BLOCKS;
+
+INSERT BLOCKS
+    STATE IN state1 in;
+SHOW ALL BLOCKS;
+
+INSERT BLOCKS
+    AND2 state1 in in out;
+SHOW ALL BLOCKS;
+
+INSERT BLOCKS
+    AND2 state1 in0 in1 out;
+SHOW ALL BLOCKS;
+
+INSERT BLOCKS
+    AND2 and0 in in out,
+SHOW ALL BLOCKS;
+
+INSERT BLOCKS
+    AND2 and0 in0 in1 out,
+    AND2 and1 in0 in1 out;
+
+SHOW ALL BLOCKS;

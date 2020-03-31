@@ -4,12 +4,16 @@ grammar FileSyntax;
     Parser Rules
 */
 
-filesyntax : (insert | run)* EOF;
+filesyntax : (command ';')* EOF;
 
-insert : INSERT_KWD (insert_blocks | insert_edges | insert_initial_conditions) ';';
+command : insert | run | show;
+
+show :SHOW_KWD ALL_KWD BLOCK_KWD;
+
+insert : INSERT_KWD (insert_blocks | insert_edges | insert_initial_conditions) ;
 
 insert_blocks : BLOCK_KWD create_block (',' create_block)* ;
-create_block : create_state_block | create_and2_block;
+create_block : create_state_block | create_and2_block ;
 
 create_and2_block : AND2_KWD block_name input_pin_name input_pin_name output_pin_name;
 create_state_block : STATE_KWD pin_type block_name io_pin_name;
@@ -33,7 +37,7 @@ pin_name : NAME;
 
 node_value : INTEGER;
 
-run : RUN_KWD ';';
+run : RUN_KWD;
 
 /*
     Lexer Rules
@@ -44,6 +48,8 @@ fragment UPPERCASE_LETTER : [A-Z];
 fragment NUMBER : [0-9];
 fragment LETTER : LOWERCASE_LETTER | UPPERCASE_LETTER;
 
+SHOW_KWD : 'SHOW';
+ALL_KWD : 'ALL';
 OUTPUT_KWD : 'OUT';
 INPUT_KWD : 'IN';
 INPUT_OUTPUT_KWD : 'INOUT';

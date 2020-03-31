@@ -18,8 +18,9 @@ inserted.
 
 #5 Tests for incorrect inputs - TODO
 Create tests that check if the input is correct
-- create block with an already existing name
-- create pin with an already existing name inside that block
+- create block with an already existing name - be careful to be across all types
+of blocks - DONE
+- create pin with an already existing name inside that block - DONE
 - vertex added to simulation already exists
 - vertex (node) specified does not exist either the name or pin is invalid
 - edge added to simulation already exists

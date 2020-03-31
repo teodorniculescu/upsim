@@ -5,33 +5,77 @@ from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from Simulation import Simulation
 from saved_blocks.AND2 import AND2
+from antlr4.Token import *
 
 
 class WrapperFileSyntaxListener(FileSyntaxListener):
     __sim: Simulation
     __output: type(sys.stdout)
+    """
+     Specifies if an error has occurred in some block which renders the block
+     execution useless. In other words, signals if an error has occurred
+     somewhere along the execution.
+     It resets each time a new instruction starts."
+    """
+    __error_occ: bool
+    __error_message: str
 
     def __init__(self, sim: Simulation, output: type(sys.stdout)):
         self.__sim = sim
         self.__output = output
+        self.__error_occ = False
+        self.__error_message = ""
+
+    def set_error(self, ctx, error_message: str) -> None:
+        self.__error_occ = True
+        self.__error_message = error_message
+        token: CommonToken
+        token = ctx.start
+        ctx.parser.notifyErrorListeners(self.__error_message, token)
+
+    def clear_error(self) -> None:
+        self.__error_occ = False
+
+    def error_is_set(self) -> bool:
+        return self.__error_occ
+
+    def enterCommand(self, ctx: FileSyntaxParser.CommandContext):
+        self.clear_error()
+
+    def exitCommand(self, ctx: FileSyntaxParser.CommandContext):
+        if self.error_is_set():
+            return
+
+    def exitInsert_blocks(self, ctx: FileSyntaxParser.Insert_blocksContext):
+        if self.error_is_set():
+            return
 
     def exitCreate_and2_block(self, ctx: FileSyntaxParser
                               .Create_and2_blockContext):
+        if self.error_is_set():
+            return
         block_name = ctx.block_name().text
         input0_name = ctx.input_pin_name(0).text
         input1_name = ctx.input_pin_name(1).text
         output_name = ctx.output_pin_name().text
-        block = AND2(block_name, [input0_name, input1_name], [output_name])
-        self.__sim.add_logical_block(block)
+        try:
+            self.__sim.add_block(
+                AND2(block_name, [input0_name, input1_name], [output_name]))
+        except Exception as e:
+            self.set_error(ctx, str(e))
 
     def exitCreate_state_block(self, ctx: FileSyntaxParser
                                .Create_state_blockContext):
+        if self.error_is_set():
+            return
         pin_type = ctx.pin_type().pin_type
         block_name = ctx.block_name().text
         io_name = ctx.io_pin_name().text
-        if BasicBlock.is_pin_type_correct(pin_type):
-            block = StateBlock(block_name, pin_type, io_name)
-            self.__sim.add_state_block(block)
+        try:
+            self.__sim.add_block(
+                StateBlock(block_name, pin_type, io_name))
+        except Exception as e:
+            self.set_error(ctx, str(e))
 
     def exitBlock_name(self, ctx: FileSyntaxParser
                        .Block_nameContext):
@@ -94,3 +138,6 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             ctx.pin_type = PIN_TYPE_IO
         else:
             ctx.pin_type = PIN_TYPE_ERROR
+
+    def exitShow(self, ctx:FileSyntaxParser.ShowContext):
+        self.__sim.show_all_blocks()

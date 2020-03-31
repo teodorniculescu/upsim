@@ -1,5 +1,8 @@
 from blocks.BasicBlock import *
 from blocks.LogicalBlock import *
+from blocks.StateBlock import *
+from gen.FileSyntaxParser import *
+from FileSyntaxErrorListener import *
 import sys
 
 
@@ -16,6 +19,7 @@ class Simulation:
     __out_fw: type(sys.stdout)
     " The number of times show stage state was called "
     __num_sss: int
+    __parser: FileSyntaxParser
 
     def __init__(self):
         self.__logical_blocks = {}
@@ -37,7 +41,7 @@ class Simulation:
         input_vertex: str
         connected_vertex: str
         for block in self.__get_all_blocks().values():
-            for input_pin in block.get_all_pins_with_type(PIN_TYPE_INPUT):
+            for input_pin in block.get_all_pins_with_type(PIN_TYPE_INPUT).values():
                 input_vertex = block.get_name() + '.' + input_pin.get_name()
                 if input_vertex in self.__edges:
                     connected_vertex = self.__edges[input_vertex]
@@ -136,12 +140,17 @@ class Simulation:
                     self.write(self.__get_vertex_values_csv())
                 else:
                     break
+            self.write("\n")
 
-    def add_logical_block(self, block: BasicBlock) -> None:
-        self.__logical_blocks[block.get_name()] = block
-
-    def add_state_block(self, block: BasicBlock) -> None:
-        self.__state_blocks[block.get_name()] = block
+    def add_block(self, block: BasicBlock) -> None:
+        if block.get_name() in self.__get_all_blocks():
+            raise Exception(ERROR_BLOCK_ALREADY_EXISTS % block.get_name())
+        if isinstance(block, LogicalBlock):
+            self.__logical_blocks[block.get_name()] = block
+        elif isinstance(block, StateBlock):
+            self.__state_blocks[block.get_name()] = block
+        else:
+            raise Exception("Invalid block_type " + str(type(block)))
 
     def get_block_with_name(self, block_name: str) -> BasicBlock:
         """
@@ -151,9 +160,9 @@ class Simulation:
         :return: The block with the specified name
         """
         block: BasicBlock
-        for block in self.__get_all_blocks().values():
-            if block.get_name() == block_name:
-                return block
+        all_blocks: dict = self.__get_all_blocks()
+        if block_name in all_blocks:
+            return all_blocks[block_name]
         raise Exception("Block " + block_name + " does not exist.")
 
     def add_edge(self, node0: str, node1: str) -> None:
@@ -196,3 +205,20 @@ class Simulation:
         :return: None
         """
         self.__out_fw.write(string)
+
+    def add_parser(self, parser: FileSyntaxParser):
+        self.__parser = parser
+
+    def show_all_blocks(self):
+        line: str = "Name,Type,Input Pins, Output Pins, IO Pins\n"
+        self.write(line)
+        for block in self.__get_all_blocks().values():
+            line = ""
+            line += block.get_name() + ','
+            line += str(type(block).__name__) + ','
+            line += block.get_pins_csv(PIN_TYPE_INPUT) + ','
+            line += block.get_pins_csv(PIN_TYPE_OUTPUT) + ","
+            line += block.get_pins_csv(PIN_TYPE_IO)
+            line += '\n'
+            self.write(line)
+        self.write('\n')

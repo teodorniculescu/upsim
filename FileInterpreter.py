@@ -35,6 +35,8 @@ class FileInterpreter:
         lexer = FileSyntaxLexer(input_stream)
         stream = CommonTokenStream(lexer)
         parser = FileSyntaxParser(stream)
+        self.__sim.add_parser(parser)
+        # self.notifyErrorListeners("seara pe block")
         " Remove and replace error listeners "
         parser.removeErrorListeners()
         error_listener = FileSyntaxErrorListener(self.__out_fw)
