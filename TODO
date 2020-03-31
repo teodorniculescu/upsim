@@ -12,12 +12,18 @@ SQL databases do it.
 #3 Start SYNTAX description in README file - TODO
 Define syntactically correct inputs in README.
 
-#4 Errors for incorrect inputs - TODO
+#4 Errors for incorrect inputs - DONE
 Create / Modify a wrapper in order to raise Exceptions if incorrect inputs are
 inserted.
 
 #5 Tests for incorrect inputs - TODO
-Create tests that
+Create tests that check if the input is correct
+- create block with an already existing name
+- create pin with an already existing name inside that block
+- vertex added to simulation already exists
+- vertex (node) specified does not exist either the name or pin is invalid
+- edge added to simulation already exists
+- invalid value for initial condition
 
 #6 Compare .result files to .answer files - TODO
 Each result will be compare to an .answer file which contains the result which
@@ -65,5 +71,7 @@ io : output
 The reason is quite simple, reading starts only from input pins, so there is no
 need for entries starting with an output pin
 
-
+#15 RUN specify SSN on/off - TODO
+Specify whether you what each vertex modification across a single time step
+(SSN) or you only need the final values in the CSV file
 

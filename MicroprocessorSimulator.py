@@ -10,7 +10,7 @@ RESULT_FILE_TYPE = ".result"
 
 def main():
     file_path: str = TEST_FOLDER_PATH
-    file_path += TEST_EIB_FB
+    file_path += TEST1_FP
     file_in = file_path + TEST_FILE_TYPE
     file_out = file_path + RESULT_FILE_TYPE
     FileInterpreter(file_in, file_out, Simulation()).parse()

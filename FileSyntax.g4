@@ -33,7 +33,7 @@ pin_name : NAME;
 
 node_value : INTEGER;
 
-run : RUN_KWD;
+run : RUN_KWD ';';
 
 /*
     Lexer Rules

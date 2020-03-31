@@ -135,7 +135,7 @@ class BasicBlock:
             if pin.is_set():
                 pin_value = str(pin.get_value())
             else:
-                pin_value = "None"
+                pin_value = "N"
             result += ',' + pin_value
         return result
 

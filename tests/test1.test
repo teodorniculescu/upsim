@@ -29,4 +29,4 @@ INSERT INITIAL CONDITIONS
     sc.out=0),
     (sc.out=1);
 
-RUN
+RUN;
