@@ -129,7 +129,7 @@ class FileSyntaxLexer(Lexer):
     COMMENT = 21
     WHITESPACE = 22
     NEWLINE = 23
-    ANY = 24
+    UNKNOWN_CHAR = 24
 
     channelNames = [ u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN" ]
 
@@ -143,14 +143,14 @@ class FileSyntaxLexer(Lexer):
             "OUTPUT_KWD", "INPUT_KWD", "INPUT_OUTPUT_KWD", "STATE_KWD", 
             "BLOCK_KWD", "EDGE_KWD", "INITIAL_CONDITIONS_KWD", "INSERT_KWD", 
             "AND2_KWD", "BETWEEN_KWD", "AND_KWD", "RUN_KWD", "INTEGER", 
-            "NAME", "COMMENT", "WHITESPACE", "NEWLINE", "ANY" ]
+            "NAME", "COMMENT", "WHITESPACE", "NEWLINE", "UNKNOWN_CHAR" ]
 
     ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "LOWERCASE_LETTER", 
                   "UPPERCASE_LETTER", "NUMBER", "LETTER", "OUTPUT_KWD", 
                   "INPUT_KWD", "INPUT_OUTPUT_KWD", "STATE_KWD", "BLOCK_KWD", 
                   "EDGE_KWD", "INITIAL_CONDITIONS_KWD", "INSERT_KWD", "AND2_KWD", 
                   "BETWEEN_KWD", "AND_KWD", "RUN_KWD", "INTEGER", "NAME", 
-                  "COMMENT", "WHITESPACE", "NEWLINE", "ANY" ]
+                  "COMMENT", "WHITESPACE", "NEWLINE", "UNKNOWN_CHAR" ]
 
     grammarFileName = "FileSyntax.g4"
 

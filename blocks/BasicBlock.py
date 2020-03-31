@@ -4,6 +4,7 @@ import itertools
 PIN_TYPE_INPUT = 0
 PIN_TYPE_OUTPUT = 1
 PIN_TYPE_IO = 2
+PIN_TYPE_ERROR = 3
 
 
 class BasicBlock:
@@ -137,4 +138,11 @@ class BasicBlock:
                 pin_value = "None"
             result += ',' + pin_value
         return result
+
+    @staticmethod
+    def is_pin_type_correct(pin: int) -> bool:
+        if (pin != PIN_TYPE_INPUT and pin != PIN_TYPE_OUTPUT and
+                pin != PIN_TYPE_IO):
+            return False
+        return True
 

@@ -29,8 +29,9 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         pin_type = ctx.pin_type().pin_type
         block_name = ctx.block_name().text
         io_name = ctx.io_pin_name().text
-        block = StateBlock(block_name, pin_type, io_name)
-        self.__sim.add_state_block(block)
+        if BasicBlock.is_pin_type_correct(pin_type):
+            block = StateBlock(block_name, pin_type, io_name)
+            self.__sim.add_state_block(block)
 
     def exitBlock_name(self, ctx: FileSyntaxParser
                        .Block_nameContext):
@@ -92,4 +93,4 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         elif ctx.getText() == str(ctx.INPUT_OUTPUT_KWD()):
             ctx.pin_type = PIN_TYPE_IO
         else:
-            raise Exception("Invalid KWD \"" + ctx.getText() + "\" on pin_type.")
+            ctx.pin_type = PIN_TYPE_ERROR

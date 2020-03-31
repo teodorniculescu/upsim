@@ -1,10 +1,11 @@
 import sys
 import os
 from antlr4 import *
-from gen.FileSyntaxLexer import FileSyntaxLexer
-from gen.FileSyntaxParser import FileSyntaxParser
+from gen.FileSyntaxLexer import *
+from gen.FileSyntaxParser import *
 from WrapperFileSyntaxListener import WrapperFileSyntaxListener
 from Simulation import Simulation
+from FileSyntaxErrorListener import FileSyntaxErrorListener
 
 
 class FileInterpreter:
@@ -34,10 +35,12 @@ class FileInterpreter:
         lexer = FileSyntaxLexer(input_stream)
         stream = CommonTokenStream(lexer)
         parser = FileSyntaxParser(stream)
-
+        " Remove and replace error listeners "
+        parser.removeErrorListeners()
+        error_listener = FileSyntaxErrorListener(self.__out_fw)
+        parser.addErrorListener(error_listener)
         " Set the root node of the tree as the 'filesyntax' rule "
         tree = parser.filesyntax()
-
         """
         Set the wrapper which will utilise the behaviour desired in the
         instructions
@@ -45,7 +48,6 @@ class FileInterpreter:
         wrapper_file_syntax = WrapperFileSyntaxListener(self.__sim, self.__out_fw)
         walker = ParseTreeWalker()
         walker.walk(wrapper_file_syntax, tree)
-
         """
         If the output was written to a file, close the file at the end of
         the execution
