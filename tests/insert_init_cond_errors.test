@@ -1,0 +1,54 @@
+INSERT BLOCKS
+    STATE OUT sa out,
+    STATE OUT sb out,
+    STATE OUT sc out,
+    STATE IN soutput in,
+    AND2 and0 in0 in1 out,
+    AND2 and1 in0 in1 out;
+INSERT EDGES
+    BETWEEN sa.out AND and0.in0,
+    BETWEEN sb.out AND and0.in1,
+    BETWEEN and0.out AND and1.in0,
+    BETWEEN sc.out AND and1.in1,
+    BETWEEN and1.out AND soutput.in;
+SHOW BLOCKS;
+SHOW EDGES;
+SHOW INITIAL CONDITIONS;
+
+/* Trying to insert initial condition about a logic block */
+INSERT INITIAL CONDITIONS
+    (and0.in=0);
+SHOW INITIAL CONDITIONS;
+
+/* Trying to insert initial condition about a logic block */
+INSERT INITIAL CONDITIONS
+    (and0.out=0);
+SHOW INITIAL CONDITIONS;
+
+/* Trying to insert initial condition about a block that does not exist */
+INSERT INITIAL CONDITIONS
+    (sdoesntexist.out=0);
+SHOW INITIAL CONDITIONS;
+
+/* Initial condition with value different than 1 or 0. */
+INSERT INITIAL CONDITIONS
+    (sb.out=2);
+SHOW INITIAL CONDITIONS;
+
+/* Correct values */
+INSERT INITIAL CONDITIONS
+    (sa.out=0,
+    sb.out=0,
+    sc.out=0),
+    (sc.out=1),
+    (sb.out=1,
+    sc.out=0),
+    (sc.out=1),
+    (sa.out=1,
+    sb.out=0,
+    sc.out=0),
+    (sc.out=1),
+    (sb.out=1,
+    sc.out=0),
+    (sc.out=1);
+SHOW INITIAL CONDITIONS;
