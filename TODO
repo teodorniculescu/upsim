@@ -25,6 +25,8 @@ of blocks - DONE
 - vertex (node) specified does not exist either the name or pin is invalid
 - edge added to simulation already exists
 - invalid value for initial condition
+- add command which specifies the type of error that is expected to happen
+ EXPECT ERROR <error number>
 
 #6 Compare .result files to .answer files - TODO
 Each result will be compare to an .answer file which contains the result which
@@ -76,3 +78,4 @@ need for entries starting with an output pin
 Specify whether you what each vertex modification across a single time step
 (SSN) or you only need the final values in the CSV file
 
+#16 Add comments in .test files - TODO

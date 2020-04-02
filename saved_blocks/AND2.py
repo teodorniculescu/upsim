@@ -5,13 +5,13 @@ from values.BaseValue import *
 
 class AND2(LogicalBlock):
     def __init__(self, block_name: str, input_names: list, output_names: list):
-        input0 = BaseValue(input_names[0], self)
-        input1 = BaseValue(input_names[1], self)
-        output0 = BaseValue(output_names[0], self)
+        input0 = BaseValue(input_names[0], PIN_TYPE_INPUT)
+        input1 = BaseValue(input_names[1], PIN_TYPE_INPUT)
+        output0 = BaseValue(output_names[0], PIN_TYPE_OUTPUT)
         super().__init__(block_name)
-        super().add_pin(input0, PIN_TYPE_INPUT)
-        super().add_pin(input1, PIN_TYPE_INPUT)
-        super().add_pin(output0, PIN_TYPE_OUTPUT)
+        super().add_pin(input0)
+        super().add_pin(input1)
+        super().add_pin(output0)
 
     def calculate(self):
         i0: BaseValue

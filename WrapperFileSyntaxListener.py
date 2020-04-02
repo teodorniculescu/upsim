@@ -107,7 +107,10 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                         .Create_edgeContext):
         node0 = ctx.node(0).text
         node1 = ctx.node(1).text
-        self.__sim.add_edge(node0, node1)
+        try:
+            self.__sim.add_edge(node0, node1)
+        except Exception as e:
+            self.set_error(ctx, str(e))
 
     def exitNode_value(self, ctx: FileSyntaxParser
                        .Node_valueContext):
@@ -139,5 +142,8 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         else:
             ctx.pin_type = PIN_TYPE_ERROR
 
-    def exitShow(self, ctx:FileSyntaxParser.ShowContext):
+    def exitShow_blocks(self, ctx:FileSyntaxParser.Show_blocksContext):
         self.__sim.show_all_blocks()
+
+    def exitShow_edges(self, ctx:FileSyntaxParser.Show_edgesContext):
+        self.__sim.show_all_edges()

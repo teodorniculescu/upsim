@@ -1,0 +1,44 @@
+/* Insert valid blocks. */
+INSERT BLOCKS
+    STATE OUT sa out,
+    STATE OUT sb out,
+    STATE OUT sc out,
+    STATE IN soutput in,
+    AND2 and0 in0 in1 out,
+    AND2 and1 in0 in1 out;
+SHOW BLOCKS;
+
+/* Insert valid edge. */
+INSERT EDGES
+    BETWEEN and1.out AND soutput.in;
+SHOW EDGES;
+
+/* Insert edge that already exists. */
+INSERT EDGES
+    BETWEEN and1.out AND soutput.in;
+SHOW EDGES;
+
+/* Insert between two output vertices. */
+INSERT EDGES
+    BETWEEN and1.out AND sa.out;
+SHOW EDGES;
+
+/* Insert between two input vertices. */
+INSERT EDGES
+    BETWEEN and0.in0 AND and1.in0;
+SHOW EDGES;
+
+/* Insert between the same vertices. */
+INSERT EDGES
+    BETWEEN and0.out AND and0.out;
+SHOW EDGES;
+
+/* Insert using a vertex from a block that does not exist. */
+INSERT EDGES
+    BETWEEN snuexista.out AND soutput.in;
+SHOW EDGES;
+
+/* Insert using a vertex with a pin that does not exist. */
+INSERT EDGES
+    BETWEEN and0.outnuexista AND soutput.in;
+SHOW EDGES;

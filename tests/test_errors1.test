@@ -1,31 +1,38 @@
+/* Insert 3 state blocks, the last one being one that already exists. */
 INSERT BLOCKS
     STATE OUT state1 out,
     STATE OUT state2 out,
     STATE OUT state2 qwer;
-SHOW ALL BLOCKS;
+SHOW BLOCKS;
 
+/* Insert a state block that already exists. */
 INSERT BLOCKS
     STATE IN state2 in;
-SHOW ALL BLOCKS;
+SHOW BLOCKS;
 
+/* Insert a state block that already exists. */
 INSERT BLOCKS
     STATE IN state1 in;
-SHOW ALL BLOCKS;
+SHOW BLOCKS;
 
+/* Insert a block with a name that already exists. */
 INSERT BLOCKS
     AND2 state1 in in out;
-SHOW ALL BLOCKS;
+SHOW BLOCKS;
 
+/* Insert a block with a name that already exists. */
 INSERT BLOCKS
     AND2 state1 in0 in1 out;
-SHOW ALL BLOCKS;
+SHOW BLOCKS;
 
+/* Insert a block with pins that have the same name. */
 INSERT BLOCKS
-    AND2 and0 in in out,
-SHOW ALL BLOCKS;
+    AND2 and0 in in out;
+SHOW BLOCKS;
 
+/* Insert correct blocks. */
 INSERT BLOCKS
     AND2 and0 in0 in1 out,
     AND2 and1 in0 in1 out;
 
-SHOW ALL BLOCKS;
+SHOW BLOCKS;

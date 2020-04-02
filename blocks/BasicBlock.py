@@ -1,11 +1,6 @@
-from values.BaseValue import BaseValue
+from values.BaseValue import *
 from FileSyntaxErrorListener import *
 import itertools
-
-PIN_TYPE_INPUT = 0
-PIN_TYPE_OUTPUT = 1
-PIN_TYPE_IO = 2
-PIN_TYPE_ERROR = 3
 
 
 class BasicBlock:
@@ -31,11 +26,12 @@ class BasicBlock:
         self.__io_pins = {}
         self.__name = name
 
-    def add_pin(self, pin: BaseValue, pin_type: int) -> None:
+    def add_pin(self, pin: BaseValue) -> None:
         # Check if the parameters are correct
         if not isinstance(pin, BaseValue):
             raise Exception("pin is type " + str(type(pin))
                             + " instead of BaseValue")
+        pin_type: int = pin.get_pin_type()
         if not isinstance(pin_type, int):
             raise Exception("pin_type is type " + str(type(pin_type))
                             + " instead of int")
@@ -135,12 +131,6 @@ class BasicBlock:
                 pin_value = "N"
             result += ',' + pin_value
         return result
-
-    @staticmethod
-    def is_pin_type_correct(pin_type: int) -> None:
-        if (pin_type != PIN_TYPE_INPUT and pin_type != PIN_TYPE_OUTPUT and
-                pin_type != PIN_TYPE_IO):
-            raise Exception(ERROR_INVALID_PIN_TYPE % pin_type)
 
     def get_pins_csv(self, pin_type: int) -> str:
         result: str = ''

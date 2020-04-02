@@ -1,0 +1,34 @@
+Name,Type,Input Pins, Output Pins, IO Pins
+and0,AND2,in0 in1,out,
+and1,AND2,in0 in1,out,
+sa,StateBlock,,out,
+sb,StateBlock,,out,
+sc,StateBlock,,out,
+soutput,StateBlock,in,,
+
+From,From Type,To,To Type
+soutput.in,IN,and1.out,OUT
+18:4 ERROR: Cannot connect input vertex "soutput.in" to specified vertex "and1.out", because it is already connected to "and1.out".
+
+From,From Type,To,To Type
+soutput.in,IN,and1.out,OUT
+23:4 ERROR: Cannot create edge "and1.out - sa.out" without an input vertex.
+
+From,From Type,To,To Type
+soutput.in,IN,and1.out,OUT
+28:4 ERROR: Cannot create edge "and0.in0 - and1.in0" between two input pins.
+
+From,From Type,To,To Type
+soutput.in,IN,and1.out,OUT
+33:4 ERROR: Cannot create edge between that starts and ends in the same vertex "and0.out".
+
+From,From Type,To,To Type
+soutput.in,IN,and1.out,OUT
+38:4 ERROR: Block snuexista does not exist.
+
+From,From Type,To,To Type
+soutput.in,IN,and1.out,OUT
+43:4 ERROR: Pin outnuexista does not exist.
+
+From,From Type,To,To Type
+soutput.in,IN,and1.out,OUT

@@ -140,7 +140,7 @@ class Simulation:
                     self.write(self.__get_vertex_values_csv())
                 else:
                     break
-            self.write("\n")
+        self.write("\n")
 
     def add_block(self, block: BasicBlock) -> None:
         if block.get_name() in self.__get_all_blocks():
@@ -173,12 +173,29 @@ class Simulation:
         :param node1: Second vertex
         :return: None
         """
-        if node0 in self.__edges:
-            raise Exception(node0 + " already connected to a pin")
-        if node1 in self.__edges:
-            raise Exception(node1 + " already connected to a pin")
-        self.__edges[node0] = node1
-        self.__edges[node1] = node0
+        if node0 == node1:
+            raise Exception(ERROR_EDGE_BETWEEN_SAME_VERTICES % node0)
+        # Get pin types
+        [node0_block, node0_pin] = node0.split('.')
+        node0_type: int = self.get_block_with_name(node0_block). \
+            get_pin_with_name(node0_pin).get_pin_type()
+        [node1_block, node1_pin] = node1.split('.')
+        node1_type: int = self.get_block_with_name(node1_block). \
+            get_pin_with_name(node1_pin).get_pin_type()
+        if node0_type == PIN_TYPE_INPUT:
+            if node1_type == PIN_TYPE_INPUT:
+                raise Exception(ERROR_EDGE_BETWEEN_INPUTS % (node0, node1))
+            if node0 in self.__edges:
+                raise Exception(ERROR_INPUT_VERTEX_EXISTS
+                                % (node0, node1, self.__edges[node0]))
+            self.__edges[node0] = node1
+        elif node1_type == PIN_TYPE_INPUT:
+            if node1 in self.__edges:
+                raise Exception(ERROR_INPUT_VERTEX_EXISTS
+                                % (node1, node0, self.__edges[node1]))
+            self.__edges[node1] = node0
+        else:
+            raise Exception(ERROR_NO_INPUT_VERTEX % (node0, node1))
 
     def add_condition(self, conditions: dict) -> None:
         """
@@ -222,3 +239,19 @@ class Simulation:
             line += '\n'
             self.write(line)
         self.write('\n')
+
+    def show_all_edges(self):
+        line: str = "From,From Type,To,To Type\n"
+        from_vertex: str
+        to_vertex: str
+        self.write(line)
+        for from_vertex, to_vertex in self.__edges.items():
+            [from_block, from_pin] = from_vertex.split('.')
+            from_type = self.get_block_with_name(from_block).\
+                get_pin_with_name(from_pin).get_pin_type_str()
+            [to_block, to_pin] = to_vertex.split('.')
+            to_type = self.get_block_with_name(to_block).\
+                get_pin_with_name(to_pin).get_pin_type_str()
+            self.write(from_vertex + ',' + from_type + ',' +
+                       to_vertex + ',' + to_type + '\n')
+

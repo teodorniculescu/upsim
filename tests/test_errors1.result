@@ -1,36 +1,38 @@
-25:0 ERROR: mismatched input 'SHOW' expecting {'STATE', 'AND2'}
-
-4:4 ERROR: There already exists a block called "state2"
+5:4 ERROR: There already exists a block called "state2".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-8:4 ERROR: There already exists a block called "state2"
+10:4 ERROR: There already exists a block called "state2".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-12:4 ERROR: There already exists a block called "state1"
+15:4 ERROR: There already exists a block called "state1".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-16:4 ERROR: The pin "in" already exists in block "state1"
+20:4 ERROR: The pin "in" already exists in block "state1".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-20:4 ERROR: There already exists a block called "state1"
+25:4 ERROR: There already exists a block called "state1".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-24:4 ERROR: The pin "in" already exists in block "and0"
+30:4 ERROR: The pin "in" already exists in block "and0".
+
+Name,Type,Input Pins, Output Pins, IO Pins
+state1,StateBlock,,out,
+state2,StateBlock,,out,
 
 Name,Type,Input Pins, Output Pins, IO Pins
 and0,AND2,in0 in1,out,

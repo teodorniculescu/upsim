@@ -4,11 +4,13 @@ grammar FileSyntax;
     Parser Rules
 */
 
-filesyntax : (command ';')* EOF;
+filesyntax : (command)* EOF;
 
-command : insert | run | show;
+command : (insert | run | show) ';';
 
-show :SHOW_KWD ALL_KWD BLOCK_KWD;
+show : SHOW_KWD (show_blocks | show_edges);
+show_blocks : BLOCK_KWD;
+show_edges : EDGE_KWD;
 
 insert : INSERT_KWD (insert_blocks | insert_edges | insert_initial_conditions) ;
 
@@ -67,6 +69,8 @@ INTEGER : NUMBER+;
 NAME : (LETTER | NUMBER)+;
 
 COMMENT : '/*' .*? '*/' -> skip ; // .*? matches anything until the first */
-WHITESPACE : (' ' | '\t') -> skip;
+WHITESPACE : (SPACE | TAB) -> skip;
+SPACE : ' ';
+TAB : '\t';
 NEWLINE : ('\r' | '\n' | '\r' '\n') -> skip;
 UNKNOWN_CHAR : . ;

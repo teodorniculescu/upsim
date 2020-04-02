@@ -1,5 +1,17 @@
+from FileSyntaxErrorListener import *
 HIGH: int = 1
 LOW: int = 0
+
+PIN_TYPE_INPUT: int = 0
+PIN_TYPE_OUTPUT: int = 1
+PIN_TYPE_IO: int = 2
+PIN_TYPE_ERROR: int = 3
+
+pin_switcher: dict = {
+    PIN_TYPE_INPUT: "IN",
+    PIN_TYPE_OUTPUT: "OUT",
+    PIN_TYPE_IO: "IO"
+}
 
 
 class BaseValue:
@@ -8,16 +20,30 @@ class BaseValue:
     __value_is_set: bool
     __changed_state: bool
 
-    def __init__(self, name: str, block, value: int = None):
+    def __init__(self, name: str, pin_type: int):
         self.__set_name(name)
-        if value is not None:
-            """
-            The value is not initialized yet, but will probably be
-            initialized later during the read or calculate stages
-            """
-            self.set_value(value)
+        self.__set_pin_type(pin_type)
         self.__value_is_set = False
         self.__changed_state = False
+
+    @staticmethod
+    def __check_pin_type(pin_type: int) -> None:
+        if pin_type not in pin_switcher:
+            raise Exception(ERROR_INVALID_PIN_TYPE % pin_type)
+
+    def __set_pin_type(self, pin_type: int) -> None:
+        BaseValue.__check_pin_type(pin_type)
+        self.__pin_type = pin_type
+
+    def get_pin_type_str(self) -> str:
+        if self.__pin_type in pin_switcher:
+            return pin_switcher[self.__pin_type]
+        raise Exception(ERROR_INVALID_PIN_TYPE % self.__pin_type)
+
+    def get_pin_type(self):
+        if self.__pin_type in pin_switcher:
+            return self.__pin_type
+        raise Exception(ERROR_INVALID_PIN_TYPE % self.__pin_type)
 
     def __set_name(self, name: str) -> None:
         if name is None:
