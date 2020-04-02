@@ -14,31 +14,37 @@ INSERT EDGES
 SHOW EDGES;
 
 /* Insert edge that already exists. */
+EXPECT ERROR 6;
 INSERT EDGES
     BETWEEN and1.out AND soutput.in;
 SHOW EDGES;
 
 /* Insert between two output vertices. */
+EXPECT ERROR 7;
 INSERT EDGES
     BETWEEN and1.out AND sa.out;
 SHOW EDGES;
 
 /* Insert between two input vertices. */
+EXPECT ERROR 5;
 INSERT EDGES
     BETWEEN and0.in0 AND and1.in0;
 SHOW EDGES;
 
 /* Insert between the same vertices. */
+EXPECT ERROR 4;
 INSERT EDGES
     BETWEEN and0.out AND and0.out;
 SHOW EDGES;
 
 /* Insert using a vertex from a block that does not exist. */
+EXPECT ERROR 9;
 INSERT EDGES
     BETWEEN snuexista.out AND soutput.in;
 SHOW EDGES;
 
 /* Insert using a vertex with a pin that does not exist. */
+EXPECT ERROR 10;
 INSERT EDGES
     BETWEEN and0.outnuexista AND soutput.in;
 SHOW EDGES;

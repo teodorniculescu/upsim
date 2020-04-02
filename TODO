@@ -21,12 +21,15 @@ Create tests that check if the input is correct
 - create block with an already existing name - be careful to be across all types
 of blocks - DONE
 - create pin with an already existing name inside that block - DONE
-- vertex added to simulation already exists
-- vertex (node) specified does not exist either the name or pin is invalid
-- edge added to simulation already exists
+- vertex added to simulation already exists - DONE
+- vertex (node) specified does not exist either the name or pin is
+invalid - DONE
+- edge added to simulation already exists - DONE
 - invalid value for initial condition
 - add command which specifies the type of error that is expected to happen
- EXPECT ERROR <error number>
+ EXPECT ERROR <error number> - DONE
+- if you are expecting an error and you don't receive it, raise an exception -
+DONE
 
 #6 Compare .result files to .answer files - TODO
 Each result will be compare to an .answer file which contains the result which
@@ -78,4 +81,4 @@ need for entries starting with an output pin
 Specify whether you what each vertex modification across a single time step
 (SSN) or you only need the final values in the CSV file
 
-#16 Add comments in .test files - TODO
+#16 Add comments in .test files - DONE

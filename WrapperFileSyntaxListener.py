@@ -19,22 +19,33 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     """
     __error_occ: bool
     __error_message: str
+    __expecting_error: bool
+    __error_number: int
 
     def __init__(self, sim: Simulation, output: type(sys.stdout)):
         self.__sim = sim
         self.__output = output
         self.__error_occ = False
         self.__error_message = ""
+        self.__expecting_error = False
 
-    def set_error(self, ctx, error_message: str) -> None:
-        self.__error_occ = True
-        self.__error_message = error_message
+    def __set_error(self, ctx, e: Exception) -> None:
         token: CommonToken
         token = ctx.start
-        ctx.parser.notifyErrorListeners(self.__error_message, token)
+        err_msg: str = str(token.line) + ':' + str(token.column) + ' ' + \
+                       "ERROR " + e.args[0]
+        if (self.__expecting_error and
+                self.__error_number == int(e.args[0].split(':')[0])):
+            self.__expecting_error = False
+            self.__error_occ = True
+            self.__error_message = err_msg
+            ctx.parser.notifyErrorListeners(err_msg, token)
+        else:
+            raise Exception(err_msg)
 
     def clear_error(self) -> None:
         self.__error_occ = False
+        self.__error_message = ""
 
     def error_is_set(self) -> bool:
         return self.__error_occ
@@ -43,8 +54,14 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         self.clear_error()
 
     def exitCommand(self, ctx: FileSyntaxParser.CommandContext):
+        if self.__expecting_error:
+            raise Exception(ERROR_NO_EXPECTED_ERROR % self.__error_number)
         if self.error_is_set():
             return
+
+    def exitExpect(self, ctx:FileSyntaxParser.ExpectContext):
+        self.__expecting_error = True
+        self.__error_number = int(str(ctx.INTEGER()))
 
     def exitInsert_blocks(self, ctx: FileSyntaxParser.Insert_blocksContext):
         if self.error_is_set():
@@ -62,7 +79,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             self.__sim.add_block(
                 AND2(block_name, [input0_name, input1_name], [output_name]))
         except Exception as e:
-            self.set_error(ctx, str(e))
+            self.__set_error(ctx, e)
 
     def exitCreate_state_block(self, ctx: FileSyntaxParser
                                .Create_state_blockContext):
@@ -75,7 +92,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             self.__sim.add_block(
                 StateBlock(block_name, pin_type, io_name))
         except Exception as e:
-            self.set_error(ctx, str(e))
+            self.__set_error(ctx, e)
 
     def exitBlock_name(self, ctx: FileSyntaxParser
                        .Block_nameContext):
@@ -110,7 +127,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         try:
             self.__sim.add_edge(node0, node1)
         except Exception as e:
-            self.set_error(ctx, str(e))
+            self.__set_error(ctx, e)
 
     def exitNode_value(self, ctx: FileSyntaxParser
                        .Node_valueContext):

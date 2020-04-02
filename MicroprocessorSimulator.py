@@ -6,7 +6,6 @@ TEST_FILE_TYPE: str = ".test"
 RESULT_FILE_TYPE: str = ".result"
 
 TEST1: str = "test1"
-TEST_EIB: str = "test_error_insert_block"
 TEST_ERRORS1: str = "test_errors1"
 TEST_ERRORS2: str = "test_errors2"
 

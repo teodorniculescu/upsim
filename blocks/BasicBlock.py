@@ -76,7 +76,7 @@ class BasicBlock:
         all_pins: dict = self.get_all_pins()
         if pin_name in all_pins:
             return all_pins[pin_name]
-        raise Exception("Pin " + pin_name + " does not exist.")
+        raise Exception(ERROR_PIN_DOESNT_EXIST % pin_name)
 
     def calculate(self):
         """

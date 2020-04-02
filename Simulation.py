@@ -163,7 +163,7 @@ class Simulation:
         all_blocks: dict = self.__get_all_blocks()
         if block_name in all_blocks:
             return all_blocks[block_name]
-        raise Exception("Block " + block_name + " does not exist.")
+        raise Exception(ERROR_BLOCK_DOESNT_EXIST % block_name)
 
     def add_edge(self, node0: str, node1: str) -> None:
         """

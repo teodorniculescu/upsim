@@ -1,34 +1,34 @@
-5:4 ERROR: There already exists a block called "state2".
+6:4 ERROR 1:There already exists a block called "state2".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-10:4 ERROR: There already exists a block called "state2".
+12:4 ERROR 1:There already exists a block called "state2".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-15:4 ERROR: There already exists a block called "state1".
+18:4 ERROR 1:There already exists a block called "state1".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-20:4 ERROR: The pin "in" already exists in block "state1".
+24:4 ERROR 3:The pin "in" already exists in block "state1".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-25:4 ERROR: There already exists a block called "state1".
+30:4 ERROR 1:There already exists a block called "state1".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,
 state2,StateBlock,,out,
 
-30:4 ERROR: The pin "in" already exists in block "and0".
+36:4 ERROR 3:The pin "in" already exists in block "and0".
 
 Name,Type,Input Pins, Output Pins, IO Pins
 state1,StateBlock,,out,

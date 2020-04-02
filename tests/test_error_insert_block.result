@@ -1,4 +1,0 @@
-3:10: missing {'OUT', 'IN', 'INOUT'} at 'sb'
-4:13: extraneous input '_' expecting NAME
-4:26: mismatched input 'o1' expecting ';'
-10:0: mismatched input '<EOF>' expecting {BLOCK_KWD, EDGE_KWD, INITIAL_CONDITIONS_KWD}

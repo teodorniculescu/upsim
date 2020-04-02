@@ -4,9 +4,13 @@ grammar FileSyntax;
     Parser Rules
 */
 
-filesyntax : (command)* EOF;
+filesyntax : ((command | investigate) ';')* EOF;
 
-command : (insert | run | show) ';';
+investigate : (show | expect);
+
+command : (insert | run);
+
+expect: EXPECT_KWD ERROR_KWD INTEGER;
 
 show : SHOW_KWD (show_blocks | show_edges);
 show_blocks : BLOCK_KWD;
@@ -50,6 +54,8 @@ fragment UPPERCASE_LETTER : [A-Z];
 fragment NUMBER : [0-9];
 fragment LETTER : LOWERCASE_LETTER | UPPERCASE_LETTER;
 
+EXPECT_KWD: 'EXPECT';
+ERROR_KWD: 'ERROR';
 SHOW_KWD : 'SHOW';
 ALL_KWD : 'ALL';
 OUTPUT_KWD : 'OUT';
