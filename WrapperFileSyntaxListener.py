@@ -1,4 +1,3 @@
-import sys
 from blocks.StateBlock import StateBlock
 from blocks.BasicBlock import *
 from gen.FileSyntaxListener import FileSyntaxListener
@@ -32,7 +31,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     def __set_error(self, ctx, e: Exception) -> None:
         token: CommonToken
         token = ctx.start
-        err_msg: str = str(token.line) + ':' + str(token.column) + ' ' + \
+        err_msg: str = str(token.line) + ':' + str(token.column) + ' ' +\
                        "ERROR " + e.args[0]
         if (self.__expecting_error and
                 self.__error_number == int(e.args[0].split(':')[0])):
@@ -59,7 +58,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         if self.error_is_set():
             return
 
-    def exitExpect(self, ctx:FileSyntaxParser.ExpectContext):
+    def exitExpect(self, ctx: FileSyntaxParser.ExpectContext):
         self.__expecting_error = True
         self.__error_number = int(str(ctx.INTEGER()))
 
@@ -144,7 +143,10 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         conditions = {}
         for cond in ctx.condition():
             conditions[cond.node] = cond.number
-        self.__sim.add_condition(conditions)
+        try:
+            self.__sim.add_condition(conditions)
+        except Exception as e:
+            self.__set_error(ctx, e)
 
     def exitRun(self, ctx: FileSyntaxParser.RunContext):
         self.__sim.run()
@@ -159,8 +161,13 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         else:
             ctx.pin_type = PIN_TYPE_ERROR
 
-    def exitShow_blocks(self, ctx:FileSyntaxParser.Show_blocksContext):
+    def exitShow_blocks(self, ctx: FileSyntaxParser.Show_blocksContext):
         self.__sim.show_all_blocks()
 
-    def exitShow_edges(self, ctx:FileSyntaxParser.Show_edgesContext):
+    def exitShow_edges(self, ctx: FileSyntaxParser.Show_edgesContext):
         self.__sim.show_all_edges()
+
+    def exitShow_initial_conditions(self,
+                                    ctx: FileSyntaxParser.
+                                    Show_initial_conditionsContext):
+        self.__sim.show_all_init_cond()

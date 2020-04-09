@@ -22,6 +22,13 @@ ERROR_BLOCK_DOESNT_EXIST: str = \
     "9:Block \"%s\" does not exist."
 ERROR_PIN_DOESNT_EXIST: str = \
     "10:Pin \"%s\" does not exist."
+ERROR_NODE_DOESNT_EXIST: str = \
+    "11:Node \"%s\" does not exist."
+ERROR_INIT_COND_NOT_STATE_BLOCK: str = \
+    "12:Initial condition block must be a state block for \"%s\"."
+ERROR_INVALID_PIN_VALUE: str = \
+    "13:Pin cannot have value \"%s\". Pin must have either HIGH \"%d\" or " \
+    "LOW \"%d\" values."
 
 
 class FileSyntaxErrorListener(ErrorListener):

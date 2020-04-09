@@ -16,21 +16,25 @@ SHOW EDGES;
 SHOW INITIAL CONDITIONS;
 
 /* Trying to insert initial condition about a logic block */
+EXPECT ERROR 12;
 INSERT INITIAL CONDITIONS
-    (and0.in=0);
+    (and0.in0=0);
 SHOW INITIAL CONDITIONS;
 
 /* Trying to insert initial condition about a logic block */
+EXPECT ERROR 12;
 INSERT INITIAL CONDITIONS
     (and0.out=0);
 SHOW INITIAL CONDITIONS;
 
 /* Trying to insert initial condition about a block that does not exist */
+EXPECT ERROR 9;
 INSERT INITIAL CONDITIONS
     (sdoesntexist.out=0);
 SHOW INITIAL CONDITIONS;
 
 /* Initial condition with value different than 1 or 0. */
+EXPECT ERROR 13;
 INSERT INITIAL CONDITIONS
     (sb.out=2);
 SHOW INITIAL CONDITIONS;

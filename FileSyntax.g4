@@ -12,9 +12,10 @@ command : (insert | run);
 
 expect: EXPECT_KWD ERROR_KWD INTEGER;
 
-show : SHOW_KWD (show_blocks | show_edges);
+show : SHOW_KWD (show_blocks | show_edges | show_initial_conditions);
 show_blocks : BLOCK_KWD;
 show_edges : EDGE_KWD;
+show_initial_conditions : INITIAL_CONDITIONS_KWD;
 
 insert : INSERT_KWD (insert_blocks | insert_edges | insert_initial_conditions) ;
 
@@ -33,7 +34,7 @@ io_pin_name : NAME;
 insert_edges : EDGE_KWD create_edge (',' create_edge)*;
 create_edge : BETWEEN_KWD node AND_KWD node;
 
-insert_initial_conditions : INITIAL_CONDITIONS_KWD initial_condition (',' initial_condition)+;
+insert_initial_conditions : INITIAL_CONDITIONS_KWD initial_condition (',' initial_condition)*;
 initial_condition : '(' condition (',' condition)* ')';
 condition : node '=' node_value;
 

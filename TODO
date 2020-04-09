@@ -82,3 +82,15 @@ Specify whether you what each vertex modification across a single time step
 (SSN) or you only need the final values in the CSV file
 
 #16 Add comments in .test files - DONE
+
+#17 Create Node class - DONE
+Simply code from simulation class and remove repetitive lines by creating a node
+class which contains information about the block and pin name of that node.
+
+#18 Create graph class - DONE
+Move edges and nodes to a class which operates only on them in order to simplify
+simulation class
+
+#19 Create BlockHandler class - DONE
+Move blocks to a different class in order to simplify simulation class and move
+all code related to blocks to its own file
