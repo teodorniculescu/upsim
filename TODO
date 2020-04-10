@@ -31,7 +31,7 @@ invalid - DONE
 - if you are expecting an error and you don't receive it, raise an exception -
 DONE
 
-#6 Compare .result files to .answer files - TODO
+#6 Compare .result files to .answer files - DONE
 Each result will be compare to an .answer file which contains the result which
 is expected to be the correct one. If the files differ, then it means that
 something is not correct in the code (either newly added code somehow breaks old

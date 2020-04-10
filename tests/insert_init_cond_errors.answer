@@ -1,0 +1,31 @@
+Name,Type,Input Pins, Output Pins, IO Pins
+and0,AND2,in0 in1,out,
+and1,AND2,in0 in1,out,
+sa,StateBlock,,out,
+sb,StateBlock,,out,
+sc,StateBlock,,out,
+soutput,StateBlock,in,,
+
+From,From Type,To,To Type
+and0.in0,IN,sa.out,OUT
+and0.in1,IN,sb.out,OUT
+and1.in0,IN,and0.out,OUT
+and1.in1,IN,sc.out,OUT
+soutput.in,IN,and1.out,OUT
+21:4 ERROR 12:Initial condition block must be a state block for "and0.in0".
+
+27:4 ERROR 12:Initial condition block must be a state block for "and0.out".
+
+33:4 ERROR 9:Block "sdoesntexist" does not exist.
+
+39:4 ERROR 13:Pin cannot have value "2". Pin must have either HIGH "1" or LOW "0" values.
+
+sa.out,sb.out,sc.out
+0,0,0
+,,1
+,1,0
+,,1
+1,0,0
+,,1
+,1,0
+,,1
