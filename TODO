@@ -16,7 +16,7 @@ Define syntactically correct inputs in README.
 Create / Modify a wrapper in order to raise Exceptions if incorrect inputs are
 inserted.
 
-#5 Tests for incorrect inputs - TODO
+#5 Tests for incorrect inputs - DONE
 Create tests that check if the input is correct
 - create block with an already existing name - be careful to be across all types
 of blocks - DONE

@@ -62,7 +62,7 @@ class Simulation:
         if self.__finished_all_init_cond():
             raise Exception("Exceeded length of __initial_conditions.")
         ic_curr: dict = self.__initial_conditions[self.__number_init_cond]
-        self.__ic.update(ic_curr)
+        self.__ic = {**self.__ic, **ic_curr}
         " now __ic contains the initial conditions of this current time frame "
         block: BasicBlock
         for block in self.__bh.get_all_blocks().values():
@@ -181,9 +181,24 @@ class Simulation:
         self.write(self.__graph.get_all_edges_csv())
 
     def show_all_init_cond(self) -> None:
-        line: str = "\n"
+        result: str = ""
         init_cond: dict
-        for init_cond in self.__initial_conditions:
-            self.write(str(init_cond))
-        self.write("\n")
-        # TODO implement inital conditions in csv format
+        merged_dict: dict = {}
+        if self.__initial_conditions:
+            # Check if the list is empty
+            for init_cond in self.__initial_conditions:
+                merged_dict = {**merged_dict, **init_cond}
+            keys = merged_dict.keys()
+            key: str
+            for key in keys:
+                result += key + ','
+            result = result[:-1] + '\n'
+            for init_cond in self.__initial_conditions:
+                node: str
+                value: str
+                for key in keys:
+                    if key in init_cond:
+                        result += init_cond[key]
+                    result += ','
+                result = result[:-1] + '\n'
+            self.write(result)
