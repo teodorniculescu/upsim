@@ -29,6 +29,11 @@ ERROR_INIT_COND_NOT_STATE_BLOCK: str = \
 ERROR_INVALID_PIN_VALUE: str = \
     "13:Pin cannot have value \"%s\". Pin must have either HIGH \"%d\" or " \
     "LOW \"%d\" values."
+ERROR_REQUIRE_CERTAIN_NUM_PINS: str = \
+    "14:Must have exactly \"%d\" %s pins. Received instead \"%d\" pins."
+ERROR_INVALID_BLOCK_NAME: str = \
+    "15:The block must have a valid name. Name \"%s\" is invalid because its " \
+    "type is \"%s\" instead of str."
 
 
 class FileSyntaxErrorListener(ErrorListener):

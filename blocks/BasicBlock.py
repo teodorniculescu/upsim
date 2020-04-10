@@ -1,6 +1,6 @@
 from values.BaseValue import *
 from FileSyntaxErrorListener import *
-import itertools
+from typing import Dict
 
 
 class BasicBlock:
@@ -9,18 +9,15 @@ class BasicBlock:
     interface which implements all the basic methods which will be used for
     analysing the circuit behaviour.
     """
-    "List of BaseValues"
-    __input_pins: dict
-    "List of BaseValues"
-    __output_pins: dict
-    "List of BaseValues"
-    __io_pins: dict
+    __input_pins: Dict[str, BaseValue]
+    __output_pins: Dict[str, BaseValue]
+    __io_pins: Dict[str, BaseValue]
     __name: str
 
     def __init__(self, name: str):
         if not isinstance(name, str):
-            raise Exception("invalid name \'" + str(name) + "\' is type "
-                            + str(type(name)) + " instead of str")
+            raise Exception(ERROR_INVALID_BLOCK_NAME %
+                            (str(name), str(type(name))))
         self.__input_pins = {}
         self.__output_pins = {}
         self.__io_pins = {}
@@ -38,11 +35,6 @@ class BasicBlock:
         if pin.get_name() in self.get_all_pins():
             raise Exception(ERROR_PIN_ALREADY_EXISTS
                             % (pin.get_name(), self.get_name()))
-        #existing_pin: BaseValue
-        #for exiting_pin in self.get_all_pins():
-        #    if existing_pin.get_name() == pin.get_name()
-
-
         # Check all types of pins
         if pin_type == PIN_TYPE_INPUT:
             self.__input_pins[pin.get_name()] = pin
@@ -53,7 +45,7 @@ class BasicBlock:
         else:
             raise Exception(ERROR_INVALID_PIN_TYPE % pin_type)
 
-    def get_all_pins_with_type(self, pin_type: int) -> dict:
+    def get_all_pins_with_type(self, pin_type: int) -> Dict[str, BaseValue]:
         # Check if the parameters are correct
         if not isinstance(pin_type, int):
             raise Exception("pin_type is type " + str(type(pin_type))
@@ -78,7 +70,7 @@ class BasicBlock:
             return all_pins[pin_name]
         raise Exception(ERROR_PIN_DOESNT_EXIST % pin_name)
 
-    def calculate(self):
+    def calculate(self) -> None:
         """
         Specifies the internal behaviour of the block, how the inputs are used
         in order to obtain the outputs
@@ -97,24 +89,21 @@ class BasicBlock:
         state_string += ");\n"
         return state_string
 
-    def get_all_pins(self) -> dict:
+    def get_all_pins(self) -> Dict[str, BaseValue]:
         return {**self.__input_pins, **self.__output_pins,
                 **self.__io_pins}
 
     def reset(self) -> None:
-        pin: BaseValue
         for pin in self.get_all_pins().values():
             pin.reset()
 
-    def output_changed_state(self):
-        pin: BaseValue
+    def output_changed_state(self) -> bool:
         for pin in self.__output_pins.values():
             if pin.changed_state_from_last_time_step():
                 return True
         return False
 
     def get_vertex_names_csv(self) -> str:
-        pin: BaseValue
         result: str = ""
         for pin in self.get_all_pins().values():
             result += "," + self.__name + "." + pin.get_name()

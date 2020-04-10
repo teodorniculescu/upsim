@@ -3,7 +3,7 @@ from blocks.BasicBlock import *
 from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from Simulation import Simulation
-from saved_blocks.AND2 import AND2
+from saved_blocks.LogicGates import AND2
 from antlr4.Token import *
 
 

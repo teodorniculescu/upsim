@@ -51,11 +51,15 @@ def main():
             answer_file = file_path + ANSWER_FILE
 
             result: str = ""
-            result += test_path + "\n"
             t1 = open(result_file).readlines()
             t2 = open(answer_file).readlines()
             for line in difflib.unified_diff(t1, t2):
                 result += line
+            if result == "":
+                result += "OK - "
+                result += test_path
+            else:
+                result = "FAILED - " + test_path + '\n' + result
             print(result)
 
 

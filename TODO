@@ -37,10 +37,13 @@ is expected to be the correct one. If the files differ, then it means that
 something is not correct in the code (either newly added code somehow breaks old
 code results or something else happened)
 
-#7 Add all possible logic gates simple logic gates - TODO
+#7.1 Add all possible logic gates simple logic gates - TODO
 Add 1 input and 1 output (1I1O) logic gate: NOT
 Add 2 input and 1 output (2I1O) logic gates: AND / OR / NAND / NOR / XOR / XNOR
 Create tests for these logic gates.
+
+#7.2 Simple logic gates made from other simple logic gates - TODO
+Create using DECLARE BLOCK
 
 #8 Logic gates with indefinite amounts of inputs - TODO
 Create and test simple logic gates that can take as many inputs as possible
@@ -94,3 +97,19 @@ simulation class
 #19 Create BlockHandler class - DONE
 Move blocks to a different class in order to simplify simulation class and move
 all code related to blocks to its own file
+
+#20 Remove need to specify state block pin name - TODO
+Change syntax in order to avoid needing to input a name for the state block
+input. Default state block pin name will be "value".
+
+#21 Add DECLARE BLOCK syntax in order to create blocks from other blocks - TODO
+Also add some way to extract result of a run with some initial conditions from
+the block.
+
+#22 Add way to assign and declare a cluster / vector of blocks - TODO
+Way to add and connect multiple blocks at the same time with [n] syntax.
+
+#23 Create ALU - TODO
+1 bit ALU and multiple bit ALU from Computer Organization and Design
+
+#22 Add import syntax in order to reuse blocks - TODO
