@@ -1,0 +1,32 @@
+INSERT BLOCKS
+    STATE OUT sa,
+    STATE OUT sb,
+    STATE OUT sc,
+    STATE IN soutput,
+    AND2 and0 in0 in1 out,
+    AND2 and1 in0 in1 out;
+
+INSERT EDGES
+    BETWEEN sa.val AND and0.in0,
+    BETWEEN sb.val AND and0.in1,
+    BETWEEN and0.out AND and1.in0,
+    BETWEEN sc.val AND and1.in1,
+    BETWEEN and1.out AND soutput.val;
+
+INSERT INITIAL CONDITIONS
+    (sa.val=0,
+    sb.val=0,
+    sc.val=0),
+    (sc.val=1),
+    (sb.val=1,
+    sc.val=0),
+    (sc.val=1),
+    (sa.val=1,
+    sb.val=0,
+    sc.val=0),
+    (sc.val=1),
+    (sb.val=1,
+    sc.val=0),
+    (sc.val=1);
+
+RUN;

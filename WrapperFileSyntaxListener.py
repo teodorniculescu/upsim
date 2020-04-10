@@ -3,7 +3,7 @@ from blocks.BasicBlock import *
 from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from Simulation import Simulation
-from saved_blocks.LogicGates import AND2
+from saved_blocks.LogicGates import *
 from antlr4.Token import *
 
 
@@ -66,17 +66,30 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         if self.error_is_set():
             return
 
-    def exitCreate_and2_block(self, ctx: FileSyntaxParser
-                              .Create_and2_blockContext):
+    def exitLogic_gate_2_inputs_type(self, ctx:FileSyntaxParser.Logic_gate_2_inputs_typeContext):
+        ctx.text = str(ctx.getText())
+
+    lg2i = {
+        "AND2": AND2,
+        "OR2": OR2,
+        "NOR2": NOR2,
+        "NAND2": NAND2,
+        "XOR2": XOR2,
+        "XNOR2": XNOR2
+    }
+
+    def exitCreate_logic_gate_2_inputs(self, ctx:FileSyntaxParser.Create_logic_gate_2_inputsContext):
         if self.error_is_set():
             return
+        block_type: str = ctx.logic_gate_2_inputs_type().text
         block_name = ctx.block_name().text
         input0_name = ctx.input_pin_name(0).text
         input1_name = ctx.input_pin_name(1).text
         output_name = ctx.output_pin_name().text
         try:
+            func = self.lg2i.get(block_type)
             self.__sim.add_block(
-                AND2(block_name, [input0_name, input1_name], [output_name]))
+                func(block_name, [input0_name, input1_name], [output_name]))
         except Exception as e:
             self.__set_error(ctx, e)
 
@@ -86,7 +99,10 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             return
         pin_type = ctx.pin_type().pin_type
         block_name = ctx.block_name().text
-        io_name = ctx.io_pin_name().text
+        if ctx.io_pin_name() is None:
+            io_name = "val"
+        else:
+            io_name = ctx.io_pin_name().text
         try:
             self.__sim.add_block(
                 StateBlock(block_name, pin_type, io_name))
@@ -105,6 +121,9 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                             .Output_pin_nameContext):
         ctx.text = str(ctx.NAME())
 
+    def enterIo_pin_name(self, ctx: FileSyntaxParser.Io_pin_nameContext):
+        ctx.text = ""
+
     def exitIo_pin_name(self, ctx: FileSyntaxParser
                         .Io_pin_nameContext):
         ctx.text = str(ctx.NAME())
@@ -119,12 +138,19 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         pin_name = ctx.pin_name().text
         ctx.text = block_name + "." + pin_name
 
+    def exitOne_or_multiple_nodes(self, ctx:FileSyntaxParser.One_or_multiple_nodesContext):
+        input_nodes: List[str] = []
+        for node in ctx.node():
+            input_nodes.append(node.text)
+        ctx.input_nodes = input_nodes
+
     def exitCreate_edge(self, ctx: FileSyntaxParser
                         .Create_edgeContext):
-        node0 = ctx.node(0).text
-        node1 = ctx.node(1).text
+        output_node: str = ctx.node().text
+        input_nodes: List[str] = ctx.one_or_multiple_nodes().input_nodes
         try:
-            self.__sim.add_edge(node0, node1)
+            for input_node in input_nodes:
+                self.__sim.add_edge(output_node, input_node)
         except Exception as e:
             self.__set_error(ctx, e)
 
@@ -171,3 +197,5 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                                     ctx: FileSyntaxParser.
                                     Show_initial_conditionsContext):
         self.__sim.show_all_init_cond()
+
+

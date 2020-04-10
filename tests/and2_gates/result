@@ -1,4 +1,4 @@
-ICN,SSN,and0.in0,and0.in1,and0.out,and1.in0,and1.in1,and1.out,sa.out,sb.out,sc.out,soutput.in
+ICN,SSN,and0.in0,and0.in1,and0.out,and1.in0,and1.in1,and1.out,sa.val,sb.val,sc.val,soutput.val
 1,0,N,N,N,N,N,N,0,0,0,N
 1,1,0,0,0,N,0,0,0,0,0,N
 1,2,0,0,0,0,0,0,0,0,0,0

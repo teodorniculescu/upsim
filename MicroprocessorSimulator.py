@@ -7,18 +7,19 @@ RESULT_FILE: str = "result"
 ANSWER_FILE: str = "answer"
 
 TEST_LIST: list = [
-    "2_and_gates",
+    "and2_gates",
     "insert_block_errors",
     "insert_edge_errors",
-    "insert_init_cond_errors"
+    "insert_init_cond_errors",
+    "simple_logic_gates"
 ]
 
 
 def main():
     output_file: str
-    print("What would you like to generate: answers / results")
+    print("What would you like to generate: answers / test / results")
     # input1 = input()
-    input1 = "results"
+    input1 = "test"
     if input1 == "answers":
         print("Are you sure? This will override all previous answers! Type: \"Yes I am sure!\"")
         input1 = input()
@@ -27,7 +28,7 @@ def main():
         else:
             print("Abort!")
             return
-    elif input1 == "results":
+    elif input1 == "results" or input1 == "test":
         output_file = RESULT_FILE
     else:
         raise Exception("Invalid cmd")
@@ -38,9 +39,10 @@ def main():
         file_path += test_path + '/'
         file_in = file_path + TEST_FILE
         file_out = file_path + output_file
+        print("Running " + test_path)
         FileInterpreter(file_in, file_out, Simulation()).parse()
 
-    if output_file == RESULT_FILE:
+    if input1 == "results":
         print("Comparing files!")
         import difflib
         for test_path in TEST_LIST:

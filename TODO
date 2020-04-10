@@ -105,6 +105,8 @@ input. Default state block pin name will be "value".
 #21 Add DECLARE BLOCK syntax in order to create blocks from other blocks - TODO
 Also add some way to extract result of a run with some initial conditions from
 the block.
+Create a way to combine .py declaration with a file which contains DECLARE BLOCK
+statements!
 
 #22 Add way to assign and declare a cluster / vector of blocks - TODO
 Way to add and connect multiple blocks at the same time with [n] syntax.
@@ -112,4 +114,6 @@ Way to add and connect multiple blocks at the same time with [n] syntax.
 #23 Create ALU - TODO
 1 bit ALU and multiple bit ALU from Computer Organization and Design
 
-#22 Add import syntax in order to reuse blocks - TODO
+#24 Add import syntax in order to reuse blocks - TODO
+
+#25 Make if possible to only connect from output to input - TODO

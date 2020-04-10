@@ -7,12 +7,13 @@ from BlockHandler import *
 from Node import Node
 import sys
 from Graph import Graph
+from typing import Dict, List
 
 
 class Simulation:
     __bh: BlockHandler
     " A list of dictionaries "
-    __initial_conditions: list
+    __initial_conditions: List[Dict]
     __number_init_cond: int
     __ic: dict
     __changed_state: bool
