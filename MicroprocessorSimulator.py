@@ -2,9 +2,9 @@ from FileInterpreter import FileInterpreter
 from Simulation import Simulation
 
 TEST_FOLDER_PATH: str = "tests/"
-TEST_FILE_TYPE: str = ".test"
-RESULT_FILE_TYPE: str = ".result"
-ANSWER_FILE_TYPE: str = ".answer"
+TEST_FILE: str = "test"
+RESULT_FILE: str = "result"
+ANSWER_FILE: str = "answer"
 
 TEST_LIST: list = [
     "2_and_gates",
@@ -15,7 +15,7 @@ TEST_LIST: list = [
 
 
 def main():
-    output_file_type: str
+    output_file: str
     print("What would you like to generate: answers / results")
     # input1 = input()
     input1 = "results"
@@ -23,32 +23,32 @@ def main():
         print("Are you sure? This will override all previous answers! Type: \"Yes I am sure!\"")
         input1 = input()
         if input1 == "Yes I am sure!":
-            output_file_type = ANSWER_FILE_TYPE
+            output_file = ANSWER_FILE
         else:
             print("Abort!")
             return
     elif input1 == "results":
-        output_file_type = RESULT_FILE_TYPE
+        output_file = RESULT_FILE
     else:
         raise Exception("Invalid cmd")
 
     for test_path in TEST_LIST:
         # Run every test in the "tests" folder
         file_path: str = TEST_FOLDER_PATH
-        file_path += test_path
-        file_in = file_path + TEST_FILE_TYPE
-        file_out = file_path + output_file_type
+        file_path += test_path + '/'
+        file_in = file_path + TEST_FILE
+        file_out = file_path + output_file
         FileInterpreter(file_in, file_out, Simulation()).parse()
 
-    if output_file_type == RESULT_FILE_TYPE:
+    if output_file == RESULT_FILE:
         print("Comparing files!")
         import difflib
         for test_path in TEST_LIST:
             # Run every test in the "tests" folder
             file_path: str = TEST_FOLDER_PATH
-            file_path += test_path
-            result_file = file_path + RESULT_FILE_TYPE
-            answer_file = file_path + ANSWER_FILE_TYPE
+            file_path += test_path + '/'
+            result_file = file_path + RESULT_FILE
+            answer_file = file_path + ANSWER_FILE
 
             result: str = ""
             result += test_path + "\n"
