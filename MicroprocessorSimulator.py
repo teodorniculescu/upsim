@@ -1,7 +1,7 @@
 from FileInterpreter import FileInterpreter
 from Simulation import Simulation
 
-TEST_FOLDER_PATH: str = "tests/"
+TEST_FOLDER_PATH: str = "unit_test/"
 TEST_FILE: str = "test"
 RESULT_FILE: str = "result"
 ANSWER_FILE: str = "answer"
@@ -34,7 +34,7 @@ def main():
         raise Exception("Invalid cmd")
 
     for test_path in TEST_LIST:
-        # Run every test in the "tests" folder
+        # Run every test in the "unit_test" folder
         file_path: str = TEST_FOLDER_PATH
         file_path += test_path + '/'
         file_in = file_path + TEST_FILE
@@ -46,7 +46,7 @@ def main():
         print("Comparing files!")
         import difflib
         for test_path in TEST_LIST:
-            # Run every test in the "tests" folder
+            # Run every test in the "unit_test" folder
             file_path: str = TEST_FOLDER_PATH
             file_path += test_path + '/'
             result_file = file_path + RESULT_FILE

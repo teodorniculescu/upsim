@@ -1,9 +1,8 @@
 from blocks.StateBlock import StateBlock
-from blocks.BasicBlock import *
 from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from Simulation import Simulation
-from saved_blocks.LogicGates import *
+from blocks.store.LogicGates import *
 from antlr4.Token import *
 
 
