@@ -9,7 +9,7 @@ Change the way .result files are represented to a CSV style.
 Use a python library to generate a table from the .csv results, similar to how
 SQL databases do it.
 
-#3 Start SYNTAX description in README file - TODO
+#3 Start SYNTAX description in README file - DONE -> #26
 Define syntactically correct inputs in README.
 
 #4 Errors for incorrect inputs - DONE
@@ -117,3 +117,8 @@ Way to add and connect multiple blocks at the same time with [n] syntax.
 #24 Add import syntax in order to reuse blocks - TODO
 
 #25 Make if possible to only connect from output to input - TODO
+
+#26 github website - TODO
+Create website to showcase this project and add the following things:
+ - blog entries & updates
+ - upsim syntax

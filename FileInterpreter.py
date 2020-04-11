@@ -1,6 +1,4 @@
-import sys
 import os
-from antlr4 import *
 from gen.FileSyntaxLexer import *
 from gen.FileSyntaxParser import *
 from WrapperFileSyntaxListener import WrapperFileSyntaxListener
@@ -35,7 +33,6 @@ class FileInterpreter:
         lexer = FileSyntaxLexer(input_stream)
         stream = CommonTokenStream(lexer)
         parser = FileSyntaxParser(stream)
-        # self.notifyErrorListeners("seara pe block")
         " Remove and replace error listeners "
         parser.removeErrorListeners()
         error_listener = FileSyntaxErrorListener(self.__out_fw)
@@ -55,4 +52,3 @@ class FileInterpreter:
         """
         if self.__out_fw != sys.stdout:
             self.__out_fw.close()
-
