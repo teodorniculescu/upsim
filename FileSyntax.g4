@@ -12,10 +12,21 @@ command : (insert | run);
 
 expect: EXPECT_KWD ERROR_KWD INTEGER;
 
-show : SHOW_KWD (show_blocks | show_edges | show_initial_conditions);
+show : SHOW_KWD
+     ( show_blocks
+     | show_edges
+     | show_initial_conditions
+     | show_run
+     );
+
 show_blocks : BLOCK_KWD;
 show_edges : EDGE_KWD;
 show_initial_conditions : INITIAL_CONDITIONS_KWD;
+show_run: RUN_KWD (show_run_all | show_run_selection);
+show_run_all: ALL_KWD;
+show_run_selection: node
+                  | '(' node (',' node)* ')'
+                  ;
 
 insert : INSERT_KWD (insert_blocks | insert_edges | insert_initial_conditions) ;
 
@@ -94,6 +105,9 @@ INSERT_KWD : 'INSERT';
 BETWEEN_KWD : 'BETWEEN';
 AND_KWD : 'AND';
 RUN_KWD : 'RUN';
+
+VERBOSE_PRM : '-' ('VERBOSE' | 'V');
+
 
 INTEGER : NUMBER+;
 NAME : (LETTER | NUMBER)+;

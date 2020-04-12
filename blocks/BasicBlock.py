@@ -1,6 +1,8 @@
 from values.BaseValue import *
 from FileSyntaxErrorListener import *
 from typing import Dict
+from DBController import Column, Row
+from typing import List
 
 
 class BasicBlock:
@@ -103,22 +105,27 @@ class BasicBlock:
                 return True
         return False
 
-    def get_vertex_names_csv(self) -> str:
-        result: str = ""
+    def get_vertex_column_descriptions(self) -> List[Column]:
+        result: List[Column] = []
         for pin in self.get_all_pins().values():
-            result += "," + self.__name + "." + pin.get_name()
+            result.append(
+                Column(
+                    self.__name + "." + pin.get_name(),
+                    "CHAR(1)"
+                )
+            )
         return result
 
-    def get_vertex_values_csv(self) -> str:
+    def get_vertex_values(self) -> Row:
+        result: Row = Row()
         pin: BaseValue
-        result: str = ""
         pin_value: str
         for pin in self.get_all_pins().values():
             if pin.is_set():
                 pin_value = str(pin.get_value())
             else:
                 pin_value = "N"
-            result += ',' + pin_value
+            result.append(pin_value)
         return result
 
     def get_pins_csv(self, pin_type: int) -> str:

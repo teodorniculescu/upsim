@@ -7,7 +7,10 @@ from BlockHandler import *
 from Node import Node
 import sys
 from Graph import Graph
-from typing import Dict, List
+from typing import Dict, List, Tuple
+from DBController import *
+from datetime import datetime
+from random import random
 
 
 class Simulation:
@@ -22,6 +25,8 @@ class Simulation:
     " The number of times show stage state was called "
     __num_sss: int
     __graph: Graph
+    __dbc: DBController
+    table_name: str
 
     def __init__(self):
         self.__bh = BlockHandler()
@@ -31,6 +36,11 @@ class Simulation:
         self.__out_fw = sys.stdout
         self.__num_sss = 0
         self.__graph = Graph(self.__bh)
+        self.__dbc = DBController()
+        self.table_name = \
+            "run_" + \
+            datetime.now().strftime("%d%m%Y_%H%M%S_") + \
+            str(int(random() * 1000000))
 
     def __read_stage(self) -> None:
         block: LogicalBlock
@@ -85,25 +95,20 @@ class Simulation:
     def __has_simulation_changed_state(self) -> bool:
         return self.__changed_state
 
-    def get_time_step_values_csv(self) -> str:
-        return str(self.__number_init_cond) + ',' + str(self.__num_sss)
+    def get_run_table_description(self) -> TableDescription:
+        column_list: List[Column] = [
+            Column("ICN", "INT"),
+            Column("SSN", "INT")
+        ]
+        column_list += self.__graph.get_vertex_column_descriptions()
+        return TableDescription(column_list)
 
-    def get_time_step_names_csv(self) -> str:
-        return "ICN,SSN"
-
-    def get_run_names_csv(self) -> str:
-        result: str = ""
-        result += self.get_time_step_names_csv()
-        result += self.__graph.get_all_vertex_names_csv()
-        result += '\n'
-        return result
-
-    def get_run_values_cvs(self) -> str:
-        result: str = ""
-        result += self.get_time_step_values_csv()
-        result += self.__graph.get_all_vertex_values_csv()
-        result += '\n'
-        return result
+    def get_run_line(self) -> Row:
+        row: Row = Row()
+        row.append(str(self.__number_init_cond))
+        row.append(str(self.__num_sss))
+        row += self.__graph.get_vertex_values()
+        return row
 
     def run(self) -> None:
         """
@@ -113,24 +118,48 @@ class Simulation:
         - The names of each pin from the schematic
         :return: None
         """
-        self.write(self.get_run_names_csv())
+        self.__dbc.create_table(
+            self.table_name,
+            self.get_run_table_description()
+        )
+
         while not self.__finished_all_init_cond():
             self.__init_stage()
             self.__changed_state = True
             # Used for showing the number of times the stage state was displayed
             self.__num_sss = 0
             # Shows the state after initializing with the initial conditions
-            self.write(self.get_run_values_cvs())
+            self.__dbc.insert_row(self.table_name, self.get_run_line())
             while True:
                 self.__num_sss += 1
                 self.__changed_state = False
                 self.__read_stage()
                 self.__calculate_stage()
                 if self.__has_simulation_changed_state():
-                    self.write(self.get_run_values_cvs())
+                    self.__dbc.insert_row(self.table_name, self.get_run_line())
                 else:
                     break
-        self.write("\n")
+        self.__dbc.commit()
+
+    def display(self, description: Tuple[str], values: List[Tuple]) -> None:
+        self.write(str(description) + "\n")
+        for line in values:
+            self.write(str(line) + "\n")
+
+    def show_run_select_all(self) -> None:
+        description = self.__dbc.describe_table(self.table_name)
+        names: Tuple[str] = tuple()
+        for line in description:
+            names += (line[0], )
+        values = self.__dbc.select_all_from_table(self.table_name)
+        self.display(names, values)
+
+    def show_run_select_some(self, columns: List[str]) -> None:
+        values = self.__dbc.select_some_from_table(
+            self.table_name,
+            columns
+        )
+        self.display(tuple(columns), values)
 
     def add_block(self, block: BasicBlock) -> None:
         self.__bh.add_block(block)

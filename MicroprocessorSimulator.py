@@ -1,5 +1,13 @@
+from unit_test.UnitTestUPSIM import *
+
+
 def main():
-    pass
+    test = "insert_block_errors"
+    FileInterpreter(
+        "unit_test/%s/test" % test,
+        "",
+        Simulation()
+    ).parse()
 
 
 if __name__ == "__main__":

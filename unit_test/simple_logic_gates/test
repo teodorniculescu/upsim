@@ -3,6 +3,10 @@ INSERT BLOCKS
     STATE OUT B,
     STATE IN andResult,
     STATE IN orResult,
+    STATE IN norResult,
+    STATE IN nandResult,
+    STATE IN xorResult,
+    STATE IN xnorResult,
     AND2 and in0 in1 out,
     OR2 or in0 in1 out,
     NAND2 nand in0 in1 out,
@@ -13,8 +17,12 @@ INSERT BLOCKS
 INSERT EDGES
     BETWEEN A.val AND (and.in0, or.in0, nand.in0, nor.in0, xor.in0, xnor.in0),
     BETWEEN B.val AND (and.in1, or.in1, nand.in1, nor.in1, xor.in1, xnor.in1),
-    BETWEEN and.out AND (andResult.val),
-    BETWEEN or.out AND orResult.val;
+    BETWEEN and.out AND andResult.val,
+    BETWEEN or.out AND orResult.val,
+    BETWEEN nor.out AND norResult.val,
+    BETWEEN nand.out AND nandResult.val,
+    BETWEEN xor.out AND xorResult.val,
+    BETWEEN xnor.out AND xnorResult.val;
 
 INSERT INITIAL CONDITIONS
     (A.val=0,
@@ -25,3 +33,10 @@ INSERT INITIAL CONDITIONS
     (B.val=1);
 
 RUN;
+
+SHOW RUN (A.val, B.val, andResult.val);
+SHOW RUN (A.val, B.val, orResult.val);
+SHOW RUN (A.val, B.val, norResult.val);
+SHOW RUN (A.val, B.val, nandResult.val);
+SHOW RUN (A.val, B.val, xorResult.val);
+SHOW RUN (A.val, B.val, xnorResult.val);

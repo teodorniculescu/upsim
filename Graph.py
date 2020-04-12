@@ -3,6 +3,8 @@ from values.BaseValue import *
 from Node import Node
 from BlockHandler import BlockHandler
 from FileSyntaxErrorListener import *
+from DBController import Column, Row
+from typing import List
 
 
 class Graph:
@@ -82,18 +84,17 @@ class Graph:
     def set_vertex_value(self, vertex_name: str, vertex_value: int) -> None:
         self.get_node(vertex_name).get_pin().set_value(vertex_value)
 
-    def get_all_vertex_names_csv(self) -> str:
-        result: str = ""
+    def get_vertex_column_descriptions(self) -> List[Column]:
+        result: List[Column] = []
         block: BasicBlock
         for block in self.__bh.get_all_blocks().values():
-            result += block.get_vertex_names_csv()
+            result += block.get_vertex_column_descriptions()
         return result
 
-    def get_all_vertex_values_csv(self) -> str:
-        result: str = ""
+    def get_vertex_values(self) -> Row:
+        result: Row = Row()
         block: BasicBlock
         for block in self.__bh.get_all_blocks().values():
-            result += block.get_vertex_values_csv()
+            result += block.get_vertex_values()
         return result
-
 

@@ -1,5 +1,5 @@
 import mysql.connector as mariadb
-from typing import Final, List
+from typing import Final, List, Any, NewType
 from FileSyntaxErrorListener import *
 
 
@@ -12,7 +12,7 @@ class Column:
         self.dt = data_type
 
     def format_create_table(self) -> str:
-        return self.cn + " " + self.dt
+        return "`" + self.cn + "` " + self.dt
 
 
 class TableDescription:
@@ -31,21 +31,59 @@ class TableDescription:
         return result
 
 
+class Row:
+    __values: list
+
+    def __init__(self):
+        self.__values = []
+
+    def append(self, string: str) -> None:
+        self.__values.append(string)
+
+    def format(self) -> str:
+        result: str = "("
+        for value in self.__values:
+            result += "'" + str(value) + "',"
+        result = result[:-1]
+        result += ")"
+        return result
+
+    def __add__(self, other):
+        result = Row()
+        result.__values = self.__values + other.__values
+        return result
+
+
 class DBController:
     USER: Final[str] = "upsim"
     PASSWORD: Final[str] = "upsim"
     DATABASE: Final[str] = "upsimdb"
 
+    mariadb_connection: Any
+
     def __init__(self):
-        mariadb_connection = mariadb.connect(
+        self.mariadb_connection = mariadb.connect(
             user=self.USER,
             password=self.PASSWORD,
             database=self.DATABASE
         )
-        self.cursor = mariadb_connection.cursor()
+
+    def __del__(self):
+        self.mariadb_connection.close()
+
+    def cursor(self):
+        return self.mariadb_connection.cursor()
 
     def drop_table(self, table_name: str) -> None:
-        self.cursor.execute("DROP TABLE IF EXISTS " + table_name + ";")
+        self.cursor().execute("DROP TABLE IF EXISTS `%s`;" % table_name)
+
+    def get_result(self, command: str) -> Any:
+        c = self.cursor()
+        c.execute(command)
+        return c.fetchall()
+
+    def show_tables(self):
+        return self.get_result("SHOW TABLES;")
 
     def create_table(
             self,
@@ -53,11 +91,54 @@ class DBController:
             table_description: TableDescription
     ) -> None:
         self.drop_table(table_name)
-        self.cursor.execute(
-            "CREATE TABLE " +
-            table_name +
-            " (" +
-            table_description.format_create_table()+
-            ");"
+        self.cursor().execute(
+            "CREATE TABLE `%s` (%s);" %
+            (table_name, table_description.format_create_table())
         )
 
+    def describe_table(self, table_name: str):
+        return self.get_result("DESCRIBE `%s`;" % table_name)
+
+    def select_all_from_table(self, table_name: str):
+        return self.get_result(
+            "SELECT %s FROM `%s`;" %
+            ("*", table_name)
+        )
+
+    def select_some_from_table(self, table_name: str, column_list: List[str]):
+        columns: str = ""
+        for column in column_list:
+            columns += "`" + column + "`,"
+        columns = columns[:-1]
+        return self.get_result(
+            "SELECT %s "
+            "FROM %s A INNER JOIN "
+            "(SELECT ICN, MAX(SSN) maximum FROM %s "
+            "GROUP BY ICN) B ON B.ICN = A.ICN AND B.maximum = A.SSN;" %
+            (columns, table_name, table_name)
+        )
+
+    @staticmethod
+    def format_row_list(rows: List[Row]) -> str:
+        result: str = ""
+        for row in rows:
+            result += row.format() + ','
+        result = result[:-1]
+        return result
+
+    INSERT_SYNTAX: Final[str] = "INSERT `%s` VALUES %s;"
+
+    def insert_rows(self, table_name: str, rows: List[Row]) -> None:
+        self.cursor().execute(
+            self.INSERT_SYNTAX %
+            (table_name, self.format_row_list(rows))
+        )
+
+    def insert_row(self, table_name: str, row: Row) -> None:
+        self.cursor().execute(
+            self.INSERT_SYNTAX %
+            (table_name, row.format())
+        )
+
+    def commit(self) -> None:
+        self.mariadb_connection.commit()

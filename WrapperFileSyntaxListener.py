@@ -197,4 +197,11 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                                     Show_initial_conditionsContext):
         self.__sim.show_all_init_cond()
 
+    def exitShow_run_all(self, ctx:FileSyntaxParser.Show_run_allContext):
+        self.__sim.show_run_select_all()
 
+    def exitShow_run_selection(self, ctx:FileSyntaxParser.Show_run_selectionContext):
+        nodes: List[str] = []
+        for node in ctx.node():
+            nodes.append(node.text)
+        self.__sim.show_run_select_some(nodes)

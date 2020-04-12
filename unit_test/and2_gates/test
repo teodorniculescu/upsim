@@ -30,3 +30,5 @@ INSERT INITIAL CONDITIONS
     (sc.val=1);
 
 RUN;
+
+SHOW RUN ALL;
