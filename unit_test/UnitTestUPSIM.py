@@ -8,6 +8,7 @@ from typing import Tuple, Final
 import unittest
 import difflib
 import inspect
+import timeout_decorator
 
 TEST_FILE: Final[str] = "test"
 RESULT_FILE: Final[str] = "result"
@@ -24,15 +25,13 @@ class UnitTestUPSIM(unittest.TestCase):
         answer = file_path + ANSWER_FILE
         return test, result, answer
 
-    @staticmethod
-    def whoami() -> str:
+    @timeout_decorator.timeout(1)
+    def run_test(self) -> None:
         frame = inspect.currentframe()
         # Get frame of penultimate function
         frame = inspect.getouterframes(frame)[2].frame
-        return inspect.getframeinfo(frame).function[5:]
+        test_name = inspect.getframeinfo(frame).function[5:]
 
-    def run_test(self) -> None:
-        test_name = self.whoami()
         (test, result, answer) = self.get_files(test_name)
         FileInterpreter(test, result, Simulation()).parse()
         file1 = open(result, 'r')
