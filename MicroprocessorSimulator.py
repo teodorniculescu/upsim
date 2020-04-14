@@ -2,7 +2,7 @@ from unit_test.UnitTestUPSIM import *
 
 
 def main():
-    test = "insert_block_errors"
+    test = "cn1_course3_adder"
     FileInterpreter(
         "unit_test/%s/test" % test,
         "",

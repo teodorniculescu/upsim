@@ -51,9 +51,9 @@ class XNOR2(LogicGate2Inputs1Output):
     def calculate(self):
         (i0, i1, o0) = self.get_calculate_pins()
         if (i0.is_low() and i1.is_low()) or (i0.is_high() and i1.is_high()):
-            o0.set_value(LOW)
-        if (i0.is_low() and i1.is_high()) or (i0.is_high() and i1.is_low()):
             o0.set_value(HIGH)
+        if (i0.is_low() and i1.is_high()) or (i0.is_high() and i1.is_low()):
+            o0.set_value(LOW)
 
 
 class XOR2(LogicGate2Inputs1Output):
@@ -64,9 +64,9 @@ class XOR2(LogicGate2Inputs1Output):
     def calculate(self):
         (i0, i1, o0) = self.get_calculate_pins()
         if (i0.is_low() and i1.is_low()) or (i0.is_high() and i1.is_high()):
-            o0.set_value(HIGH)
-        if (i0.is_low() and i1.is_high()) or (i0.is_high() and i1.is_low()):
             o0.set_value(LOW)
+        if (i0.is_low() and i1.is_high()) or (i0.is_high() and i1.is_low()):
+            o0.set_value(HIGH)
 
 
 class NOR2(LogicGate2Inputs1Output):

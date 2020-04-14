@@ -57,3 +57,6 @@ class UnitTestUPSIM(unittest.TestCase):
 
     def test_insert_init_cond_errors(self) -> None:
         self.run_test()
+
+    def test_simple_logic_gates(self) -> None:
+        self.run_test()

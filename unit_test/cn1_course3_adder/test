@@ -1,0 +1,36 @@
+INSERT BLOCKS
+    STATE OUT Ai,
+    STATE OUT Bi,
+    STATE OUT Ci,
+    STATE IN Cip1,
+    STATE IN Si,
+    XOR2 xor0 i0 i1 o,
+    XOR2 xor1 i0 i1 o,
+    AND2 and0 i0 i1 o,
+    AND2 and1 i0 i1 o,
+    OR2 or i0 i1 o;
+
+INSERT EDGES
+    BTWN Ai.val AND (xor0.i0, and1.i0),
+    BTWN Bi.val AND (xor0.i1, and1.i1),
+    BTWN Ci.val AND (xor1.i1, and0.i1),
+    BTWN xor0.o AND (xor1.i0, and0.i0),
+    BTWN and0.o AND or.i0,
+    BTWN and1.o AND or.i1,
+    BTWN xor1.o AND Si.val,
+    BTWN or.o AND Cip1.val;
+
+INSERT INIT COND
+    (Ai.val=0, Bi.val=0, Ci.val=0),
+    (Ai.val=0, Bi.val=0, Ci.val=1),
+    (Ai.val=0, Bi.val=1, Ci.val=0),
+    (Ai.val=0, Bi.val=1, Ci.val=1),
+    (Ai.val=1, Bi.val=0, Ci.val=0),
+    (Ai.val=1, Bi.val=0, Ci.val=1),
+    (Ai.val=1, Bi.val=1, Ci.val=0),
+    (Ai.val=1, Bi.val=1, Ci.val=1);
+
+RUN;
+
+SHOW RUN ALL;
+SHOW RUN (Ai.val, Bi.val, Ci.val, Cip1.val, Si.val);
