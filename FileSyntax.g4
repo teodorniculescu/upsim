@@ -40,7 +40,13 @@ create_logic_gate_n_inputs : logic_gate_types_n
                              (input_pin_name (input_pin_name)*)
                              output_pin_name
                            ;
-logic_gate_types_n : NAND_KWD;
+logic_gate_types_n : NOR_KWD
+                   | AND_KWD
+                   | XNOR_KWD
+                   | XOR_KWD
+                   | OR_KWD
+                   | NAND_KWD
+                   ;
 create_logic_gate_2_inputs : logic_gate_types
                              block_name
                              input_pin_name
@@ -91,7 +97,13 @@ fragment UPPERCASE_LETTER : [A-Z];
 fragment NUMBER : [0-9];
 fragment LETTER : LOWERCASE_LETTER | UPPERCASE_LETTER;
 
+
+OR_KWD : 'OR';
+AND_KWD : 'AND';
 NAND_KWD : 'NAND';
+NOR_KWD : 'NOR';
+XOR_KWD : 'XOR';
+XNOR_KWD : 'XNOR';
 
 AND2_KWD : 'AND2';
 OR2_KWD : 'OR2';
@@ -113,7 +125,6 @@ EDGE_KWD : 'EDGE' | 'EDGES';
 INITIAL_CONDITIONS_KWD : 'INITIAL CONDITION' | 'INITIAL CONDITIONS' | 'INIT COND';
 INSERT_KWD : 'INSERT';
 BETWEEN_KWD : 'BETWEEN' | 'BTWN';
-AND_KWD : 'AND';
 RUN_KWD : 'RUN';
 
 VERBOSE_PRM : '-' ('VERBOSE' | 'V');

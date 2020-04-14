@@ -124,6 +124,115 @@ class LogicGateNInputs1Output(LogicalBlock):
         super().add_pin(output0)
 
 
+class XNOR(LogicGateNInputs1Output):
+    def __init__(self, block_name: str, input_names: List[str],
+                 output_names: List[str]):
+        super().__init__(block_name, input_names, output_names)
+
+    def calculate(self):
+        input_pin: BaseValue
+        output_pin: BaseValue
+        [output_pin] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
+        num_high_inputs: int = 0
+        for input_pin in self.get_all_pins_with_type(PIN_TYPE_INPUT).values():
+            if input_pin.is_high():
+                num_high_inputs += 1
+            elif not input_pin.is_set():
+                # not all pins are set which means we don't know exactly
+                # how many high inputs are there
+                return
+        if num_high_inputs % 2 == 1:
+            output_pin.set_value(LOW)
+        else:
+            output_pin.set_value(HIGH)
+
+
+class XOR(LogicGateNInputs1Output):
+    def __init__(self, block_name: str, input_names: List[str],
+                 output_names: List[str]):
+        super().__init__(block_name, input_names, output_names)
+
+    def calculate(self):
+        input_pin: BaseValue
+        output_pin: BaseValue
+        [output_pin] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
+        num_high_inputs: int = 0
+        for input_pin in self.get_all_pins_with_type(PIN_TYPE_INPUT).values():
+            if input_pin.is_high():
+                num_high_inputs += 1
+            elif not input_pin.is_set():
+                # not all pins are set which means we don't know exactly
+                # how many high inputs are there
+                return
+        if num_high_inputs % 2 == 1:
+            output_pin.set_value(HIGH)
+        else:
+            output_pin.set_value(LOW)
+
+
+
+
+
+class NOR(LogicGateNInputs1Output):
+    def __init__(self, block_name: str, input_names: List[str],
+                 output_names: List[str]):
+        super().__init__(block_name, input_names, output_names)
+
+    def calculate(self):
+        input_pin: BaseValue
+        output_pin: BaseValue
+        [output_pin] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
+        all_pins_are_low: bool = True
+        for input_pin in self.get_all_pins_with_type(PIN_TYPE_INPUT).values():
+            if input_pin.is_high():
+                output_pin.set_value(LOW)
+                return
+            if not input_pin.is_low():
+                all_pins_are_low = False
+        if all_pins_are_low:
+            output_pin.set_value(HIGH)
+
+
+class OR(LogicGateNInputs1Output):
+    def __init__(self, block_name: str, input_names: List[str],
+                 output_names: List[str]):
+        super().__init__(block_name, input_names, output_names)
+
+    def calculate(self):
+        input_pin: BaseValue
+        output_pin: BaseValue
+        [output_pin] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
+        all_pins_are_low: bool = True
+        for input_pin in self.get_all_pins_with_type(PIN_TYPE_INPUT).values():
+            if input_pin.is_high():
+                output_pin.set_value(HIGH)
+                return
+            if not input_pin.is_low():
+                all_pins_are_low = False
+        if all_pins_are_low:
+            output_pin.set_value(LOW)
+
+
+class AND(LogicGateNInputs1Output):
+    def __init__(self, block_name: str, input_names: List[str],
+                 output_names: List[str]):
+        super().__init__(block_name, input_names, output_names)
+
+    def calculate(self):
+        input_pin: BaseValue
+        output_pin: BaseValue
+        [output_pin] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
+        all_pins_are_high: bool = True
+        for input_pin in self.get_all_pins_with_type(PIN_TYPE_INPUT).values():
+            if input_pin.is_low():
+                output_pin.set_value(LOW)
+                return
+            if not input_pin.is_high():
+                all_pins_are_high = False
+        if all_pins_are_high:
+            output_pin.set_value(HIGH)
+
+
 class NAND(LogicGateNInputs1Output):
     def __init__(self, block_name: str, input_names: List[str],
                  output_names: List[str]):

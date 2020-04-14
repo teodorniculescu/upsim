@@ -1,42 +1,46 @@
 INSERT BLOCKS
     STATE OUT A,
     STATE OUT B,
+    STATE OUT C,
     STATE IN andResult,
     STATE IN orResult,
     STATE IN norResult,
     STATE IN nandResult,
     STATE IN xorResult,
     STATE IN xnorResult,
-    AND and in0 in1 out,
-    OR or in0 in1 out,
-    NAND nand in0 in1 out,
-    NOR nor in0 in1 out,
-    XOR xor in0 in1 out,
-    XNOR xnor in0 in1 out;
+    OR or inA inB inC out,
+    NOR nor inA inB inC out,
+    AND and inA inB inC out,
+    NAND nand inA inB inC out,
+    XOR xor inA inB inC out,
+    XNOR xnor inA inB inC out;
 
 INSERT EDGES
-    BETWEEN A.val AND (and.in0, or.in0, nand.in0, nor.in0, xor.in0, xnor.in0),
-    BETWEEN B.val AND (and.in1, or.in1, nand.in1, nor.in1, xor.in1, xnor.in1),
-    BETWEEN and.out AND andResult.val,
-    BETWEEN or.out AND orResult.val,
-    BETWEEN nor.out AND norResult.val,
-    BETWEEN nand.out AND nandResult.val,
-    BETWEEN xor.out AND xorResult.val,
-    BETWEEN xnor.out AND xnorResult.val;
+    BTWN A.val AND (and.inA, or.inA, nand.inA, nor.inA, xor.inA, xnor.inA),
+    BTWN B.val AND (and.inB, or.inB, nand.inB, nor.inB, xor.inB, xnor.inB),
+    BTWN C.val AND (and.inC, or.inC, nand.inC, nor.inC, xor.inC, xnor.inC),
+    BTWN and.out AND andResult.val,
+    BTWN or.out AND orResult.val,
+    BTWN nor.out AND norResult.val,
+    BTWN nand.out AND nandResult.val,
+    BTWN xor.out AND xorResult.val,
+    BTWN xnor.out AND xnorResult.val;
 
 INSERT INITIAL CONDITIONS
-    (A.val=0,
-    B.val=0),
-    (B.val=1),
-    (A.val=1,
-    B.val=0),
-    (B.val=1);
+    (A.val=0, B.val=0, C.val=0),
+    (A.val=0, B.val=0, C.val=1),
+    (A.val=0, B.val=1, C.val=0),
+    (A.val=0, B.val=1, C.val=1),
+    (A.val=1, B.val=0, C.val=0),
+    (A.val=1, B.val=0, C.val=1),
+    (A.val=1, B.val=1, C.val=0),
+    (A.val=1, B.val=1, C.val=1);
 
 RUN;
 
-SHOW RUN (A.val, B.val, andResult.val);
-SHOW RUN (A.val, B.val, orResult.val);
-SHOW RUN (A.val, B.val, norResult.val);
-SHOW RUN (A.val, B.val, nandResult.val);
-SHOW RUN (A.val, B.val, xorResult.val);
-SHOW RUN (A.val, B.val, xnorResult.val);
+SHOW RUN (A.val, B.val, C.val, andResult.val);
+SHOW RUN (A.val, B.val, C.val, orResult.val);
+SHOW RUN (A.val, B.val, C.val, norResult.val);
+SHOW RUN (A.val, B.val, C.val, nandResult.val);
+SHOW RUN (A.val, B.val, C.val, xorResult.val);
+SHOW RUN (A.val, B.val, C.val, xnorResult.val);

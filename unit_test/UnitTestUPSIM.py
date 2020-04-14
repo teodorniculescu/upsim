@@ -69,3 +69,6 @@ class UnitTestUPSIM(unittest.TestCase):
 
     def test_sr_flip_flop(self) -> None:
         self.run_test()
+
+    def test_simple_logic_gates_n(self) -> None:
+        self.run_test()

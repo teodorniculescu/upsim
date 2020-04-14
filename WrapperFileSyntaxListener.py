@@ -213,6 +213,11 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         self.__sim.show_run_select_some(nodes)
 
     lgNi = {
+        "XOR": XOR,
+        "XNOR": XNOR,
+        "NOR": NOR,
+        "OR": OR,
+        "AND": AND,
         "NAND": NAND
     }
 
