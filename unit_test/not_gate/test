@@ -1,0 +1,22 @@
+INSERT BLOCKS
+    STATE OUT A,
+    STATE IN N0,
+    STATE IN N1,
+    STATE IN N2,
+    NOT not0 i o,
+    NOT not1 i o,
+    NOT not2 i o;
+
+INSERT EDGES
+    BTWN A.val AND not0.i,
+    BTWN not0.o AND (not1.i, N0.val),
+    BTWN not1.o AND (not2.i, N1.val),
+    BTWN not2.o AND (N2.val);
+
+INSERT INIT COND
+    (A.val=0),
+    (A.val=1);
+
+RUN;
+
+SHOW RUN (A.val, N0.val, N1.val, N2.val);

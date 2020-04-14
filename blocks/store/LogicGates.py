@@ -4,6 +4,32 @@ from values.BaseValue import *
 from typing import List, Tuple
 
 
+class NOT(LogicalBlock):
+    def __init__(self, block_name: str, input_names: List[str],
+                 output_names: List[str]):
+        if len(input_names) != 1:
+            raise Exception(ERROR_REQUIRE_CERTAIN_NUM_PINS
+                            % (2, "INPUT", len(input_names)))
+        if len(output_names) != 1:
+            raise Exception(ERROR_REQUIRE_CERTAIN_NUM_PINS
+                            % (1, "OUTPUT", len(output_names)))
+        input0 = BaseValue(input_names[0], PIN_TYPE_INPUT)
+        output0 = BaseValue(output_names[0], PIN_TYPE_OUTPUT)
+        super().__init__(block_name)
+        super().add_pin(input0)
+        super().add_pin(output0)
+
+    def calculate(self):
+        i0: BaseValue
+        o0: BaseValue
+        [i0] = self.get_all_pins_with_type(PIN_TYPE_INPUT).values()
+        [o0] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
+        if i0.is_high():
+            o0.set_value(LOW)
+        elif i0.is_low():
+            o0.set_value(HIGH)
+
+
 class LogicGate2Inputs1Output(LogicalBlock):
     def __init__(self, block_name: str, input_names: List[str],
                  output_names: List[str]):

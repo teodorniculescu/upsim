@@ -240,3 +240,18 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         except Exception as e:
             self.__set_error(ctx, e)
 
+    def exitCreate_not_gate(
+            self,
+            ctx: FileSyntaxParser.Create_not_gateContext
+    ):
+        if self.error_is_set():
+            return
+        block_name = ctx.block_name().text
+        input_name = ctx.input_pin_name().text
+        output_name = ctx.output_pin_name().text
+        try:
+            self.__sim.add_block(
+                NOT(block_name, [input_name], [output_name]))
+        except Exception as e:
+            self.__set_error(ctx, e)
+

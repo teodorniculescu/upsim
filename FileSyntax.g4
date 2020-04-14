@@ -32,9 +32,15 @@ insert : INSERT_KWD (insert_blocks | insert_edges | insert_initial_conditions) ;
 
 insert_blocks : BLOCK_KWD create_block (',' create_block)* ;
 create_block : create_state_block
+             | create_not_gate
              | create_logic_gate_2_inputs
              | create_logic_gate_n_inputs
              ;
+create_not_gate : NOT_KWD
+                  block_name
+                  input_pin_name
+                  output_pin_name;
+
 create_logic_gate_n_inputs : logic_gate_types_n
                              block_name
                              (input_pin_name (input_pin_name)*)
@@ -104,6 +110,7 @@ NAND_KWD : 'NAND';
 NOR_KWD : 'NOR';
 XOR_KWD : 'XOR';
 XNOR_KWD : 'XNOR';
+NOT_KWD : 'NOT';
 
 AND2_KWD : 'AND2';
 OR2_KWD : 'OR2';

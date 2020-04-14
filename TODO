@@ -37,15 +37,12 @@ is expected to be the correct one. If the files differ, then it means that
 something is not correct in the code (either newly added code somehow breaks old
 code results or something else happened)
 
-#7.1 Add all possible logic gates simple logic gates - TODO
+#7.1 Add all possible logic gates simple logic gates - DONE
 Add 1 input and 1 output (1I1O) logic gate: NOT
 Add 2 input and 1 output (2I1O) logic gates: AND / OR / NAND / NOR / XOR / XNOR
 Create tests for these logic gates.
 
-#7.2 Simple logic gates made from other simple logic gates - TODO
-Create using DECLARE BLOCK
-
-#8 Logic gates with indefinite amounts of inputs - TODO
+#8 Logic gates with indefinite amounts of inputs - DONE
 Create and test simple logic gates that can take as many inputs as possible
 without hard coding the number of inputs.
 n input 1 output logic gates - AND / OR / etc same as in #7
@@ -64,7 +61,7 @@ same as in #9, with and without logic gates
 #11 Implement configurable logic block - TODO
 Implement and test a CLB
 
-#12 RUN syntax toggle each step - TODO
+#12 RUN syntax toggle each step - DONE
 Specify in the RUN command syntax if you either want to see each step in the
 simulation which includes the SSN steps or only the main steps when the output
 is determined.
@@ -80,7 +77,7 @@ io : output
 The reason is quite simple, reading starts only from input pins, so there is no
 need for entries starting with an output pin
 
-#15 RUN specify SSN on/off - TODO
+#15 RUN specify SSN on/off - DONE
 Specify whether you what each vertex modification across a single time step
 (SSN) or you only need the final values in the CSV file
 
@@ -98,7 +95,7 @@ simulation class
 Move blocks to a different class in order to simplify simulation class and move
 all code related to blocks to its own file
 
-#20 Remove need to specify state block pin name - TODO
+#20 Remove need to specify state block pin name - DONE
 Change syntax in order to avoid needing to input a name for the state block
 input. Default state block pin name will be "value".
 
@@ -122,3 +119,6 @@ Way to add and connect multiple blocks at the same time with [n] syntax.
 Create website to showcase this project and add the following things:
  - blog entries & updates
  - upsim syntax
+
+#27 Flip flops - TODO
+Implement RS, JK, D, T flip flops
