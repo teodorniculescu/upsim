@@ -32,5 +32,4 @@ INSERT INIT COND
 
 RUN;
 
-SHOW RUN ALL;
 SHOW RUN (Ai.val, Bi.val, Ci.val, Cip1.val, Si.val);

@@ -2,9 +2,10 @@ from unit_test.UnitTestUPSIM import *
 
 
 def main():
-    test = "cn1_course3_adder"
+    test = "simple_logic_gates_n"
     FileInterpreter(
         "unit_test/%s/test" % test,
+        #"unit_test/%s/answer" % test,
         "",
         Simulation()
     ).parse()

@@ -31,4 +31,4 @@ INSERT INITIAL CONDITIONS
 
 RUN;
 
-SHOW RUN ALL;
+SHOW RUN (sa.val, sb.val, sc.val, soutput.val);

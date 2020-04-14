@@ -88,7 +88,7 @@ class BaseValue:
         return self.__name + "=" + value_str
 
     def reset(self) -> None:
-        self.__value_is_set = False
+        #self.__value_is_set = False
         self.__changed_state = False
 
     def is_set(self):

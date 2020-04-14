@@ -134,11 +134,13 @@ class DBController:
             (table_name, self.format_row_list(rows))
         )
 
-    def insert_row(self, table_name: str, row: Row) -> None:
+    def insert_row(self, table_name: str, row: Row, commit: bool = False) -> None:
         self.cursor().execute(
             self.INSERT_SYNTAX %
             (table_name, row.format())
         )
+        if commit:
+            self.commit()
 
     def commit(self) -> None:
         self.mariadb_connection.commit()

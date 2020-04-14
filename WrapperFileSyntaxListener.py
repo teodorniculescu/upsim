@@ -65,7 +65,10 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         if self.error_is_set():
             return
 
-    def exitLogic_gate_2_inputs_type(self, ctx:FileSyntaxParser.Logic_gate_2_inputs_typeContext):
+    def exitLogic_gate_types(self, ctx:FileSyntaxParser.Logic_gate_typesContext):
+        ctx.text = str(ctx.getText())
+
+    def exitLogic_gate_types_n(self, ctx:FileSyntaxParser.Logic_gate_typesContext):
         ctx.text = str(ctx.getText())
 
     lg2i = {
@@ -80,7 +83,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     def exitCreate_logic_gate_2_inputs(self, ctx:FileSyntaxParser.Create_logic_gate_2_inputsContext):
         if self.error_is_set():
             return
-        block_type: str = ctx.logic_gate_2_inputs_type().text
+        block_type: str = ctx.logic_gate_types().text
         block_name = ctx.block_name().text
         input0_name = ctx.input_pin_name(0).text
         input1_name = ctx.input_pin_name(1).text
@@ -200,8 +203,35 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     def exitShow_run_all(self, ctx:FileSyntaxParser.Show_run_allContext):
         self.__sim.show_run_select_all()
 
-    def exitShow_run_selection(self, ctx:FileSyntaxParser.Show_run_selectionContext):
+    def exitShow_run_selection(
+            self,
+            ctx:FileSyntaxParser.Show_run_selectionContext
+    ):
         nodes: List[str] = []
         for node in ctx.node():
             nodes.append(node.text)
         self.__sim.show_run_select_some(nodes)
+
+    lgNi = {
+        "NAND": NAND
+    }
+
+    def exitCreate_logic_gate_n_inputs(
+            self,
+            ctx:FileSyntaxParser.Create_logic_gate_n_inputsContext
+    ):
+        if self.error_is_set():
+            return
+        block_type: str = ctx.logic_gate_types_n().text
+        block_name = ctx.block_name().text
+        input_names: List[str] = []
+        for input_pin in ctx.input_pin_name():
+            input_names.append(input_pin.text)
+        output_name = ctx.output_pin_name().text
+        try:
+            func = self.lgNi.get(block_type)
+            self.__sim.add_block(
+                func(block_name, input_names, [output_name]))
+        except Exception as e:
+            self.__set_error(ctx, e)
+

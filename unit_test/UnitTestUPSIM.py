@@ -49,6 +49,9 @@ class UnitTestUPSIM(unittest.TestCase):
     def test_and2_gates(self) -> None:
         self.run_test()
 
+    def test_cn1_course3_adder(self) -> None:
+        self.run_test()
+
     def test_insert_block_errors(self) -> None:
         self.run_test()
 
@@ -58,5 +61,11 @@ class UnitTestUPSIM(unittest.TestCase):
     def test_insert_init_cond_errors(self) -> None:
         self.run_test()
 
+    def test_nand_gate_with_8_inputs(self) -> None:
+        self.run_test()
+
     def test_simple_logic_gates(self) -> None:
+        self.run_test()
+
+    def test_sr_flip_flop(self) -> None:
         self.run_test()

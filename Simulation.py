@@ -58,8 +58,6 @@ class Simulation:
                             self.__changed_state = True
                 else:
                     # todo create exception for when a input vertex is not connected
-                    print(input_pin.get_name())
-                    print(input_vertex)
                     raise Exception(str(input_vertex) + " is not connected.")
 
     def __calculate_stage(self) -> None:

@@ -1,0 +1,29 @@
+INSERT BLOCKS
+    STATE OUT J,
+    STATE OUT K,
+    STATE OUT CLK,
+    STATE IN Q,
+    STATE IN nQ,
+    NAND N0 i0 i1 i2 o,
+    NAND N1 i0 i1 i2 o,
+    NAND N2 i0 i1 o,
+    NAND N3 i0 i1 o;
+
+INSERT EDGES
+    BTWN J.val AND (N0.i1),
+    BTWN K.val AND (N1.i1),
+    BTWN CLK.val AND (N0.i2, N1.i0),
+    BTWN N0.o AND (N2.i0),
+    BTWN N1.o AND (N3.i1),
+    BTWN N2.o AND (N3.i0, N1.i2, Q.val),
+    BTWN N3.o AND (N2.i1, N0.i0, nQ.val);
+
+INSERT INIT COND
+    (J.val=0, K.val=0, CLK.val=0),
+    (J.val=0, K.val=0, CLK.val=1),
+    (J.val=0, K.val=1, CLK.val=0),
+    (J.val=0, K.val=1, CLK.val=1);
+
+RUN;
+
+SHOW RUN (J.val, K.val, CLK.val, Q.val, nQ.val);

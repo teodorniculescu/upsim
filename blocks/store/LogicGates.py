@@ -107,3 +107,41 @@ class OR2(LogicGate2Inputs1Output):
         elif i0.is_low() and i1.is_low():
             o0.set_value(LOW)
 
+
+class LogicGateNInputs1Output(LogicalBlock):
+    def __init__(self, block_name: str, input_names: List[str],
+                 output_names: List[str]):
+        if len(input_names) == 0:
+            raise Exception(ERROR_REQUIRE_AT_LEAST_NUM_PINS
+                            % (1, "INPUT", len(input_names)))
+        if len(output_names) != 1:
+            raise Exception(ERROR_REQUIRE_CERTAIN_NUM_PINS
+                            % (1, "OUTPUT", len(output_names)))
+        super().__init__(block_name)
+        for name in input_names:
+            super().add_pin(BaseValue(name, PIN_TYPE_INPUT))
+        output0 = BaseValue(output_names[0], PIN_TYPE_OUTPUT)
+        super().add_pin(output0)
+
+
+class NAND(LogicGateNInputs1Output):
+    def __init__(self, block_name: str, input_names: List[str],
+                 output_names: List[str]):
+        super().__init__(block_name, input_names, output_names)
+
+    def calculate(self):
+        input_pin: BaseValue
+        output_pin: BaseValue
+        [output_pin] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
+        all_pins_are_high: bool = True
+        for input_pin in self.get_all_pins_with_type(PIN_TYPE_INPUT).values():
+            if input_pin.is_low():
+                output_pin.set_value(HIGH)
+                return
+            if not input_pin.is_high():
+                all_pins_are_high = False
+        if all_pins_are_high:
+            output_pin.set_value(LOW)
+
+
+

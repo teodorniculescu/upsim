@@ -1,0 +1,25 @@
+INSERT BLOCKS
+    STATE OUT S,
+    STATE OUT R,
+    STATE IN Q,
+    STATE IN nQ,
+    NAND2 X i0 i1 o,
+    NAND2 Y i0 i1 o;
+
+INSERT EDGES
+    BTWN S.val AND X.i0,
+    BTWN R.val AND Y.i1,
+    BTWN X.o AND (Q.val, Y.i0),
+    BTWN Y.o AND (nQ.val, X.i1);
+
+INSERT INIT COND
+    (S.val=1, R.val=1),
+    (S.val=1, R.val=0),
+    (S.val=1, R.val=1),
+    (S.val=0, R.val=1),
+    (S.val=1, R.val=1),
+    (S.val=0, R.val=0);
+
+RUN;
+
+SHOW RUN (S.val, R.val, Q.val, nQ.val);

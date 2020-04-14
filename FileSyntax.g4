@@ -33,20 +33,28 @@ insert : INSERT_KWD (insert_blocks | insert_edges | insert_initial_conditions) ;
 insert_blocks : BLOCK_KWD create_block (',' create_block)* ;
 create_block : create_state_block
              | create_logic_gate_2_inputs
+             | create_logic_gate_n_inputs
              ;
-create_logic_gate_2_inputs : logic_gate_2_inputs_type
+create_logic_gate_n_inputs : logic_gate_types_n
+                             block_name
+                             (input_pin_name (input_pin_name)*)
+                             output_pin_name
+                           ;
+logic_gate_types_n : NAND_KWD;
+create_logic_gate_2_inputs : logic_gate_types
                              block_name
                              input_pin_name
                              input_pin_name
                              output_pin_name
                            ;
-logic_gate_2_inputs_type : AND2_KWD
-                         | OR2_KWD
-                         | NOR2_KWD
-                         | NAND2_KWD
-                         | XOR2_KWD
-                         | XNOR2_KWD
-                         ;
+logic_gate_types : AND2_KWD
+                 | OR2_KWD
+                 | NOR2_KWD
+                 | NAND2_KWD
+                 | XOR2_KWD
+                 | XNOR2_KWD
+                 ;
+
 
 create_state_block : STATE_KWD pin_type block_name io_pin_name?;
 
@@ -82,6 +90,8 @@ fragment LOWERCASE_LETTER : [a-z];
 fragment UPPERCASE_LETTER : [A-Z];
 fragment NUMBER : [0-9];
 fragment LETTER : LOWERCASE_LETTER | UPPERCASE_LETTER;
+
+NAND_KWD : 'NAND';
 
 AND2_KWD : 'AND2';
 OR2_KWD : 'OR2';

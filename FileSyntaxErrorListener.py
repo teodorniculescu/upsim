@@ -37,6 +37,8 @@ ERROR_INVALID_BLOCK_NAME: Final[str] = \
     "type is \"%s\" instead of str."
 ERROR_EMPTY_TABLE_DESCRIPTION: Final[str] = \
     "16:Cannot create a table without at least one column."
+ERROR_REQUIRE_AT_LEAST_NUM_PINS: Final[str] = \
+    "17:Must have at least \"%\" %s pins. Received instead \"%d\" pins."
 
 
 class FileSyntaxErrorListener(ErrorListener):
