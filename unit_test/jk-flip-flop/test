@@ -19,6 +19,8 @@ INSERT EDGES
     BTWN N3.o AND (N2.i1, N0.i0, nQ.val);
 
 INSERT INIT COND
+    (J.val=1, K.val=1, CLK.val=0),
+    (J.val=1, K.val=1, CLK.val=1),
     (J.val=0, K.val=0, CLK.val=0),
     (J.val=0, K.val=0, CLK.val=1),
     (J.val=0, K.val=1, CLK.val=0),

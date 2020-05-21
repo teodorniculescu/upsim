@@ -2,7 +2,7 @@ from unit_test.UnitTestUPSIM import *
 
 
 def main():
-    test = "not_gate"
+    test = "jk-flip-flop"
     FileInterpreter(
         "unit_test/%s/test" % test,
         #"unit_test/%s/answer" % test,
