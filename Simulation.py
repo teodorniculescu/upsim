@@ -155,11 +155,12 @@ class Simulation:
         return len(self.__execution_stack) == 0
 
     def __propagate(self, block_name: str) -> None:
-        self.__graph.propagate_values_block(block_name)
-
+        propagated_blocks_list: List[str] = self.__graph.propagate_values_block(block_name)
+        for prop_name in propagated_blocks_list:
+            self.__execution_stack.append((prop_name, CALCULATE_CMD))
 
     def __calculate(self, block_name: str) -> None:
-        pass
+        self.__graph.calculate_values_block(block_name)
 
     def run(self) -> None:
         """
@@ -169,35 +170,10 @@ class Simulation:
         - The names of each pin from the schematic
         :return: None
         """
-        '''
-        self.__dbc.create_table(
-            self.table_name,
-            self.get_run_table_description()
-        )
-
-        while not self.__finished_all_init_cond():
-            self.__init_stage()
-            self.__changed_state = True
-            # Used for showing the number of times the stage state was displayed
-            self.__num_sss = 0
-            # Shows the state after initializing with the initial conditions
-            self.__dbc.insert_row(self.table_name, self.get_run_line())
-            while True:
-                self.__num_sss += 1
-                self.__changed_state = False
-                self.__read_stage()
-                self.__calculate_stage()
-                if self.__has_simulation_changed_state():
-                    self.__dbc.insert_row(self.table_name, self.get_run_line())
-                else:
-                    break
-        self.__dbc.commit()
-        '''
 
         self.__setup_run()
         while not self.__finished_all_init_cond():
             self.__setup_init_cond()
-            print(self.__execution_stack)
             while not self.__execution_stack_is_empty():
                 # increment the number of steps the initial conditions took to completion
                 self.__num_sss += 1

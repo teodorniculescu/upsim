@@ -83,13 +83,23 @@ class Graph:
     def set_vertex_value(self, vertex_name: str, vertex_value: int) -> None:
         self.get_node(vertex_name).get_pin().set_value(vertex_value)
 
-    def propagate_values_block(self, block_name) -> None:
+    def calculate_values_block(self, block_name: str) -> None:
+        self.__bh.get_block_with_name(block_name).calculate()
+
+    def propagate_values_block(self, block_name: str) -> List[str]:
+        result: List[str] = []
         pin: BaseValue
         for pin in self.__bh.get_block_with_name(block_name).get_all_pins_with_type(PIN_TYPE_OUTPUT).values():
+            # obtain the node name
             node_name: str = block_name + "." + pin.get_name()
+            # get the node connected to this one
             connected_node: Node = self.get_node_connected_to_node(node_name)
+            # get the value that must be propagated
             pin_value = pin.get_value()
+            # change the value of the connected node with the one that is propagated
             connected_node.get_pin().set_value(pin_value)
+            result.append(connected_node.get_block().get_name())
+        return result
 
     def get_vertex_column_descriptions(self) -> List[Column]:
         result: List[Column] = []
