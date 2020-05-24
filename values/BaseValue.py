@@ -15,16 +15,17 @@ pin_switcher: dict = {
 
 
 class BaseValue:
+    # How the pin is identified among other pins on the block
     __name: str
+    # What is the current value of the pin
     __value: int
+    # Check if the current value has been previously set or not
     __value_is_set: bool
-    __changed_state: bool
 
     def __init__(self, name: str, pin_type: int):
         self.__set_name(name)
         self.__set_pin_type(pin_type)
         self.__value_is_set = False
-        self.__changed_state = False
 
     @staticmethod
     def __check_pin_type(pin_type: int) -> None:
@@ -58,41 +59,29 @@ class BaseValue:
             raise Exception('the value must be either HIGH:{:d} or'
                             'LOW:{:d}.'.format(HIGH, LOW)
                             + "Received value: " + str(value) + ".")
-        if (not self.__value_is_set) or (self.__value != value):
-            self.__changed_state = True
-        else:
-            self.__changed_state = False
         self.__value_is_set = True
         self.__value = value
 
     def get_value(self) -> int:
-        if not self.__value_is_set:
-            raise Exception("The pin has no set value.")
         return self.__value
 
     def is_low(self) -> bool:
-        if self.__value_is_set and self.__value == LOW:
+        if self.__value == LOW:
             return True
         return False
 
     def is_high(self) -> bool:
-        if self.__value_is_set and self.__value == HIGH:
+        if self.__value == HIGH:
             return True
         return False
 
     def get_pin_state(self) -> str:
-        if self.__value_is_set:
-            value_str = str(self.__value)
-        else:
-            value_str = "None"
+        value_str = str(self.__value)
         return self.__name + "=" + value_str
 
     def reset(self) -> None:
-        #self.__value_is_set = False
-        self.__changed_state = False
+        self.__value_is_set = False
+        self.__value = LOW;
 
     def is_set(self):
         return self.__value_is_set
-
-    def changed_state_from_last_time_step(self) -> bool:
-        return self.__changed_state

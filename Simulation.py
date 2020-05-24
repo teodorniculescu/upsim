@@ -12,6 +12,9 @@ from DBController import *
 from datetime import datetime
 from random import random
 
+PROPAGATE_CMD: Final[str] = "prop"
+CALCULATE_CMD: Final[str] = "calc"
+
 
 class Simulation:
     __bh: BlockHandler
@@ -27,8 +30,11 @@ class Simulation:
     __graph: Graph
     __dbc: DBController
     table_name: str
+    # A stack which contains tuples of 1. the block name 2. if the block should calculate its value or propagate it
+    __execution_stack: List[Tuple[str, str]]
 
     def __init__(self):
+        self.__execution_stack = []
         self.__bh = BlockHandler()
         self.__initial_conditions = []
         self.__number_init_cond = 0
@@ -108,6 +114,48 @@ class Simulation:
         row += self.__graph.get_vertex_values()
         return row
 
+
+    def __setup_run(self) -> None:
+        self.__dbc.create_table(
+            self.table_name,
+            self.get_run_table_description()
+        )
+        # reset all values - set as 0 and uninitialised
+        block: BasicBlock
+        for block in self.__bh.get_all_blocks().values():
+            block.reset()
+
+    def __setup_init_cond(self) -> None:
+        # Get current initial condition
+        current_init_cont: dict = self.__initial_conditions[self.__number_init_cond]
+        # setup the values of the respective pins according to the initial conditions
+        vertex_name: str
+        vertex_value_str: str
+        for vertex_name, vertex_value_str in current_init_cont.items():
+            # obtains the integer value from the stored string
+            vertex_value: int = int(vertex_value_str)
+            # TODO exception if the vertex value is invalid
+            # sets the value to the appropriate pin
+            self.__graph.set_vertex_value(vertex_name, vertex_value)
+            # set new stack value
+            stack_value: Tuple[str, str] = \
+                (self.__graph.get_node(vertex_name).get_block().get_name(),
+                 PROPAGATE_CMD)
+            # setup execution stack
+            self.__execution_stack.\
+                append(stack_value)
+            print(self.__execution_stack)
+
+        # increment initial condition counter
+        self.__number_init_cond += 1
+        # Used for showing the number of times the stage state was displayed
+        self.__num_sss = 0
+        # Shows the state after initializing with the initial conditions
+        self.__dbc.insert_row(self.table_name, self.get_run_line())
+
+    def __execution_stack_is_empty(self) -> bool:
+        return True
+
     def run(self) -> None:
         """
         Creates a CSV with the following fields:
@@ -116,6 +164,7 @@ class Simulation:
         - The names of each pin from the schematic
         :return: None
         """
+        '''
         self.__dbc.create_table(
             self.table_name,
             self.get_run_table_description()
@@ -137,6 +186,19 @@ class Simulation:
                     self.__dbc.insert_row(self.table_name, self.get_run_line())
                 else:
                     break
+        self.__dbc.commit()
+        '''
+
+        self.__setup_run()
+        while not self.__finished_all_init_cond():
+            self.__setup_init_cond()
+            while not self.__execution_stack_is_empty():
+                # increment the number of steps the initial conditions took to completion
+                self.__num_sss += 1
+                # TODO pop execution stack
+                # TODO propagate or calculate
+                # TODO push execution stack
+                # TODO show circuit state, which means inserting a value in the table
         self.__dbc.commit()
 
     def display(self, description: Tuple[str], values: List[Tuple]) -> None:
