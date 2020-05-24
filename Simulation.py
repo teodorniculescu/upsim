@@ -142,9 +142,7 @@ class Simulation:
                 (self.__graph.get_node(vertex_name).get_block().get_name(),
                  PROPAGATE_CMD)
             # setup execution stack
-            self.__execution_stack.\
-                append(stack_value)
-            print(self.__execution_stack)
+            self.__execution_stack.append(stack_value)
 
         # increment initial condition counter
         self.__number_init_cond += 1
@@ -154,7 +152,14 @@ class Simulation:
         self.__dbc.insert_row(self.table_name, self.get_run_line())
 
     def __execution_stack_is_empty(self) -> bool:
-        return True
+        return len(self.__execution_stack) == 0
+
+    def __propagate(self, block_name: str) -> None:
+        self.__graph.propagate_values_block(block_name)
+
+
+    def __calculate(self, block_name: str) -> None:
+        pass
 
     def run(self) -> None:
         """
@@ -192,13 +197,23 @@ class Simulation:
         self.__setup_run()
         while not self.__finished_all_init_cond():
             self.__setup_init_cond()
+            print(self.__execution_stack)
             while not self.__execution_stack_is_empty():
                 # increment the number of steps the initial conditions took to completion
                 self.__num_sss += 1
-                # TODO pop execution stack
+                # pop execution stack
+                (block, cmd) = self.__execution_stack.pop()
                 # TODO propagate or calculate
+                if cmd == PROPAGATE_CMD:
+                    self.__propagate(block)
+                elif cmd == CALCULATE_CMD:
+                    self.__calculate(block)
+                else:
+                    # TODO Create exception for undefined cmd from execution stack
+                    raise Exception("UNDEFINED")
                 # TODO push execution stack
-                # TODO show circuit state, which means inserting a value in the table
+                # show circuit state, which means inserting a value in the table
+                self.__dbc.insert_row(self.table_name, self.get_run_line())
         self.__dbc.commit()
 
     def display(self, description: Tuple[str], values: List[Tuple]) -> None:
