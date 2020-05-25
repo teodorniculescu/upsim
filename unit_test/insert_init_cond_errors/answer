@@ -9,9 +9,9 @@ soutput,StateBlock,in,,
 From,From Type,To,To Type
 and0.in0,IN,sa.out,OUT
 and0.in1,IN,sb.out,OUT
-and1.in0,IN,and0.out,OUT
 and1.in1,IN,sc.out,OUT
-soutput.in,IN,and1.out,OUT
+and1.out,OUT,soutput.in,IN
+and0.out,OUT,and1.in0,IN
 21:4 ERROR 12:Initial condition block must be a state block for "and0.in0".
 
 27:4 ERROR 12:Initial condition block must be a state block for "and0.out".

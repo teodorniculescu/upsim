@@ -25,7 +25,7 @@ class UnitTestUPSIM(unittest.TestCase):
         answer = file_path + ANSWER_FILE
         return test, result, answer
 
-    @timeout_decorator.timeout(1)
+    @timeout_decorator.timeout(2)
     def run_test(self) -> None:
         frame = inspect.currentframe()
         # Get frame of penultimate function

@@ -2,11 +2,11 @@ from unit_test.UnitTestUPSIM import *
 
 
 def main():
-    test = "sr_flip_flop"
+    test = "nand_gate_with_8_inputs"
     FileInterpreter(
         "unit_test/%s/test" % test,
-        "unit_test/%s/answer" % test,
-        #"",
+        #"unit_test/%s/answer" % test,
+        "",
         Simulation()
     ).parse()
 
