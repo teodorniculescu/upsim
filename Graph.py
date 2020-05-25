@@ -5,7 +5,7 @@ from Node import Node
 from BlockHandler import BlockHandler
 from FileSyntaxErrorListener import *
 from DBController import Column, Row
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 
 
@@ -36,6 +36,11 @@ class Graph:
     def get_node(self, node_name: str) -> Node:
         if node_name in self.__nodes:
             return self.__nodes[node_name]
+        [block_name, pin_name] = node_name.split(".")
+        # tries to get the block name and the pin name
+        # if it succeeds, it means that the block and pin exist
+        self.__bh.get_block_with_name(block_name).get_pin_with_name(pin_name)
+        # which means the node has not been declared
         raise Exception(ERROR_NODE_DOESNT_EXIST % node_name)
 
     def get_edges(self) -> Dict[str, Dict[str, None]]:
@@ -50,7 +55,7 @@ class Graph:
         :return: None
         """
         if node0_name == node1_name:
-            raise Exception(ERROR_EDGE_BETWEEN_SAME_VERTICES % node0)
+            raise Exception(ERROR_EDGE_BETWEEN_SAME_VERTICES % node0_name)
         # Get pin types
         node0_type: int = self.get_node(node0_name).get_pin().get_pin_type()
         node1_type: int = self.get_node(node1_name).get_pin().get_pin_type()
@@ -68,9 +73,22 @@ class Graph:
         result: str = "From,From Type,To,To Type\n"
         from_vertex_name: str
         to_vertex_name: str
-        for from_vertex_name, to_vertex_name in self.__edges.items():
+        to_vertex_dict: Dict[str, None]
+        unique_vertex_dict: Dict[Tuple[str, str], None] = {}
+        for from_vertex_name, to_vertex_dict in self.__edges.items():
+            for to_vertex_name in to_vertex_dict.keys():
+                if from_vertex_name < to_vertex_name:
+                    small_string: str = from_vertex_name
+                    big_string: str = to_vertex_name
+                else:
+                    big_string: str = from_vertex_name
+                    small_string: str = to_vertex_name
+                key = (small_string, big_string)
+                unique_vertex_dict[key] = None
+
+        for (from_vertex_name, to_vertex_name) in unique_vertex_dict.keys():
             from_type: str = self.get_node(from_vertex_name).get_pin().get_pin_type_str()
-            to_type: str = self._get_node(to_vertex_name).get_pin().get_pin_type_str()
+            to_type: str = self.get_node(to_vertex_name).get_pin().get_pin_type_str()
             result += (from_vertex_name + ',' + from_type + ',' +
                        to_vertex_name + ',' + to_type + '\n')
         return result

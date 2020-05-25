@@ -39,7 +39,9 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             self.__error_message = err_msg
             ctx.parser.notifyErrorListeners(err_msg, token)
         else:
-            raise Exception(err_msg)
+            raise Exception(err_msg + \
+                            " with expecting error " + str(self.__expecting_error) + \
+                            " with error expected error number " + str(self.__error_number))
 
     def clear_error(self) -> None:
         self.__error_occ = False

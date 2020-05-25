@@ -7,28 +7,28 @@ sc,StateBlock,,out,
 soutput,StateBlock,in,,
 
 From,From Type,To,To Type
-soutput.in,IN,and1.out,OUT
-19:4 ERROR 6:Cannot connect input vertex "soutput.in" to specified vertex "and1.out", because it is already connected to "and1.out".
+and1.out,OUT,soutput.in,IN
+19:4 ERROR 6:Cannot connect input vertex "and1.out" to specified vertex "soutput.in", because it is already connected to "{'soutput.in': None}".
 
 From,From Type,To,To Type
-soutput.in,IN,and1.out,OUT
+and1.out,OUT,soutput.in,IN
 25:4 ERROR 7:Cannot create edge "and1.out - sa.out" without an input vertex.
 
 From,From Type,To,To Type
-soutput.in,IN,and1.out,OUT
+and1.out,OUT,soutput.in,IN
 31:4 ERROR 5:Cannot create edge "and0.in0 - and1.in0" between two input pins.
 
 From,From Type,To,To Type
-soutput.in,IN,and1.out,OUT
+and1.out,OUT,soutput.in,IN
 37:4 ERROR 4:Cannot create edge between that starts and ends in the same vertex "and0.out".
 
 From,From Type,To,To Type
-soutput.in,IN,and1.out,OUT
+and1.out,OUT,soutput.in,IN
 43:4 ERROR 9:Block "snuexista" does not exist.
 
 From,From Type,To,To Type
-soutput.in,IN,and1.out,OUT
+and1.out,OUT,soutput.in,IN
 49:4 ERROR 10:Pin "outnuexista" does not exist.
 
 From,From Type,To,To Type
-soutput.in,IN,and1.out,OUT
+and1.out,OUT,soutput.in,IN
