@@ -65,6 +65,9 @@ class BaseValue:
     def get_value(self) -> int:
         return self.__value
 
+    def get_value_is_set(self) -> bool:
+        return self.__value_is_set
+
     def is_low(self) -> bool:
         if self.__value == LOW:
             return True

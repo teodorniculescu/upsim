@@ -139,7 +139,7 @@ class Simulation:
             self.__graph.set_vertex_value(vertex_name, vertex_value)
             # set new stack value
             stack_value: Tuple[str, str] = \
-                (self.__graph.get_node(vertex_name).get_block().get_name(),
+                (self.__graph.get_node(vertex_name).__str__(),
                  PROPAGATE_CMD)
             # setup execution stack
             self.__execution_stack.append(stack_value)
@@ -154,13 +154,14 @@ class Simulation:
     def __execution_stack_is_empty(self) -> bool:
         return len(self.__execution_stack) == 0
 
-    def __propagate(self, block_name: str) -> None:
-        propagated_blocks_list: List[str] = self.__graph.propagate_values_block(block_name)
-        for prop_name in propagated_blocks_list:
-            self.__execution_stack.append((prop_name, CALCULATE_CMD))
+    def __propagate(self, node_name: str) -> None:
+        calculate_blocks_list: List[str] = self.__graph.propagate_values_block(node_name)
+        for calc_name in calculate_blocks_list:
+            self.__execution_stack.append((calc_name, CALCULATE_CMD))
 
     def __calculate(self, block_name: str) -> None:
         self.__graph.calculate_values_block(block_name)
+        # self.__execution_stack.append((block_name, PROPAGATE_CMD))
 
     def run(self) -> None:
         """

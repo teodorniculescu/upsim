@@ -25,6 +25,18 @@ class BasicBlock:
         self.__io_pins = {}
         self.__name = name
 
+    def get_output_values(self) -> Dict[str, str]:
+        result: Dict[str, str] = {}
+        pin: BaseValue
+        for pin in self.__output_pins.values():
+            stored_value: str
+            if pin.get_value_is_set() == False:
+                stored_value = str(None)
+            else:
+                stored_value = str(pin.get_value())
+            result[pin.get_name()] = stored_value
+        return result
+
     def add_pin(self, pin: BaseValue) -> None:
         # Check if the parameters are correct
         if not isinstance(pin, BaseValue):
