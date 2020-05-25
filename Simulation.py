@@ -179,6 +179,7 @@ class Simulation:
             while not self.__execution_stack_is_empty():
                 # increment the number of steps the initial conditions took to completion
                 self.__num_sss += 1
+                # print(str(self.__number_init_cond) + "\t" + str(self.__num_sss) + "\t" + str(self.__execution_stack))
                 # pop execution stack
                 (block, cmd) = self.__execution_stack.pop()
                 # TODO propagate or calculate

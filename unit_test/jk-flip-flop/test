@@ -7,24 +7,52 @@ INSERT BLOCKS
     NAND N0 i0 i1 i2 o,
     NAND N1 i0 i1 i2 o,
     NAND N2 i0 i1 o,
-    NAND N3 i0 i1 o;
+    NAND N3 i0 i1 o,
+    NAND N4 i0 i1 o,
+    NAND N5 i0 i1 o,
+    NAND N6 i0 i1 o,
+    NAND N7 i0 i1 o,
+    NOT NOT0 i o;
 
 INSERT EDGES
     BTWN J.val AND (N0.i1),
     BTWN K.val AND (N1.i1),
-    BTWN CLK.val AND (N0.i2, N1.i0),
+    BTWN CLK.val AND (N0.i2, N1.i0, NOT0.i),
     BTWN N0.o AND (N2.i0),
     BTWN N1.o AND (N3.i1),
-    BTWN N2.o AND (N3.i0, N1.i2, Q.val),
-    BTWN N3.o AND (N2.i1, N0.i0, nQ.val);
+    BTWN N2.o AND (N3.i0, N4.i0),
+    BTWN N3.o AND (N2.i1, N5.i1),
+    BTWN NOT0.o AND (N4.i1, N5.i0),
+    BTWN N4.o AND (N6.i0),
+    BTWN N5.o AND (N7.i1),
+    BTWN N6.o AND (N7.i0, N1.i2, Q.val),
+    BTWN N7.o AND (N6.i1, N0.i0, nQ.val);
 
 INSERT INIT COND
+    (J.val=1, K.val=1, CLK.val=1),
     (J.val=1, K.val=1, CLK.val=0),
     (J.val=1, K.val=1, CLK.val=1),
+    (J.val=1, K.val=1, CLK.val=0),
+    (J.val=1, K.val=1, CLK.val=1),
+    (J.val=1, K.val=1, CLK.val=0),
+    (J.val=0, K.val=0, CLK.val=1),
+    (J.val=0, K.val=0, CLK.val=0),
+    (J.val=1, K.val=0, CLK.val=1),
+    (J.val=1, K.val=0, CLK.val=0),
+    (J.val=1, K.val=0, CLK.val=1),
+    (J.val=1, K.val=0, CLK.val=0),
+    (J.val=0, K.val=1, CLK.val=1),
+    (J.val=0, K.val=1, CLK.val=0),
+    (J.val=0, K.val=0, CLK.val=1),
     (J.val=0, K.val=0, CLK.val=0),
     (J.val=0, K.val=0, CLK.val=1),
-    (J.val=0, K.val=1, CLK.val=0),
-    (J.val=0, K.val=1, CLK.val=1);
+    (J.val=0, K.val=0, CLK.val=0),
+    (J.val=1, K.val=1, CLK.val=1),
+    (J.val=1, K.val=1, CLK.val=0),
+    (J.val=0, K.val=0, CLK.val=1),
+    (J.val=0, K.val=0, CLK.val=0),
+    (J.val=0, K.val=0, CLK.val=1),
+    (J.val=0, K.val=0, CLK.val=0);
 
 RUN;
 
