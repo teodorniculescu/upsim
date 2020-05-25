@@ -160,8 +160,9 @@ class Simulation:
             self.__execution_stack.append((calc_name, CALCULATE_CMD))
 
     def __calculate(self, block_name: str) -> None:
-        self.__graph.calculate_values_block(block_name)
-        # self.__execution_stack.append((block_name, PROPAGATE_CMD))
+        propagate_blocks_list: List[str] = self.__graph.calculate_values_block(block_name)
+        for prop_name in propagate_blocks_list:
+            self.__execution_stack.append((prop_name, PROPAGATE_CMD))
 
     def run(self) -> None:
         """

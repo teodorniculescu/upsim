@@ -1,10 +1,12 @@
 from blocks.BasicBlock import BasicBlock
+from blocks.StateBlock import StateBlock
 from values.BaseValue import *
 from Node import Node
 from BlockHandler import BlockHandler
 from FileSyntaxErrorListener import *
 from DBController import Column, Row
 from typing import List, Dict
+
 
 
 class Graph:
@@ -111,7 +113,7 @@ class Graph:
             # change the value of the connected node with the one that is propagated
             connected_node.get_pin().set_value(pin_value)
             # add the block to the execution stack if the value is new
-            if pin_value != old_value:
+            if type(connected_node.get_block()) != StateBlock and pin_value != old_value:
                 # the block is added instead of the node because the it
                 # will be executed in the following step
                 result.append(connected_node.get_block().get_name())
