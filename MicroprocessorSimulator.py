@@ -5,8 +5,8 @@ def main():
     test = "sr_flip_flop"
     FileInterpreter(
         "unit_test/%s/test" % test,
-        #"unit_test/%s/answer" % test,
-        "",
+        "unit_test/%s/answer" % test,
+        #"",
         Simulation()
     ).parse()
 
