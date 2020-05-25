@@ -154,15 +154,14 @@ class Simulation:
     def __execution_stack_is_empty(self) -> bool:
         return len(self.__execution_stack) == 0
 
-    def __propagate(self, node_name: str) -> None:
+    def __propagate(self, node_name: str) -> List[str]:
         calculate_blocks_list: List[str] = self.__graph.propagate_values_block(node_name)
-        for calc_name in calculate_blocks_list:
-            self.__execution_stack.append((calc_name, CALCULATE_CMD))
+        return calculate_blocks_list
 
-    def __calculate(self, block_name: str) -> None:
+
+    def __calculate(self, block_name: str) -> List[str]:
         propagate_blocks_list: List[str] = self.__graph.calculate_values_block(block_name)
-        for prop_name in propagate_blocks_list:
-            self.__execution_stack.append((prop_name, PROPAGATE_CMD))
+        return propagate_blocks_list
 
     def run(self) -> None:
         """
@@ -182,15 +181,21 @@ class Simulation:
                 # print(str(self.__number_init_cond) + "\t" + str(self.__num_sss) + "\t" + str(self.__execution_stack))
                 # pop execution stack
                 (block, cmd) = self.__execution_stack.pop()
-                # TODO propagate or calculate
+                new_stack_elements: List[str]
+                new_cmd: str
+                # propagate or calculate
                 if cmd == PROPAGATE_CMD:
-                    self.__propagate(block)
+                    new_stack_elements = self.__propagate(block)
+                    new_cmd = CALCULATE_CMD
                 elif cmd == CALCULATE_CMD:
-                    self.__calculate(block)
+                    new_stack_elements = self.__calculate(block)
+                    new_cmd = PROPAGATE_CMD
                 else:
-                    # TODO Create exception for undefined cmd from execution stack
+                    # Create exception for undefined cmd from execution stack
                     raise Exception("UNDEFINED")
-                # TODO push execution stack
+                # push execution stack
+                for new_element in new_stack_elements:
+                    self.__execution_stack.append((new_element, new_cmd))
                 # show circuit state, which means inserting a value in the table
                 self.__dbc.insert_row(self.table_name, self.get_run_line())
         self.__dbc.commit()
