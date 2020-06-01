@@ -12,8 +12,8 @@ from DBController import *
 from datetime import datetime
 from random import random
 
-PROPAGATE_CMD: Final[str] = "prop"
-CALCULATE_CMD: Final[str] = "calc"
+PROPAGATE_CMD: [str] = "prop"
+CALCULATE_CMD: [str] = "calc"
 
 
 class Simulation:

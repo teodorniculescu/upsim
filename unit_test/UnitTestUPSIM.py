@@ -4,15 +4,15 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # finding the parent directory automatically
 from FileInterpreter import FileInterpreter
 from Simulation import Simulation
-from typing import Tuple, Final
+from typing import Tuple
 import unittest
 import difflib
 import inspect
 import timeout_decorator
 
-TEST_FILE: Final[str] = "test"
-RESULT_FILE: Final[str] = "result"
-ANSWER_FILE: Final[str] = "answer"
+TEST_FILE: [str] = "test"
+RESULT_FILE: [str] = "result"
+ANSWER_FILE: [str] = "answer"
 
 
 class UnitTestUPSIM(unittest.TestCase):

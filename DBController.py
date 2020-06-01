@@ -1,5 +1,5 @@
 import mysql.connector as mariadb
-from typing import Final, List, Any, NewType
+from typing import List, Any, NewType
 from FileSyntaxErrorListener import *
 
 
@@ -55,9 +55,9 @@ class Row:
 
 
 class DBController:
-    USER: Final[str] = "upsim"
-    PASSWORD: Final[str] = "upsim"
-    DATABASE: Final[str] = "upsimdb"
+    USER: [str] = "upsim"
+    PASSWORD: [str] = "upsim"
+    DATABASE: [str] = "upsimdb"
 
     mariadb_connection: Any
 
@@ -126,7 +126,7 @@ class DBController:
         result = result[:-1]
         return result
 
-    INSERT_SYNTAX: Final[str] = "INSERT `%s` VALUES %s;"
+    INSERT_SYNTAX: [str] = "INSERT `%s` VALUES %s;"
 
     def insert_rows(self, table_name: str, rows: List[Row]) -> None:
         self.cursor().execute(
