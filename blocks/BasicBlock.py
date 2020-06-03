@@ -1,7 +1,7 @@
 from values.BaseValue import *
 from FileSyntaxErrorListener import *
 from typing import Dict
-from DBController import Column, Row
+from database.DBController import Column, Row
 from typing import List
 
 

@@ -1,14 +1,8 @@
-from blocks.BasicBlock import *
-from blocks.LogicalBlock import *
-from blocks.StateBlock import *
-from gen.FileSyntaxParser import *
-from FileSyntaxErrorListener import *
 from BlockHandler import *
 from Node import Node
-import sys
 from Graph import Graph
-from typing import Dict, List, Tuple
-from DBController import *
+from typing import Dict, Tuple
+from database.DBController import *
 from datetime import datetime
 from random import random
 

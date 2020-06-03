@@ -4,7 +4,7 @@ from values.BaseValue import *
 from Node import Node
 from BlockHandler import BlockHandler
 from FileSyntaxErrorListener import *
-from DBController import Column, Row
+from database.DBController import Column, Row
 from typing import List, Dict, Tuple
 
 
