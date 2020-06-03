@@ -14,7 +14,7 @@ def main():
 
 def parse_test():
     # used for updating and checking test results
-    test = "nand_gate_with_8_inputs"
+    test = ""
     FileInterpreter(
         "unit_test/%s/test" % test,
         #"unit_test/%s/answer" % test,
