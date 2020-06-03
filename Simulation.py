@@ -142,7 +142,7 @@ class Simulation:
                 (self.__graph.get_node(vertex_name).__str__(),
                  PROPAGATE_CMD)
             # setup execution stack
-            self.__execution_stack.append(stack_value)
+            self.__insert_execution(stack_value)
 
         # increment initial condition counter
         self.__number_init_cond += 1
@@ -150,6 +150,14 @@ class Simulation:
         self.__num_sss = 0
         # Shows the state after initializing with the initial conditions
         self.__dbc.insert_row(self.table_name, self.get_run_line())
+
+    def __insert_execution(self, stack_value: Tuple[str, str]) -> None:
+        self.__execution_stack.append(stack_value)
+
+    def __remove_execution(self) -> Tuple[str, str]:
+        stack_value: Tuple[str, str]
+        stack_value = self.__execution_stack.pop()
+        return stack_value
 
     def __execution_stack_is_empty(self) -> bool:
         return len(self.__execution_stack) == 0
@@ -180,7 +188,7 @@ class Simulation:
                 self.__num_sss += 1
                 # print(str(self.__number_init_cond) + "\t" + str(self.__num_sss) + "\t" + str(self.__execution_stack))
                 # pop execution stack
-                (block, cmd) = self.__execution_stack.pop()
+                (block, cmd) = self.__remove_execution()
                 new_stack_elements: List[str]
                 new_cmd: str
                 # propagate or calculate
@@ -195,7 +203,7 @@ class Simulation:
                     raise Exception("UNDEFINED")
                 # push execution stack
                 for new_element in new_stack_elements:
-                    self.__execution_stack.append((new_element, new_cmd))
+                    self.__insert_execution((new_element, new_cmd))
                 # show circuit state, which means inserting a value in the table
                 self.__dbc.insert_row(self.table_name, self.get_run_line())
         self.__dbc.commit()
