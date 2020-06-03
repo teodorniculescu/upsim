@@ -1,0 +1,20 @@
+<SimulationUI>:
+    ButtonBar:
+    SimulationPanel:
+
+<ButtonBar>:
+    size_hint: 1, None
+    size: 0, 20
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, .5
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<NoneSection>:
+    size_hint: None, None
+<RowsSection>:
+    size_hint: None, 1
+<ColumnsSection>:
+    size_hint: 1, None

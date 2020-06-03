@@ -10,7 +10,7 @@ def check_python_version():
 
 def main():
     check_python_version()
-    UI()
+    UI().run()
 
 def parse_test():
     # used for updating and checking test results
