@@ -61,7 +61,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
 
     def exitExpect(self, ctx: FileSyntaxParser.ExpectContext):
         self.__expecting_error = True
-        self.__error_number = int(str(ctx.INTEGER()))
+        self.__error_number = int(str(ctx.UINT()))
 
     def exitInsert_blocks(self, ctx: FileSyntaxParser.Insert_blocksContext):
         if self.error_is_set():
@@ -160,7 +160,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
 
     def exitNode_value(self, ctx: FileSyntaxParser
                        .Node_valueContext):
-        ctx.number = str(ctx.INTEGER())
+        ctx.number = str(ctx.UINT())
 
     def exitCondition(self, ctx: FileSyntaxParser
                       .ConditionContext):
