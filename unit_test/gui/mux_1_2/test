@@ -31,5 +31,6 @@ RUN;
 
 SHOW RUN (s.val, i0.val, i1.val, result.val);
 
-DRAW BLOCK
-    s 0:0;
+DRAW BLOCKS
+    s 0 : 0;
+

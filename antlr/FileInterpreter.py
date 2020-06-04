@@ -1,6 +1,6 @@
 import os
-from antlr.gen.FileSyntaxLexer import *
-from antlr.gen.FileSyntaxParser import *
+from gen.FileSyntaxLexer import *
+from gen.FileSyntaxParser import *
 from antlr.WrapperFileSyntaxListener import WrapperFileSyntaxListener
 from Simulation import Simulation
 from antlr.FileSyntaxErrorListener import FileSyntaxErrorListener

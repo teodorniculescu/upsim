@@ -8,17 +8,11 @@ filesyntax : ((draw | command | investigate) ';')* EOF;
 
 draw : DRAW_KWD draw_blocks;
 
-draw_blocks : BLOCK_KWD draw_one_block (',' draw_one_block);
+draw_blocks : BLOCK_KWD draw_one_block;
 
-draw_one_block : block_name block_position draw_input_pins draw_output_pins;
+draw_one_block : block_name block_position;
 
-draw_input_pins : INPUT_KWD UINT+;
-draw_output_pins : OUTPUT_KWD UINT+;
-
-block_position : index_line ':' index_column;
-
-index_line : UINT;
-index_column: UINT;
+block_position : UINT ':' UINT;
 
 investigate : (show | expect);
 

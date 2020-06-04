@@ -1,4 +1,4 @@
 __pycache__/
-antlr/gen/*
+gen/*
 .idea/*
 unit_test/*/result
