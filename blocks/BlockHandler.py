@@ -1,7 +1,6 @@
 from blocks.BasicBlock import BasicBlock
 from blocks.LogicalBlock import LogicalBlock
 from blocks.StateBlock import StateBlock
-from FileSyntaxErrorListener import *
 from values.BaseValue import *
 
 

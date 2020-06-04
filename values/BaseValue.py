@@ -1,4 +1,4 @@
-from FileSyntaxErrorListener import *
+from antlr.FileSyntaxErrorListener import *
 HIGH: int = 1
 LOW: int = 0
 

@@ -1,6 +1,6 @@
 from blocks.BasicBlock import BasicBlock
 from values.BaseValue import BaseValue
-from BlockHandler import BlockHandler
+from blocks.BlockHandler import BlockHandler
 
 
 class Node:

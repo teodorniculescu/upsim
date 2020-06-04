@@ -1,6 +1,6 @@
 import mysql.connector as mariadb
-from typing import List, Any, NewType
-from FileSyntaxErrorListener import *
+from typing import List, Any
+from antlr.FileSyntaxErrorListener import *
 
 
 class Column:

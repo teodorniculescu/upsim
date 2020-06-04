@@ -1,4 +1,4 @@
-from BlockHandler import *
+from blocks.BlockHandler import *
 from Node import Node
 from Graph import Graph
 from typing import Dict, Tuple

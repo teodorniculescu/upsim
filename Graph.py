@@ -2,8 +2,8 @@ from blocks.BasicBlock import BasicBlock
 from blocks.StateBlock import StateBlock
 from values.BaseValue import *
 from Node import Node
-from BlockHandler import BlockHandler
-from FileSyntaxErrorListener import *
+from blocks.BlockHandler import BlockHandler
+from antlr.FileSyntaxErrorListener import *
 from database.DBController import Column, Row
 from typing import List, Dict, Tuple
 

@@ -1,5 +1,5 @@
 from values.BaseValue import *
-from FileSyntaxErrorListener import *
+from antlr.FileSyntaxErrorListener import *
 from typing import Dict
 from database.DBController import Column, Row
 from typing import List

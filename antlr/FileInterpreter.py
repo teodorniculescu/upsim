@@ -1,9 +1,9 @@
 import os
-from gen.FileSyntaxLexer import *
-from gen.FileSyntaxParser import *
-from WrapperFileSyntaxListener import WrapperFileSyntaxListener
+from antlr.gen.FileSyntaxLexer import *
+from antlr.gen.FileSyntaxParser import *
+from antlr.WrapperFileSyntaxListener import WrapperFileSyntaxListener
 from Simulation import Simulation
-from FileSyntaxErrorListener import FileSyntaxErrorListener
+from antlr.FileSyntaxErrorListener import FileSyntaxErrorListener
 
 
 class FileInterpreter:
