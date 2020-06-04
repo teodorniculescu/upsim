@@ -10,7 +10,8 @@ def check_python_version():
 
 def main():
     check_python_version()
-    UI().run()
+    parse_gui()
+    #UI().run()
 
 def parse_test():
     # used for updating and checking test results
@@ -18,6 +19,15 @@ def parse_test():
     FileInterpreter(
         "unit_test/%s/test" % test,
         #"unit_test/%s/answer" % test,
+        "",
+        Simulation()
+    ).parse()
+
+def parse_gui():
+    # used for updating and checking test results
+    test = "mux_1_2"
+    FileInterpreter(
+        "user_interface/tests/%s/test" % test,
         "",
         Simulation()
     ).parse()

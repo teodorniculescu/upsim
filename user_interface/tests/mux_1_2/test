@@ -1,0 +1,32 @@
+INSERT BLOCKS
+    STATE OUT s,
+    STATE OUT i0,
+    STATE OUT i1,
+    STATE IN result,
+    NOT not in out,
+    AND and0 i0 i1 o,
+    AND and1 i0 i1 o,
+    OR or i0 i1 o;
+
+INSERT EDGES
+    BTWN s.val AND (and0.i0, not.in),
+    BTWN not.out AND and1.i0,
+    BTWN i0.val AND and1.i1,
+    BTWN i1.val AND and0.i1,
+    BTWN and0.o AND or.i0,
+    BTWN and1.o AND or.i1,
+    BTWN or.o AND result.val;
+
+INSERT INITIAL CONDITIONS
+    (s.val=0,i0.val=0,i1.val=0),
+    (s.val=0,i0.val=0,i1.val=1),
+    (s.val=0,i0.val=1,i1.val=0),
+    (s.val=0,i0.val=1,i1.val=1),
+    (s.val=1,i0.val=0,i1.val=0),
+    (s.val=1,i0.val=0,i1.val=1),
+    (s.val=1,i0.val=1,i1.val=0),
+    (s.val=1,i0.val=1,i1.val=1);
+
+RUN;
+
+SHOW RUN (s.val, i0.val, i1.val, result.val);
