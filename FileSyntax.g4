@@ -4,13 +4,27 @@ grammar FileSyntax;
     Parser Rules
 */
 
-filesyntax : ((command | investigate) ';')* EOF;
+filesyntax : ((draw | command | investigate) ';')* EOF;
+
+draw : DRAW_KWD draw_blocks;
+
+draw_blocks : BLOCK_KWD draw_one_block (',' draw_one_block);
+
+draw_one_block : block_name block_position draw_input_pins draw_output_pins;
+
+draw_input_pins : INPUT_KWD UINT+;
+draw_output_pins : OUTPUT_KWD UINT+;
+
+block_position : index_line ':' index_column;
+
+index_line : UINT;
+index_column: UINT;
 
 investigate : (show | expect);
 
 command : (insert | run);
 
-expect: EXPECT_KWD ERROR_KWD INTEGER;
+expect: EXPECT_KWD ERROR_KWD UINT;
 
 show : SHOW_KWD
      ( show_blocks
@@ -90,7 +104,7 @@ node : block_name '.' pin_name;
 block_name : NAME;
 pin_name : NAME;
 
-node_value : INTEGER;
+node_value : UINT;
 
 run : RUN_KWD;
 
@@ -119,6 +133,7 @@ NAND2_KWD : 'NAND2';
 XOR2_KWD : 'XOR2';
 XNOR2_KWD : 'XNOR2';
 
+DRAW_KWD: 'DRAW';
 EXPECT_KWD: 'EXPECT';
 ERROR_KWD: 'ERROR';
 SHOW_KWD : 'SHOW';
@@ -137,7 +152,7 @@ RUN_KWD : 'RUN';
 VERBOSE_PRM : '-' ('VERBOSE' | 'V');
 
 
-INTEGER : NUMBER+;
+UINT: NUMBER+;
 NAME : (LETTER | NUMBER)+;
 
 COMMENT : '/*' .*? '*/' -> skip ; // .*? matches anything until the first */
