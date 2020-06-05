@@ -6,23 +6,23 @@ from typing import Dict
 
 
 class BlockHandler:
-    __logical_blocks: dict
-    __state_blocks: dict
+    __logical_blocks: Dict[str, BasicBlock]
+    __state_blocks: Dict[str, BasicBlock]
 
     def __init__(self):
         self.__logical_blocks = {}
         self.__state_blocks = {}
 
-    def get_all_blocks(self) -> dict:
+    def get_all_blocks(self) -> Dict[str, BasicBlock]:
         return {**self.__logical_blocks, **self.__state_blocks}
 
-    def get_positionable_blocks(self) -> dict:
+    def get_positionable_blocks(self) -> Dict[str, BasicBlock]:
         pass
 
-    def get_logical_blocks(self) -> dict:
+    def get_logical_blocks(self) -> Dict[str, BasicBlock]:
         return self.__logical_blocks
 
-    def get_state_blocks(self) -> dict:
+    def get_state_blocks(self) -> Dict[str, BasicBlock]:
         return self.__state_blocks
 
     def get_block_with_name(self, block_name: str) -> BasicBlock:
@@ -33,7 +33,7 @@ class BlockHandler:
         :return: The block with the specified name
         """
         block: BasicBlock
-        all_blocks: dict = self.get_all_blocks()
+        all_blocks: Dict[str, BasicBlock] = self.get_all_blocks()
         if block_name in all_blocks:
             return all_blocks[block_name]
         raise Exception(ERROR_BLOCK_DOESNT_EXIST % block_name)
