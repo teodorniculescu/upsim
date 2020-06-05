@@ -38,6 +38,8 @@ ERROR_EMPTY_TABLE_DESCRIPTION: [str] = \
     "16:Cannot create a table without at least one column."
 ERROR_REQUIRE_AT_LEAST_NUM_PINS: [str] = \
     "17:Must have at least \"%\" %s pins. Received instead \"%d\" pins."
+ERROR_POSITION_NOT_SET: [str] = \
+    "18:The block position for \"%s\" is not set."
 
 
 class FileSyntaxErrorListener(ErrorListener):

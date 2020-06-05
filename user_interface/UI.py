@@ -1,5 +1,6 @@
 import kivy
 kivy.require("1.11.1")
+from Simulation import Simulation
 
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -74,6 +75,11 @@ class SimulationUI(BoxLayout):
         print("woah " + str(dt))
 
 class UI(App):
+    __simulation: Simulation
+    def __init__(self, simulation: Simulation, **kwargs):
+        super(UI, self).__init__(**kwargs)
+        self.__simulation = simulation
+
     def build(self):
         simui = SimulationUI()
         return simui

@@ -9,6 +9,7 @@ from user_interface.UI import UI
 
 class WrapperFileSyntaxListener(FileSyntaxListener):
     __sim: Simulation
+    __ui: UI
     __output: type(sys.stdout)
     """
      Specifies if an error has occurred in some block which renders the block
@@ -23,6 +24,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
 
     def __init__(self, sim: Simulation, output: type(sys.stdout)):
         self.__sim = sim
+        self.__ui = UI(simulation=sim)
         self.__output = output
         self.__error_occ = False
         self.__error_message = ""
@@ -259,11 +261,16 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             self.__set_error(ctx, e)
 
     def exitDisplay(self, ctx:FileSyntaxParser.DisplayContext):
-        UI().run()
+        self.__ui.run()
 
     def exitBlock_position(self, ctx:FileSyntaxParser.Block_positionContext):
         index_line = int(str(ctx.UINT(0)))
         index_column = int(str(ctx.UINT(1)))
-        print(index_line)
-        print(index_column)
+        ctx.val = (index_line, index_column)
+
+    def exitDraw_one_block(self, ctx:FileSyntaxParser.Draw_one_blockContext):
+        name = ctx.block_name().text
+        pos = ctx.block_position().val
+        self.__sim.add_block_position(name, pos)
+
 

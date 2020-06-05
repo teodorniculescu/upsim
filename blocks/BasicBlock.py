@@ -2,7 +2,7 @@ from values.BaseValue import *
 from antlr.FileSyntaxErrorListener import *
 from typing import Dict
 from database.DBController import Column, Row
-from typing import List
+from typing import List, Tuple
 
 
 class BasicBlock:
@@ -15,6 +15,8 @@ class BasicBlock:
     __output_pins: Dict[str, BaseValue]
     __io_pins: Dict[str, BaseValue]
     __name: str
+    __position: Tuple[int, int]
+    __position_is_set: bool
 
     def __init__(self, name: str):
         if not isinstance(name, str):
@@ -24,6 +26,16 @@ class BasicBlock:
         self.__output_pins = {}
         self.__io_pins = {}
         self.__name = name
+        self.__position_is_set = False
+
+    def set_position(self, position: Tuple[int, int]) -> None:
+        self.__position_is_set = True
+        self.__position = position
+
+    def get_position(self) -> Tuple[int, int]:
+        if not self.__position_is_set:
+            raise Exception(ERROR_POSITION_NOT_SET % self.__name)
+        return self.__position
 
     def get_output_values(self) -> Dict[str, str]:
         result: Dict[str, str] = {}

@@ -42,6 +42,9 @@ class Simulation:
             datetime.now().strftime("%d%m%Y_%H%M%S_") + \
             str(int(random() * 1000000))
 
+    def add_block_position(self, block_name: str, block_position: Tuple[int, int]) -> None:
+        self.__bh.get_block_with_name(block_name).set_position(block_position)
+
     def __read_stage(self) -> None:
         block: LogicalBlock
         for block in self.__bh.get_all_blocks().values():
