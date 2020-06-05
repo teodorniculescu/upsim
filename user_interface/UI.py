@@ -85,7 +85,8 @@ class SimulationPanel(GridLayout):
         self.update_panel()
 
     def build_grid(self):
-        print("grid yo")
+        self.__grid = Grid(size=(100, 100))
+        self.__simulation.show
 
     def update_panel(self) -> None:
         print("panel yo")

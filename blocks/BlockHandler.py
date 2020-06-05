@@ -2,6 +2,7 @@ from blocks.BasicBlock import BasicBlock
 from blocks.LogicalBlock import LogicalBlock
 from blocks.StateBlock import StateBlock
 from values.BaseValue import *
+from typing import Dict
 
 
 class BlockHandler:
@@ -14,6 +15,9 @@ class BlockHandler:
 
     def get_all_blocks(self) -> dict:
         return {**self.__logical_blocks, **self.__state_blocks}
+
+    def get_positionable_blocks(self) -> dict:
+        pass
 
     def get_logical_blocks(self) -> dict:
         return self.__logical_blocks

@@ -42,6 +42,9 @@ class Simulation:
             datetime.now().strftime("%d%m%Y_%H%M%S_") + \
             str(int(random() * 1000000))
 
+    def get_positionable_blocks(self):
+        return self.__bh.get_positionable_blocks()
+
     def add_block_position(self, block_name: str, block_position: Tuple[int, int]) -> None:
         self.__bh.get_block_with_name(block_name).set_position(block_position)
 
