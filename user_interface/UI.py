@@ -1,7 +1,7 @@
 import kivy
 kivy.require("1.11.1")
 from Simulation import Simulation
-from typing import Tuple, List, Dict, Callable
+from typing import Tuple, List, Dict
 from blocks.BasicBlock import BasicBlock
 
 from kivy.app import App
@@ -9,50 +9,9 @@ from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
-from kivy.graphics import Color, Rectangle
 import kivy.utils as kivy_utils
 
-
-class EmptyCell(Widget):
-    rect: Rectangle
-    def __init__(self,
-                 bg_col: Tuple[int, int , int, int] = (0, 0, 0, 0),
-                 **kwargs):
-        super(EmptyCell, self).__init__(**kwargs)
-        with self.canvas.before:
-            Color(bg_col[0], bg_col[1], bg_col[2], bg_col[3])
-            self.rect = Rectangle(size=self.size,
-                                  pos=self.pos)
-        self.bind(pos=self.update_rect,
-                  size=self.update_rect)
-
-    def update_rect(self, *args):
-        self.rect.pos = self.pos
-        self.rect.size = self.size
-
-    @staticmethod
-    def get_describing_string() -> str:
-        # This is used for identifying the type of cell in the matrix
-        return ""
-
-
-class PanelHandler:
-    background_color: Tuple[int, int, int, int]
-    __code_dict: Dict[str, Callable[[], EmptyCell]]
-
-    def __init__(self,
-                 background_color: Tuple[int, int , int, int] = (0, 0, 0, 0)):
-        self.background_color = background_color
-        self.__code_dict = {
-            "": self.get_empty_cell
-        }
-
-    def get_empty_cell(self) -> EmptyCell:
-        return EmptyCell(
-            bg_col=self.background_color)
-
-    def get_cell(self, code: str) -> EmptyCell:
-        return self.__code_dict[code]()
+from user_interface.PanelCells import PanelHandler, EmptyCell
 
 
 class Grid:
@@ -80,7 +39,6 @@ class Grid:
     def get_cell_widget(self, index: Tuple[int, int]) -> EmptyCell:
         str_code: str = self.__matrix[index[0]][index[1]]
         return self.__ph.get_cell(str_code)
-
 
 
 class SimulationSection(BoxLayout):
