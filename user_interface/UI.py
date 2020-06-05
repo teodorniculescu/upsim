@@ -1,7 +1,7 @@
 import kivy
 kivy.require("1.11.1")
 from Simulation import Simulation
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Callable
 from blocks.BasicBlock import BasicBlock
 
 from kivy.app import App
@@ -30,14 +30,21 @@ class EmptyCell(Widget):
 
 class PanelHandler:
     background_color: Tuple[int, int, int, int]
+    __code_dict: Dict[str, Callable[[], EmptyCell]]
 
     def __init__(self,
                  background_color: Tuple[int, int , int, int] = (0, 0, 0, 0)):
         self.background_color = background_color
+        self.__code_dict = {
+            "": self.get_empty_cell
+        }
 
     def get_empty_cell(self) -> EmptyCell:
         return EmptyCell(
             bg_col=self.background_color)
+
+    def get_cell(self, code: str) -> EmptyCell:
+        return self.__code_dict[code]()
 
 
 class Grid:
@@ -49,27 +56,40 @@ class Grid:
     # they cause problems when when they are not used.
     # Also, strings take up less memory than emtpy cells.
     __matrix: List[List[str]]
+    __ph: PanelHandler
 
     def __init__(self, size: Tuple[int, int] = (1, 1)):
         self.__size = size
         self.__ph = PanelHandler(
             background_color=(1, 1, 1, 1)
         )
-        # creating a matrix of size[0] lines and size[1] columns
+        # creating a matrix of size[0] rows and size[1] columns
         self.__matrix = [[""] * self.__size[1]] * self.__size[0]
 
     def add_blocks(self, blocks: Dict[str, BasicBlock]) -> None:
         pass
 
+    def get_cell_widget(self, index: Tuple[int, int]) -> EmptyCell:
+        str_code: str = self.__matrix[index[0]][index[1]]
+        return self.__ph.get_cell(str_code)
+
+
 
 class SimulationSection(GridLayout):
     __grid: Grid
     __simulation: Simulation
+    __sim_size: Tuple[int, int]
+    __ul_corner: Tuple[int, int]
 
-    def __init__(self, simulation: Simulation, **kwargs):
+    def __init__(self,
+                 simulation: Simulation,
+                 sim_size: Tuple[int, int],
+                 ul_corner: Tuple[int, int] = (0, 0),
+                 **kwargs):
         super(SimulationSection, self).__init__(**kwargs)
         self.__simulation = simulation
-
+        self.__sim_size = sim_size
+        self.__ul_corner = ul_corner
         self.build_grid()
         self.update_panel()
 
@@ -78,9 +98,18 @@ class SimulationSection(GridLayout):
         self.__grid.add_blocks(self.__simulation.get_positionable_blocks())
 
     def update_panel(self) -> None:
-        print("panel yo")
-        print(self.__simulation)
-        # Todo this wonderful thing
+        self.clear_widgets()
+        for row_index in range(self.__sim_size[0]):
+            row_widget = BoxLayout(
+                orientation="horizontal"
+            )
+            for column_index in range(self.__sim_size[1]):
+                cell_widget: EmptyCell = self.__grid.get_cell_widget(
+                    index=(row_index, column_index)
+                )
+                row_widget.add_widget(cell_widget)
+            self.add_widget(row_widget)
+
 
 
 class ButtonBar(BoxLayout):
@@ -119,7 +148,7 @@ class NoneSection(Widget):
 class SimulationPanel(GridLayout):
 
     # when the screen resolution changes, increment the
-    # number of rows and columns acording to their current
+    # number of rows and columns according to their current
     # size divided by the size of the screen
     margin_size: tuple
     __simulation: Simulation
@@ -130,16 +159,18 @@ class SimulationPanel(GridLayout):
         self.cols = 2
         self.rows = 2
         self.margin_size = (40, 20)
+        sim_size = (8, 8)
         none_section = NoneSection(
             size=self.margin_size)
         rows_section = RowsSection(
             size=self.margin_size,
-            num_elements=8)
+            num_elements=sim_size[0])
         cols_section = ColumnsSection(
             size=self.margin_size,
-            num_elements=8)
+            num_elements=sim_size[1])
         sim_section = SimulationSection(
-            simulation=self.__simulation)
+            simulation=self.__simulation,
+            sim_size=sim_size)
         self.add_widget(none_section)
         self.add_widget(cols_section)
         self.add_widget(rows_section)
