@@ -10,9 +10,11 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.graphics import Color, Rectangle
+import kivy.utils as kivy_utils
 
 
 class EmptyCell(Widget):
+    rect: Rectangle
     def __init__(self,
                  bg_col: Tuple[int, int , int, int] = (0, 0, 0, 0),
                  **kwargs):
@@ -21,6 +23,12 @@ class EmptyCell(Widget):
             Color(bg_col[0], bg_col[1], bg_col[2], bg_col[3])
             self.rect = Rectangle(size=self.size,
                                   pos=self.pos)
+        self.bind(pos=self.update_rect,
+                  size=self.update_rect)
+
+    def update_rect(self, *args):
+        self.rect.pos = self.pos
+        self.rect.size = self.size
 
     @staticmethod
     def get_describing_string() -> str:
@@ -61,7 +69,7 @@ class Grid:
     def __init__(self, size: Tuple[int, int] = (1, 1)):
         self.__size = size
         self.__ph = PanelHandler(
-            background_color=(1, 1, 1, 1)
+            background_color=kivy_utils.get_color_from_hex("#828282ff")
         )
         # creating a matrix of size[0] rows and size[1] columns
         self.__matrix = [[""] * self.__size[1]] * self.__size[0]
@@ -75,7 +83,7 @@ class Grid:
 
 
 
-class SimulationSection(GridLayout):
+class SimulationSection(BoxLayout):
     __grid: Grid
     __simulation: Simulation
     __sim_size: Tuple[int, int]
@@ -87,6 +95,7 @@ class SimulationSection(GridLayout):
                  ul_corner: Tuple[int, int] = (0, 0),
                  **kwargs):
         super(SimulationSection, self).__init__(**kwargs)
+        self.orientation = "vertical"
         self.__simulation = simulation
         self.__sim_size = sim_size
         self.__ul_corner = ul_corner
