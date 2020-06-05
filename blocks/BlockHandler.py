@@ -17,7 +17,12 @@ class BlockHandler:
         return {**self.__logical_blocks, **self.__state_blocks}
 
     def get_positionable_blocks(self) -> Dict[str, BasicBlock]:
-        pass
+        result: Dict[str, BasicBlock] = {}
+        block: BasicBlock
+        for name, block in self.get_all_blocks().items():
+            if block.is_positionable():
+                result[name] = block
+        return result
 
     def get_logical_blocks(self) -> Dict[str, BasicBlock]:
         return self.__logical_blocks

@@ -37,6 +37,9 @@ class BasicBlock:
             raise Exception(ERROR_POSITION_NOT_SET % self.__name)
         return self.__position
 
+    def is_positionable(self) -> bool:
+        return self.__position_is_set
+
     def get_output_values(self) -> Dict[str, str]:
         result: Dict[str, str] = {}
         pin: BaseValue
