@@ -117,6 +117,24 @@ class BorderCell(BoxLayout):
         return area_widget, up, down
 
 
+class UpBorderCell(BorderCell):
+    def __init__(self, **kwargs):
+        super(UpBorderCell, self).__init__(
+            luc=BORDER_COLOR,
+            ruc=BORDER_COLOR,
+            ud_size_hint=(BORDER_THICKNESS, 1),
+            **kwargs)
+
+
+class DownBorderCell(BorderCell):
+    def __init__(self, **kwargs):
+        super(DownBorderCell, self).__init__(
+            ldc=BORDER_COLOR,
+            rdc=BORDER_COLOR,
+            ud_size_hint=(1, BORDER_THICKNESS),
+            **kwargs)
+
+
 class LeftBorderCell(BorderCell):
     def __init__(self, **kwargs):
         super(LeftBorderCell, self).__init__(
@@ -142,6 +160,30 @@ class LeftDownBorderCell(LeftBorderCell):
             **kwargs)
 
 
+class RightBorderCell(BorderCell):
+    def __init__(self, **kwargs):
+        super(RightBorderCell, self).__init__(
+            ruc=BORDER_COLOR,
+            rdc=BORDER_COLOR,
+            lr_size_hint=(1, BORDER_THICKNESS),
+            **kwargs)
+
+
+class RightUpBorderCell(RightBorderCell):
+    def __init__(self, **kwargs):
+        super(RightUpBorderCell, self).__init__(
+            luc=BORDER_COLOR,
+            ud_size_hint=(BORDER_THICKNESS, 1),
+            **kwargs)
+
+
+class RightDownBorderCell(RightBorderCell):
+    def __init__(self, **kwargs):
+        super(RightDownBorderCell, self).__init__(
+            ldc=BORDER_COLOR,
+            ud_size_hint=(1, BORDER_THICKNESS),
+            **kwargs)
+
 class PanelHandler:
     background_color: ColorType
     __code_dict: Dict[str, Callable[[], Widget]]
@@ -154,7 +196,12 @@ class PanelHandler:
             CODE.EMPTY: self.get_empty_cell,
             CODE.BORDER_LEFT: self.get_left_border_cell,
             CODE.BORDER_LEFT_UP: self.get_left_up_border_cell,
-            CODE.BORDER_LEFT_DOWN: self.get_left_down_border_cell
+            CODE.BORDER_LEFT_DOWN: self.get_left_down_border_cell,
+            CODE.BORDER_RIGHT: self.get_right_border_cell,
+            CODE.BORDER_RIGHT_UP: self.get_right_up_border_cell,
+            CODE.BORDER_RIGHT_DOWN: self.get_right_down_border_cell,
+            CODE.BORDER_UP: self.get_up_border_cell,
+            CODE.BORDER_DOWN: self.get_down_border_cell
         }
 
     def get_empty_cell(self) -> EmptyCell:
@@ -170,6 +217,21 @@ class PanelHandler:
 
     def get_left_down_border_cell(self) -> BorderCell:
         return LeftDownBorderCell()
+
+    def get_right_border_cell(self) -> BorderCell:
+        return RightBorderCell()
+
+    def get_right_up_border_cell(self) -> BorderCell:
+        return RightUpBorderCell()
+
+    def get_right_down_border_cell(self) -> BorderCell:
+        return RightDownBorderCell()
+
+    def get_up_border_cell(self) -> BorderCell:
+        return UpBorderCell()
+
+    def get_down_border_cell(self) -> BorderCell:
+        return DownBorderCell()
 
     def get_cell(self, code: str) -> Widget:
         return self.__code_dict[code]()
