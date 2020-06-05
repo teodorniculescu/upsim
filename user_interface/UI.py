@@ -1,16 +1,17 @@
 import kivy
 kivy.require("1.11.1")
+
+from user_interface.PanelCells import PanelHandler, EmptyCell
+from Simulation import Simulation
+from typing import Tuple, List, Dict
+from blocks.BasicBlock import BasicBlock
+
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 import kivy.utils as kivy_utils
-
-from user_interface.PanelCells import PanelHandler, EmptyCell
-from Simulation import Simulation
-from typing import Tuple, List, Dict
-from blocks.BasicBlock import BasicBlock
 
 
 class Grid:
@@ -26,14 +27,17 @@ class Grid:
 
     def __init__(self, size: Tuple[int, int] = (1, 1)):
         self.__size = size
-        self.__ph = PanelHandler(
-            background_color=kivy_utils.get_color_from_hex("#828282ff")
-        )
+        self.__ph = PanelHandler()
         # creating a matrix of size[0] rows and size[1] columns
-        self.__matrix = [[""] * self.__size[1]] * self.__size[0]
+        self.__matrix = []
+        for row_index in range(self.__size[0]):
+            row: List[str] = []
+            for col_index in range(self.__size[1]):
+                row.append("")
+            self.__matrix.append(row)
 
     def add_blocks(self, blocks: Dict[str, BasicBlock]) -> None:
-        pass
+        self.__matrix[0][0] = "b_l"
 
     def get_cell_widget(self, index: Tuple[int, int]) -> EmptyCell:
         str_code: str = self.__matrix[index[0]][index[1]]

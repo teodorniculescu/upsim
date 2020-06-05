@@ -40,6 +40,8 @@ ERROR_REQUIRE_AT_LEAST_NUM_PINS: [str] = \
     "17:Must have at least \"%\" %s pins. Received instead \"%d\" pins."
 ERROR_POSITION_NOT_SET: [str] = \
     "18:The block position for \"%s\" is not set."
+ERROR_INVALID_BORDER_THICKNESS: [str] = \
+    "19:The border thickness if \"%d\". The value must be greater than 0 and less or equal to 1"
 
 
 class FileSyntaxErrorListener(ErrorListener):
