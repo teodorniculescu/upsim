@@ -1,9 +1,5 @@
 import kivy
 kivy.require("1.11.1")
-from Simulation import Simulation
-from typing import Tuple, List, Dict
-from blocks.BasicBlock import BasicBlock
-
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
@@ -12,6 +8,9 @@ from kivy.uix.button import Button
 import kivy.utils as kivy_utils
 
 from user_interface.PanelCells import PanelHandler, EmptyCell
+from Simulation import Simulation
+from typing import Tuple, List, Dict
+from blocks.BasicBlock import BasicBlock
 
 
 class Grid:
@@ -76,7 +75,6 @@ class SimulationSection(BoxLayout):
                 )
                 row_widget.add_widget(cell_widget)
             self.add_widget(row_widget)
-
 
 
 class ButtonBar(BoxLayout):
@@ -163,6 +161,5 @@ class UI(App):
         self.__simulation = simulation
 
     def build(self):
-        simui = SimulationUI(simulation=self.__simulation)
-        return simui
-
+        sim_ui = SimulationUI(simulation=self.__simulation)
+        return sim_ui
