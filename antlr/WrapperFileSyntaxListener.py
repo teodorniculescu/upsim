@@ -4,6 +4,7 @@ from gen.FileSyntaxParser import FileSyntaxParser
 from Simulation import Simulation
 from blocks.store.LogicGates import *
 from antlr4.Token import *
+from user_interface.UI import UI
 
 
 class WrapperFileSyntaxListener(FileSyntaxListener):
@@ -256,4 +257,13 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                 NOT(block_name, [input_name], [output_name]))
         except Exception as e:
             self.__set_error(ctx, e)
+
+    def exitDisplay(self, ctx:FileSyntaxParser.DisplayContext):
+        UI().run()
+
+    def exitBlock_position(self, ctx:FileSyntaxParser.Block_positionContext):
+        index_line = int(str(ctx.UINT(0)))
+        index_column = int(str(ctx.UINT(1)))
+        print(index_line)
+        print(index_column)
 

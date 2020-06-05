@@ -4,8 +4,10 @@ grammar FileSyntax;
     Parser Rules
 */
 
-filesyntax : ((draw | command | investigate) ';')* EOF;
+filesyntax : ((screen | command | investigate) ';')* EOF;
 
+screen : draw | display;
+display : DISPLAY_KWD;
 draw : DRAW_KWD draw_blocks;
 
 draw_blocks : BLOCK_KWD draw_one_block;
@@ -142,6 +144,7 @@ INITIAL_CONDITIONS_KWD : 'INITIAL CONDITION' | 'INITIAL CONDITIONS' | 'INIT COND
 INSERT_KWD : 'INSERT';
 BETWEEN_KWD : 'BETWEEN' | 'BTWN';
 RUN_KWD : 'RUN';
+DISPLAY_KWD : 'DISPLAY';
 
 VERBOSE_PRM : '-' ('VERBOSE' | 'V');
 

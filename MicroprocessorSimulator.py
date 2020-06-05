@@ -1,5 +1,4 @@
 from unit_test.UnitTestUPSIM import *
-from user_interface.UI import UI
 import sys
 
 
@@ -11,7 +10,6 @@ def check_python_version():
 def main():
     check_python_version()
     parse_test()
-    #UI().run()
 
 def parse_test():
     # used for updating and checking test results
