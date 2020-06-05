@@ -21,6 +21,18 @@ BORDER_COLOR: ColorType = GULF_STREAM
 BORDER_THICKNESS: int = 0.05
 
 
+class CODE:
+    EMPTY: str = ""
+    BORDER_LEFT: str = "b_l"
+    BORDER_RIGHT: str = "b_r"
+    BORDER_UP: str = "b_u"
+    BORDER_DOWN: str = "b_d"
+    BORDER_LEFT_UP: str = "b_lu"
+    BORDER_LEFT_DOWN: str = "b_ld"
+    BORDER_RIGHT_UP: str = "b_ru"
+    BORDER_RIGHT_DOWN: str = "b_rd"
+
+
 class ColoredWidget(Widget):
     background_rectangle: Rectangle
     bg_col: ColorType
@@ -69,22 +81,37 @@ class BorderCell(BoxLayout):
                  ldc: ColorType = BACKGROUND_COLOR,
                  ruc: ColorType = BACKGROUND_COLOR,
                  rdc: ColorType = BACKGROUND_COLOR,
-                 lr_size_hint: Tuple[int, int] = (1, 1),
-                 ud_size_hint: Tuple[int, int] = (1, 1),
+                 lr_size_hint: Tuple[float, float] = (1, 1),
+                 ud_size_hint: Tuple[float, float] = (1, 1),
                  **kwargs):
         super(BorderCell, self).__init__(**kwargs)
         self.orientation = "horizontal"
-        (self.l_aw, self.lu_aw, self.ld_aw) = self.__get_area(uc=luc, dc=ldc)
-        (self.r_aw, self.ru_aw, self.rd_aw) = self.__get_area(uc=ruc, dc=rdc)
+        (self.l_aw, self.lu_aw, self.ld_aw) = self.__get_area(
+            uc=luc, dc=ldc, width_sh=lr_size_hint[0], ud_sh=ud_size_hint)
+        (self.r_aw, self.ru_aw, self.rd_aw) = self.__get_area(
+            uc=ruc, dc=rdc, width_sh=lr_size_hint[1], ud_sh=ud_size_hint)
         self.add_widget(self.l_aw)
         self.add_widget(self.r_aw)
-        self.size_hint = lr_size_hint
 
     @staticmethod
-    def __get_area(uc: ColorType, dc:ColorType) -> Tuple[BoxLayout, ColoredWidget, ColoredWidget]:
-        area_widget: BoxLayout = BoxLayout(orientation="vertical")
-        up = ColoredWidget(bg_col=uc)
-        down = ColoredWidget(bg_col=dc)
+    def __get_area(
+            uc: ColorType,
+            dc: ColorType,
+            width_sh: float,
+            ud_sh: Tuple[float, float]
+    ) -> Tuple[BoxLayout, ColoredWidget, ColoredWidget]:
+        area_widget: BoxLayout = BoxLayout(
+            orientation="vertical",
+            size_hint=(width_sh, 1)
+        )
+        up = ColoredWidget(
+            bg_col=uc,
+            size_hint=(1, ud_sh[0])
+        )
+        down = ColoredWidget(
+            bg_col=dc,
+            size_hint = (1, ud_sh[1])
+        )
         area_widget.add_widget(up)
         area_widget.add_widget(down)
         return area_widget, up, down
@@ -99,6 +126,22 @@ class LeftBorderCell(BorderCell):
             **kwargs)
 
 
+class LeftUpBorderCell(LeftBorderCell):
+    def __init__(self, **kwargs):
+        super(LeftUpBorderCell, self).__init__(
+            ruc=BORDER_COLOR,
+            ud_size_hint=(BORDER_THICKNESS, 1),
+            **kwargs)
+
+
+class LeftDownBorderCell(LeftBorderCell):
+    def __init__(self, **kwargs):
+        super(LeftDownBorderCell, self).__init__(
+            rdc=BORDER_COLOR,
+            ud_size_hint=(1, BORDER_THICKNESS),
+            **kwargs)
+
+
 class PanelHandler:
     background_color: ColorType
     __code_dict: Dict[str, Callable[[], Widget]]
@@ -107,10 +150,11 @@ class PanelHandler:
                  background_color: ColorType = BACKGROUND_COLOR
                  ):
         self.background_color = background_color
-        self.__code_dict \
-            = {
-            "": self.get_empty_cell,
-            "b_l": self.get_left_border_cell
+        self.__code_dict = {
+            CODE.EMPTY: self.get_empty_cell,
+            CODE.BORDER_LEFT: self.get_left_border_cell,
+            CODE.BORDER_LEFT_UP: self.get_left_up_border_cell,
+            CODE.BORDER_LEFT_DOWN: self.get_left_down_border_cell
         }
 
     def get_empty_cell(self) -> EmptyCell:
@@ -120,6 +164,12 @@ class PanelHandler:
 
     def get_left_border_cell(self) -> BorderCell:
         return LeftBorderCell()
+
+    def get_left_up_border_cell(self) -> BorderCell:
+        return LeftUpBorderCell()
+
+    def get_left_down_border_cell(self) -> BorderCell:
+        return LeftDownBorderCell()
 
     def get_cell(self, code: str) -> Widget:
         return self.__code_dict[code]()
