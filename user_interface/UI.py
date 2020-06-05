@@ -1,7 +1,7 @@
 import kivy
 kivy.require("1.11.1")
 
-from user_interface.PanelCells import PanelHandler, EmptyCell
+from user_interface.PanelCells import PanelHandler
 from Simulation import Simulation
 from typing import Tuple, List, Dict
 from blocks.BasicBlock import BasicBlock
@@ -37,9 +37,9 @@ class Grid:
             self.__matrix.append(row)
 
     def add_blocks(self, blocks: Dict[str, BasicBlock]) -> None:
-        self.__matrix[0][0] = "b_l"
+        self.__matrix[1][0] = "b_l"
 
-    def get_cell_widget(self, index: Tuple[int, int]) -> EmptyCell:
+    def get_cell_widget(self, index: Tuple[int, int]) -> Widget:
         str_code: str = self.__matrix[index[0]][index[1]]
         return self.__ph.get_cell(str_code)
 
@@ -74,7 +74,7 @@ class SimulationSection(BoxLayout):
                 orientation="horizontal"
             )
             for column_index in range(self.__sim_size[1]):
-                cell_widget: EmptyCell = self.__grid.get_cell_widget(
+                cell_widget: Widget = self.__grid.get_cell_widget(
                     index=(row_index, column_index)
                 )
                 row_widget.add_widget(cell_widget)

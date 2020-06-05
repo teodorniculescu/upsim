@@ -42,6 +42,8 @@ ERROR_POSITION_NOT_SET: [str] = \
     "18:The block position for \"%s\" is not set."
 ERROR_INVALID_BORDER_THICKNESS: [str] = \
     "19:The border thickness if \"%d\". The value must be greater than 0 and less or equal to 1"
+ERROR_INVALID_BORDER_TYPE: [str] = \
+    "20:Border type \"%s\" does not exist."
 
 
 class FileSyntaxErrorListener(ErrorListener):
