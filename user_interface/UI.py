@@ -22,6 +22,11 @@ class EmptyCell(Widget):
             self.rect = Rectangle(size=self.size,
                                   pos=self.pos)
 
+    @staticmethod
+    def get_describing_string() -> str:
+        # This is used for identifying the type of cell in the matrix
+        return ""
+
 
 class PanelHandler:
     background_color: Tuple[int, int, int, int]
@@ -37,7 +42,13 @@ class PanelHandler:
 
 class Grid:
     __size: Tuple[int, int]
-    __matrix: List[List]
+    # This matrix stores strings which describe the type of block
+    # that is stored in that position.
+    # Strings are used instead of EmptyCells because EmptyCells update
+    # depending on their position in the simulation grid, which means
+    # they cause problems when when they are not used.
+    # Also, strings take up less memory than emtpy cells.
+    __matrix: List[List[str]]
 
     def __init__(self, size: Tuple[int, int] = (1, 1)):
         self.__size = size
@@ -45,7 +56,7 @@ class Grid:
             background_color=(1, 1, 1, 1)
         )
         # creating a matrix of size[0] lines and size[1] columns
-        self.__matrix = [[None] * self.__size[1]] * self.__size[0]
+        self.__matrix = [[""] * self.__size[1]] * self.__size[0]
 
     def add_blocks(self, blocks: Dict[str, BasicBlock]) -> None:
         pass
@@ -69,6 +80,7 @@ class SimulationSection(GridLayout):
     def update_panel(self) -> None:
         print("panel yo")
         print(self.__simulation)
+        # Todo this wonderful thing
 
 
 class ButtonBar(BoxLayout):
