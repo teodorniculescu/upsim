@@ -1,24 +1,11 @@
-from kivy.graphics import Color, Rectangle
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from typing import Tuple, Dict, Callable, NewType
 from kivy.uix.label import Label
-import kivy.utils as kivy_utils
 from antlr.FileSyntaxErrorListener import \
     ERROR_INVALID_BORDER_THICKNESS, \
     ERROR_INVALID_BORDER_TYPE
-
-
-ColorType = NewType("ColorType", Tuple[int, int, int, int])
-
-BLACKCURRANT: ColorType = kivy_utils.get_color_from_hex("#342b38ff")
-GULF_STREAM: ColorType = kivy_utils.get_color_from_hex("#80BDABff")
-MADANG: ColorType = kivy_utils.get_color_from_hex("#bbf1c8ff")
-MONA_LISA: ColorType = kivy_utils.get_color_from_hex("#FF9595ff")
-
-BACKGROUND_COLOR: ColorType = BLACKCURRANT
-BORDER_COLOR: ColorType = GULF_STREAM
-BORDER_THICKNESS: int = 0.05
+from user_interface.Color import ColorType, BORDER_THICKNESS, BORDER_COLOR, BACKGROUND_COLOR, ColoredWidget
 
 
 class CODE:
@@ -33,33 +20,7 @@ class CODE:
     BORDER_RIGHT_DOWN: str = "b_rd"
 
 
-class ColoredWidget(Widget):
-    background_rectangle: Rectangle
-    bg_col: ColorType
-    new_bg_col: bool
-
-    def __init__(self,
-                 bg_col: ColorType = BACKGROUND_COLOR,
-                 **kwargs):
-        super(ColoredWidget, self).__init__(**kwargs)
-        self.orientation = "horizontal"
-        self.bg_col = bg_col
-        self.new_bg_col = False
-        with self.canvas.before:
-            Color(self.bg_col[0], self.bg_col[1], self.bg_col[2], self.bg_col[3])
-            self.background_rectangle = Rectangle(size=self.size,
-                                                  pos=self.pos)
-        self.bind(pos=self.update_background_rectangle,
-                  size=self.update_background_rectangle)
-
-    def update_background_rectangle(self, *args):
-        self.background_rectangle.pos = self.pos
-        self.background_rectangle.size = self.size
-
-
 class EmptyCell(BoxLayout):
-    background_rectangle: Rectangle
-
     def __init__(self,
                  bg_col: ColorType = BACKGROUND_COLOR,
                  **kwargs):
@@ -183,6 +144,7 @@ class RightDownBorderCell(RightBorderCell):
             ldc=BORDER_COLOR,
             ud_size_hint=(1, BORDER_THICKNESS),
             **kwargs)
+
 
 class PanelHandler:
     background_color: ColorType

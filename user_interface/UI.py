@@ -37,6 +37,7 @@ class Grid:
             self.__matrix.append(row)
 
     def add_blocks(self, blocks: Dict[str, BasicBlock]) -> None:
+        print(blocks)
         self.__matrix[0][0] = CODE.BORDER_LEFT_UP
         self.__matrix[1][0] = CODE.BORDER_LEFT
         self.__matrix[2][0] = CODE.BORDER_LEFT_DOWN
