@@ -6,6 +6,7 @@ from antlr.FileSyntaxErrorListener import \
     ERROR_INVALID_BORDER_THICKNESS, \
     ERROR_INVALID_BORDER_TYPE
 from user_interface.Color import ColorType, BORDER_THICKNESS, BORDER_COLOR, BACKGROUND_COLOR, ColoredWidget
+from user_interface.EmptyCell import EmptyCell
 
 
 class CODE:
@@ -18,14 +19,6 @@ class CODE:
     BORDER_LEFT_DOWN: str = "b_ld"
     BORDER_RIGHT_UP: str = "b_ru"
     BORDER_RIGHT_DOWN: str = "b_rd"
-
-
-class EmptyCell(BoxLayout):
-    def __init__(self,
-                 bg_col: ColorType = BACKGROUND_COLOR,
-                 **kwargs):
-        super(EmptyCell, self).__init__(**kwargs)
-        self.add_widget(ColoredWidget())
 
 
 class BorderCell(BoxLayout):
