@@ -1,10 +1,5 @@
 from kivy.uix.widget import Widget
-from typing import Tuple, Dict, Callable, NewType
-from kivy.uix.label import Label
-from antlr.FileSyntaxErrorListener import \
-    ERROR_INVALID_BORDER_THICKNESS, \
-    ERROR_INVALID_BORDER_TYPE
-from user_interface.Color import ColorType, BORDER_THICKNESS, BORDER_COLOR, BACKGROUND_COLOR, ColoredWidget
+from typing import Dict, Callable
 from user_interface.EmptyCell import EmptyCell
 from user_interface.BorderCell import *
 
