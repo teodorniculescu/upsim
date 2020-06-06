@@ -32,7 +32,7 @@ RUN;
 SHOW RUN (s.val, i0.val, i1.val, result.val);
 
 DRAW BLOCKS
-    s 1 : 5;
+    s 2 : 1;
 
 DISPLAY;
 

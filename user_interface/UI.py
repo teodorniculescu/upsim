@@ -40,8 +40,12 @@ class Grid:
             matrix: List[List[str]],
             position: Tuple[int, int]
     ) -> None:
-        pass
-        # TODO
+        num_rows = len(matrix)
+        num_cols = len(matrix[0])
+        for row_index in range(num_rows):
+            for col_index in range(num_cols):
+                self.__matrix[position[0] + row_index][position[1] + col_index] = \
+                    matrix[row_index][col_index]
 
     def add_blocks(self, blocks_dict: Dict[str, BasicBlock]) -> None:
         for block in blocks_dict.values():

@@ -44,9 +44,9 @@ class BasicBlock:
         result[0][1] = CODE.BORDER_LEFT_UP
         result[0][2] = CODE.BORDER_UP
         result[0][3] = CODE.BORDER_RIGHT_UP
-        result[num_rows-1][1] = CODE.BORDER_LEFT_UP
-        result[num_rows-1][2] = CODE.BORDER_UP
-        result[num_rows-1][3] = CODE.BORDER_RIGHT_UP
+        result[num_rows-1][1] = CODE.BORDER_LEFT_DOWN
+        result[num_rows-1][2] = CODE.BORDER_DOWN
+        result[num_rows-1][3] = CODE.BORDER_RIGHT_DOWN
         return result
 
     def set_position(self, position: Tuple[int, int]) -> None:
