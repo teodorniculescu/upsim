@@ -30,6 +30,16 @@ class BasicBlock:
         self.__name = name
         self.__position_is_set = False
 
+    def get_position_pins(self, cell_type: str, num_rows: int, max: int) -> List[str]:
+        result: List[str] = [""] * num_rows
+        row_counter = 1
+        max_counter = 0
+        while row_counter < num_rows - 1 and max_counter < max:
+            result[row_counter] = cell_type
+            row_counter += 2
+            max_counter += 1
+        return result
+
     def get_gui_grid(self) -> List[List[str]]:
         result: List[List[str]] = []
         height_pins = max(len(self.__input_pins), len(self.__output_pins))
@@ -47,6 +57,19 @@ class BasicBlock:
         result[num_rows-1][1] = CODE.BORDER_LEFT_DOWN
         result[num_rows-1][2] = CODE.BORDER_DOWN
         result[num_rows-1][3] = CODE.BORDER_RIGHT_DOWN
+        # configure first column (input pins)
+        row_index:int = 1
+        for pin in self.__output_pins.values():
+            result[row_index][0] = CODE.WIRE_RIGHT
+            row_index += 2
+        # configure last column (output pins)
+        row_index:int = 1
+        for pin in self.__output_pins.values():
+            result[row_index][4] = CODE.WIRE_LEFT
+            row_index += 2
+
+
+
         return result
 
     def set_position(self, position: Tuple[int, int]) -> None:
