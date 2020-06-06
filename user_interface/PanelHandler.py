@@ -40,6 +40,13 @@ class PanelHandler:
         CODE.BORDER_DOWN: DownBorderCell,
 
         CODE.WIRE_RIGHT: WireCell.Right,
+        CODE.WIRE_RIGHT_DOWN: WireCell.RightDown,
+        CODE.WIRE_RIGHT_UP: WireCell.RightUp,
+        CODE.WIRE_LEFT: WireCell.Left,
+        CODE.WIRE_LEFT_DOWN: WireCell.LeftDown,
+        CODE.WIRE_LEFT_UP: WireCell.LeftUp,
+        CODE.WIRE_LEFT_RIGHT: WireCell.LeftRight,
+        CODE.WIRE_UP_DOWN: WireCell.UpDown,
 
         CODE.EMPTY: EmptyCell
     }

@@ -48,7 +48,14 @@ class Grid:
         self.__matrix[1][1] = CODE.BORDER_LEFT
         self.__matrix[1][3] = CODE.BORDER_RIGHT
 
+        self.__matrix[1][4] = CODE.WIRE_LEFT
         self.__matrix[1][0] = CODE.WIRE_RIGHT
+        self.__matrix[2][0] = CODE.WIRE_RIGHT_DOWN
+        self.__matrix[3][0] = CODE.WIRE_UP_DOWN
+        self.__matrix[4][0] = CODE.WIRE_RIGHT_UP
+        self.__matrix[4][1] = CODE.WIRE_LEFT_RIGHT
+        self.__matrix[4][2] = CODE.WIRE_LEFT_DOWN
+        self.__matrix[5][2] = CODE.WIRE_LEFT_UP
 
     def get_cell_widget(self, index: Tuple[int, int]) -> Widget:
         str_code: str = self.__matrix[index[0]][index[1]]

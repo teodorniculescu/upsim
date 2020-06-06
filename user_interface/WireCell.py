@@ -49,3 +49,72 @@ class WireCell:
                 ]
             super(WireCell.Right, self).__init__(matrix_colors=matrix_colors, **kwargs)
 
+    class RightUp(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [BACKGROUND_COLOR, WIRE_COLOR, BACKGROUND_COLOR],
+                    [BACKGROUND_COLOR, WIRE_COLOR, WIRE_COLOR],
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR]
+                ]
+            super(WireCell.RightUp, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+    class RightDown(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR],
+                    [BACKGROUND_COLOR, WIRE_COLOR, WIRE_COLOR],
+                    [BACKGROUND_COLOR, WIRE_COLOR, BACKGROUND_COLOR]
+                ]
+            super(WireCell.RightDown, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+    class Left(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR],
+                    [WIRE_COLOR, WIRE_COLOR, BACKGROUND_COLOR],
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR]
+                ]
+            super(WireCell.Left, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+    class LeftUp(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [BACKGROUND_COLOR, WIRE_COLOR, BACKGROUND_COLOR],
+                    [WIRE_COLOR, WIRE_COLOR, BACKGROUND_COLOR],
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR]
+                ]
+            super(WireCell.LeftUp, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+    class LeftDown(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR],
+                    [WIRE_COLOR, WIRE_COLOR, BACKGROUND_COLOR],
+                    [BACKGROUND_COLOR, WIRE_COLOR, BACKGROUND_COLOR]
+                ]
+            super(WireCell.LeftDown, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+    class LeftRight(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR],
+                    [WIRE_COLOR, WIRE_COLOR, WIRE_COLOR],
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR]
+                ]
+            super(WireCell.LeftRight, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+    class UpDown(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [BACKGROUND_COLOR, WIRE_COLOR, BACKGROUND_COLOR],
+                    [BACKGROUND_COLOR, WIRE_COLOR, BACKGROUND_COLOR],
+                    [BACKGROUND_COLOR, WIRE_COLOR, BACKGROUND_COLOR]
+                ]
+            super(WireCell.UpDown, self).__init__(matrix_colors=matrix_colors, **kwargs)
