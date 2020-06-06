@@ -1,7 +1,7 @@
 import kivy
 kivy.require("1.11.1")
 
-from user_interface.PanelCells import PanelHandler, CODE
+from user_interface.PanelHandler import PanelHandler, CODE
 from Simulation import Simulation
 from typing import Tuple, List, Dict
 from blocks.BasicBlock import BasicBlock

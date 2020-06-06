@@ -52,6 +52,7 @@ def get_right_down_border_cell() -> BorderCell:
 def get_up_border_cell() -> BorderCell:
     return UpBorderCell()
 
+
 def get_down_border_cell() -> BorderCell:
     return DownBorderCell()
 
@@ -70,10 +71,8 @@ class PanelHandler:
         CODE.BORDER_DOWN: get_down_border_cell
     }
 
-    def __init__(self,
-                 background_color: ColorType = BACKGROUND_COLOR
-                 ):
-        self.background_color = background_color
+    def __init__(self):
+        pass
 
     def get_cell(self, code: str) -> Widget:
         return self.__code_dict[code]()
