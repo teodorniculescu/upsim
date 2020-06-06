@@ -7,13 +7,13 @@ WIRE_THICKNESS = 0.05
 WIRE_COLOR = MADANG
 
 
-class WireCell(BoxLayout):
+class BaseWireCell(BoxLayout):
     class Row(BoxLayout):
         def __init__(self,
                      column_colors: List[ColorType],
                      column_width_hint: List[float],
                      **kwargs):
-            super(WireCell.Row, self).__init__(**kwargs)
+            super(BaseWireCell.Row, self).__init__(**kwargs)
             self.orientation = "horizontal"
             for column_index in range(3):
                 widget = ColoredWidget(
@@ -25,12 +25,12 @@ class WireCell(BoxLayout):
     def __init__(self,
                  matrix_colors: List[List[ColorType]],
                  **kwargs):
-        super(WireCell, self).__init__(**kwargs)
+        super(BaseWireCell, self).__init__(**kwargs)
         self.orientation = "vertical"
         rest_thickness: float = (1 - WIRE_THICKNESS) / 2
         size_hints: List[float] = [rest_thickness, WIRE_THICKNESS, rest_thickness]
         for row_index in range(3):
-            widget = WireCell.Row(
+            widget = BaseWireCell.Row(
                 column_colors=matrix_colors[row_index],
                 column_width_hint=size_hints,
                 size_hint=(1, size_hints[row_index])
@@ -38,13 +38,14 @@ class WireCell(BoxLayout):
             self.add_widget(widget)
 
 
-class RightWireCell(WireCell):
-    def __init__(self, **kwargs):
-        matrix_colors: List[List[ColorType]] = \
-            [
-                [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR],
-                [WIRE_COLOR, WIRE_COLOR, BACKGROUND_COLOR],
-                [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR]
-            ]
-        super(RightWireCell, self).__init__(matrix_colors=matrix_colors, **kwargs)
+class WireCell:
+    class Right(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR],
+                    [BACKGROUND_COLOR, WIRE_COLOR, WIRE_COLOR],
+                    [BACKGROUND_COLOR, BACKGROUND_COLOR, BACKGROUND_COLOR]
+                ]
+            super(WireCell.Right, self).__init__(matrix_colors=matrix_colors, **kwargs)
 

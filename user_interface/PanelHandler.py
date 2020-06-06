@@ -2,7 +2,7 @@ from kivy.uix.widget import Widget
 from typing import Dict, Callable
 from user_interface.EmptyCell import EmptyCell
 from user_interface.BorderCell import *
-from user_interface.WireCell import *
+from user_interface.WireCell import WireCell
 
 
 class CODE:
@@ -30,7 +30,6 @@ class CODE:
 class PanelHandler:
     background_color: ColorType
     __code_dict: Dict[str, Callable[[], Widget]] = {
-        CODE.EMPTY: EmptyCell,
         CODE.BORDER_LEFT: LeftBorderCell,
         CODE.BORDER_LEFT_UP: LeftUpBorderCell,
         CODE.BORDER_LEFT_DOWN: LeftDownBorderCell,
@@ -39,7 +38,10 @@ class PanelHandler:
         CODE.BORDER_RIGHT_DOWN: RightDownBorderCell,
         CODE.BORDER_UP: UpBorderCell,
         CODE.BORDER_DOWN: DownBorderCell,
-        CODE.WIRE_RIGHT: RightWireCell
+
+        CODE.WIRE_RIGHT: WireCell.Right,
+
+        CODE.EMPTY: EmptyCell
     }
 
     def __init__(self):
