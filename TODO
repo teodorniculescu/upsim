@@ -134,3 +134,7 @@ Implement RS, JK, D, T flip flops
  - LEFT-DOWN
  - RIGHT-UP
  - RIGHT-DOWN
+
+#30 TODO - BorderCell and WireCell are more or less the same type of class
+which have a grid of a number of elements, different size_hints and colors
+among them

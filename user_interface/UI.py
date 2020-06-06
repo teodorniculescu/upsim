@@ -37,29 +37,18 @@ class Grid:
 
     def add_blocks(self, blocks: Dict[str, BasicBlock]) -> None:
         print(blocks)
-        self.__matrix[0][0] = CODE.BORDER_LEFT_UP
-        self.__matrix[1][0] = CODE.BORDER_LEFT
-        self.__matrix[2][0] = CODE.BORDER_LEFT_DOWN
-        self.__matrix[0][2] = CODE.BORDER_RIGHT_UP
-        self.__matrix[1][2] = CODE.BORDER_RIGHT
-        self.__matrix[2][2] = CODE.BORDER_RIGHT_DOWN
-        self.__matrix[0][1] = CODE.BORDER_UP
-        self.__matrix[2][1] = CODE.BORDER_DOWN
-        self.__matrix[0][4] = CODE.BORDER_LEFT_UP
-        self.__matrix[1][4] = CODE.BORDER_LEFT
-        self.__matrix[2][4] = CODE.BORDER_LEFT_DOWN
-        self.__matrix[0][5] = CODE.BORDER_LEFT_UP
-        self.__matrix[1][5] = CODE.BORDER_LEFT
-        self.__matrix[2][5] = CODE.BORDER_LEFT_DOWN
-        self.__matrix[0][6] = CODE.BORDER_LEFT_UP
-        self.__matrix[1][6] = CODE.BORDER_LEFT
-        self.__matrix[2][6] = CODE.BORDER_LEFT_DOWN
-        self.__matrix[0][7] = CODE.BORDER_LEFT_UP
-        self.__matrix[1][7] = CODE.BORDER_LEFT
-        self.__matrix[2][7] = CODE.BORDER_LEFT_DOWN
-        self.__matrix[0][8] = CODE.BORDER_LEFT_UP
-        self.__matrix[1][8] = CODE.BORDER_LEFT
-        self.__matrix[2][8] = CODE.BORDER_LEFT_DOWN
+        self.__matrix[0][1] = CODE.BORDER_LEFT_UP
+        self.__matrix[0][2] = CODE.BORDER_UP
+        self.__matrix[0][3] = CODE.BORDER_RIGHT_UP
+
+        self.__matrix[2][1] = CODE.BORDER_LEFT_DOWN
+        self.__matrix[2][2] = CODE.BORDER_DOWN
+        self.__matrix[2][3] = CODE.BORDER_RIGHT_DOWN
+
+        self.__matrix[1][1] = CODE.BORDER_LEFT
+        self.__matrix[1][3] = CODE.BORDER_RIGHT
+
+        self.__matrix[1][0] = CODE.WIRE_RIGHT
 
     def get_cell_widget(self, index: Tuple[int, int]) -> Widget:
         str_code: str = self.__matrix[index[0]][index[1]]

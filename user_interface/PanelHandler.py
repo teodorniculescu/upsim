@@ -2,10 +2,12 @@ from kivy.uix.widget import Widget
 from typing import Dict, Callable
 from user_interface.EmptyCell import EmptyCell
 from user_interface.BorderCell import *
+from user_interface.WireCell import *
 
 
 class CODE:
     EMPTY: str = ""
+
     BORDER_LEFT: str = "b_l"
     BORDER_RIGHT: str = "b_r"
     BORDER_UP: str = "b_u"
@@ -14,6 +16,15 @@ class CODE:
     BORDER_LEFT_DOWN: str = "b_ld"
     BORDER_RIGHT_UP: str = "b_ru"
     BORDER_RIGHT_DOWN: str = "b_rd"
+
+    WIRE_LEFT_RIGHT: str = "w_lr"
+    WIRE_UP_DOWN: str = "w_ud"
+    WIRE_LEFT: str = "w_l"
+    WIRE_LEFT_UP: str = "w_lu"
+    WIRE_LEFT_DOWN: str = "w_ld"
+    WIRE_RIGHT: str = "w_r"
+    WIRE_RIGHT_UP: str = "w_ru"
+    WIRE_RIGHT_DOWN: str = "w_rd"
 
 
 class PanelHandler:
@@ -27,7 +38,8 @@ class PanelHandler:
         CODE.BORDER_RIGHT_UP: RightUpBorderCell,
         CODE.BORDER_RIGHT_DOWN: RightDownBorderCell,
         CODE.BORDER_UP: UpBorderCell,
-        CODE.BORDER_DOWN: DownBorderCell
+        CODE.BORDER_DOWN: DownBorderCell,
+        CODE.WIRE_RIGHT: RightWireCell
     }
 
     def __init__(self):

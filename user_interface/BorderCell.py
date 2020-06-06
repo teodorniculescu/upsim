@@ -4,7 +4,6 @@ from user_interface.Color import ColoredWidget, ColorType, BACKGROUND_COLOR, BOR
 
 
 class BorderCell(BoxLayout):
-    border_type: str
     l_aw: BoxLayout
     r_aw: BoxLayout
     lu_aw: ColoredWidget
