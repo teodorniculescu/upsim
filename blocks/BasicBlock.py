@@ -4,6 +4,8 @@ from typing import Dict
 from database.DBController import Column, Row
 from typing import List, Tuple
 
+from user_interface.PanelHandler import CODE
+
 
 class BasicBlock:
     """
@@ -27,6 +29,25 @@ class BasicBlock:
         self.__io_pins = {}
         self.__name = name
         self.__position_is_set = False
+
+    def get_gui_grid(self) -> List[List[str]]:
+        result: List[List[str]] = []
+        height_pins = max(len(self.__input_pins), len(self.__output_pins))
+        num_rows = height_pins * 2 + 1
+        num_cols = 5
+        for row_index in range(num_rows):
+            row: List[str] = []
+            for col_index in range(num_cols):
+                row.append("")
+            result.append(row)
+        # configure the top and bottom rows
+        result[0][1] = CODE.BORDER_LEFT_UP
+        result[0][2] = CODE.BORDER_UP
+        result[0][3] = CODE.BORDER_RIGHT_UP
+        result[num_rows-1][1] = CODE.BORDER_LEFT_UP
+        result[num_rows-1][2] = CODE.BORDER_UP
+        result[num_rows-1][3] = CODE.BORDER_RIGHT_UP
+        return result
 
     def set_position(self, position: Tuple[int, int]) -> None:
         self.__position_is_set = True
