@@ -11,7 +11,6 @@ from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
-import kivy.utils as kivy_utils
 
 
 class Grid:
@@ -46,6 +45,21 @@ class Grid:
         self.__matrix[2][2] = CODE.BORDER_RIGHT_DOWN
         self.__matrix[0][1] = CODE.BORDER_UP
         self.__matrix[2][1] = CODE.BORDER_DOWN
+        self.__matrix[0][4] = CODE.BORDER_LEFT_UP
+        self.__matrix[1][4] = CODE.BORDER_LEFT
+        self.__matrix[2][4] = CODE.BORDER_LEFT_DOWN
+        self.__matrix[0][5] = CODE.BORDER_LEFT_UP
+        self.__matrix[1][5] = CODE.BORDER_LEFT
+        self.__matrix[2][5] = CODE.BORDER_LEFT_DOWN
+        self.__matrix[0][6] = CODE.BORDER_LEFT_UP
+        self.__matrix[1][6] = CODE.BORDER_LEFT
+        self.__matrix[2][6] = CODE.BORDER_LEFT_DOWN
+        self.__matrix[0][7] = CODE.BORDER_LEFT_UP
+        self.__matrix[1][7] = CODE.BORDER_LEFT
+        self.__matrix[2][7] = CODE.BORDER_LEFT_DOWN
+        self.__matrix[0][8] = CODE.BORDER_LEFT_UP
+        self.__matrix[1][8] = CODE.BORDER_LEFT
+        self.__matrix[2][8] = CODE.BORDER_LEFT_DOWN
 
     def get_cell_widget(self, index: Tuple[int, int]) -> Widget:
         str_code: str = self.__matrix[index[0]][index[1]]
