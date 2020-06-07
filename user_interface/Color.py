@@ -2,6 +2,7 @@ from typing import Tuple, NewType
 from kivy.graphics import Color, Rectangle
 import kivy.utils as kivy_utils
 from kivy.uix.widget import Widget
+from kivy.uix.relativelayout import RelativeLayout
 
 ColorType = NewType("ColorType", Tuple[int, int, int, int])
 

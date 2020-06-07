@@ -1,5 +1,5 @@
 from kivy.uix.widget import Widget
-from typing import Dict, Callable
+from typing import Dict, Callable, List, Any
 from user_interface.EmptyCell import EmptyCell
 from user_interface.BorderCell import *
 from user_interface.WireCell import WireCell
@@ -29,7 +29,7 @@ class CODE:
 
 class PanelHandler:
     background_color: ColorType
-    __code_dict: Dict[str, Callable[[], Widget]] = {
+    __code_dict: Dict[str, Any] = {
         CODE.BORDER_LEFT: LeftBorderCell,
         CODE.BORDER_LEFT_UP: LeftUpBorderCell,
         CODE.BORDER_LEFT_DOWN: LeftDownBorderCell,
@@ -54,7 +54,5 @@ class PanelHandler:
     def __init__(self):
         pass
 
-    def get_cell(self, code: str) -> Widget:
-        # TODO strip param of each received parameter
-        # TODO add calling param
-        return self.__code_dict[code]()
+    def get_cell(self, code: str, parameters: Dict[str, str]) -> Widget:
+        return self.__code_dict[code](parameters=parameters)

@@ -1,5 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
 from user_interface.Color import ColoredWidget, ColorType, BACKGROUND_COLOR, WIRE_COLOR
+from user_interface.DataStructure import ParamElem
 from typing import List
 
 
@@ -7,27 +9,35 @@ WIRE_THICKNESS: float = 0.05
 
 
 class BaseWireCell(BoxLayout):
+    rows: List[Widget]
+
     class Row(BoxLayout):
+        columns: List[Widget]
+
         def __init__(self,
                      column_colors: List[ColorType],
                      column_width_hint: List[float],
                      **kwargs):
             super(BaseWireCell.Row, self).__init__(**kwargs)
             self.orientation = "horizontal"
+            self.columns = []
             for column_index in range(3):
                 widget = ColoredWidget(
                     bg_col=column_colors[column_index],
                     size_hint=(column_width_hint[column_index], 1)
                 )
                 self.add_widget(widget)
+                self.columns.append(widget)
 
     def __init__(self,
                  matrix_colors: List[List[ColorType]],
+                 parameters: ParamElem = [],
                  **kwargs):
         super(BaseWireCell, self).__init__(**kwargs)
         self.orientation = "vertical"
         rest_thickness: float = (1 - WIRE_THICKNESS) / 2
         size_hints: List[float] = [rest_thickness, WIRE_THICKNESS, rest_thickness]
+        self.rows = []
         for row_index in range(3):
             widget = BaseWireCell.Row(
                 column_colors=matrix_colors[row_index],
@@ -35,6 +45,8 @@ class BaseWireCell(BoxLayout):
                 size_hint=(1, size_hints[row_index])
             )
             self.add_widget(widget)
+            self.rows.append(widget)
+
 
 
 class WireCell:

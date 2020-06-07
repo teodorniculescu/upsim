@@ -1,7 +1,8 @@
 from kivy.uix.boxlayout import BoxLayout
-from typing import Tuple
+from typing import Tuple, List
 from user_interface.Color import \
     ColoredWidget, ColorType, BACKGROUND_COLOR, BORDER_COLOR
+from user_interface.DataStructure import ParamElem
 
 
 BORDER_THICKNESS: float = 0.05
@@ -22,6 +23,7 @@ class BorderCell(BoxLayout):
                  rdc: ColorType = BACKGROUND_COLOR,
                  lr_size_hint: Tuple[float, float] = (1, 1),
                  ud_size_hint: Tuple[float, float] = (1, 1),
+                 parameters: ParamElem = [],
                  **kwargs):
         super(BorderCell, self).__init__(**kwargs)
         self.orientation = "horizontal"

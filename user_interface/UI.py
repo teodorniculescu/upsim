@@ -1,6 +1,7 @@
 import kivy
 kivy.require("1.11.1")
 
+from user_interface.DataStructure import ParamElem
 from user_interface.PanelHandler import PanelHandler, CODE
 from Simulation import Simulation
 from typing import Tuple, List, Dict
@@ -22,7 +23,7 @@ class Grid:
     # they cause problems when when they are not used.
     # Also, strings take up less memory than emtpy cells.
     __matrix: List[List[str]]
-    __parameter: Dict[Tuple[int, int], List[str]]
+    __parameter: Dict[Tuple[int, int], ParamElem]
     __ph: PanelHandler
 
     def __init__(self, size: Tuple[int, int] = (1, 1)):
@@ -46,12 +47,15 @@ class Grid:
             for row_index in range(num_rows):
                 for col_index in range(num_cols):
                     (cell_type, cell_param) = matrix[row_index][col_index]
-                    self.__matrix[position[0] + row_index][position[1] + col_index] = cell_type
-                    self.__parameter[(row_index, col_index)] = cell_param
+                    # real matrix position
+                    rmp = (position[0] + row_index, position[1] + col_index)
+                    self.__matrix[rmp[0]][rmp[1]] = cell_type
+                    self.__parameter[rmp] = cell_param
 
     def get_cell_widget(self, index: Tuple[int, int]) -> Widget:
         str_code: str = self.__matrix[index[0]][index[1]]
-        return self.__ph.get_cell(str_code)
+        parameters: ParamElem = self.__parameter[index] if index in self.__parameter else {}
+        return self.__ph.get_cell(str_code, parameters)
 
 
 class SimulationSection(BoxLayout):

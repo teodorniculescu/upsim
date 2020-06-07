@@ -2,14 +2,10 @@ from values.BaseValue import *
 from antlr.FileSyntaxErrorListener import *
 from typing import Dict
 from database.DBController import Column, Row
-from typing import List, Tuple, NewType
+from typing import List, Tuple
 
 from user_interface.PanelHandler import CODE
-
-
-ParamGridElem = NewType('ParamGridElem', Tuple[str, List[str]])
-ParamGridRow = NewType('ParamGridRow', List[ParamGridElem])
-ParamGrid = NewType('ParamGrid', List[ParamGridRow])
+from user_interface.DataStructure import ParamGridElem, ParamGridRow, ParamGrid, ParamElem
 
 
 class BasicBlock:
@@ -43,7 +39,7 @@ class BasicBlock:
         for row_index in range(num_rows):
             row: ParamGridRow = ParamGridRow([])
             for col_index in range(num_cols):
-                row.append(ParamGridElem(("", [])))
+                row.append(ParamGridElem(("", ParamElem({}))))
             result.append(row)
         # configure the top and bottom rows
         result[0][1] = (CODE.BORDER_LEFT_UP, [])
@@ -73,8 +69,9 @@ class BasicBlock:
     ):
         row_index: int = 1
         for pin in pins_dict.values():
+            cell_param = ParamElem({"name": pin.get_name()})
             grid[row_index][column] = \
-                ParamGridElem((cell_type, ['#name', pin.get_name()]))
+                ParamGridElem((cell_type, cell_param))
             row_index += 2
 
     def set_position(self, position: Tuple[int, int]) -> None:
