@@ -11,6 +11,10 @@ class EmptyCell(BoxLayout):
             **kwargs
     ):
         super(EmptyCell, self).__init__(**kwargs)
-        self.add_widget(ColoredWidget())
+        widget = ColoredWidget()
+        if parameters is not None:
+            if "name" in parameters:
+                widget.add_text_widget(parameters["name"])
+        self.add_widget(widget )
 
 

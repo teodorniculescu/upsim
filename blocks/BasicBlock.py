@@ -42,21 +42,23 @@ class BasicBlock:
                 row.append(ParamGridElem(("", ParamElem({}))))
             result.append(row)
         # configure the top and bottom rows
-        result[0][1] = (CODE.BORDER_LEFT_UP, [])
-        result[0][2] = (CODE.BORDER_UP, [])
-        result[0][3] = (CODE.BORDER_RIGHT_UP, [])
-        result[num_rows-1][1] = (CODE.BORDER_LEFT_DOWN, [])
-        result[num_rows-1][2] = (CODE.BORDER_DOWN, [])
-        result[num_rows-1][3] = (CODE.BORDER_RIGHT_DOWN, [])
+        result[0][1] = (CODE.BORDER_LEFT_UP, {})
+        result[0][2] = (CODE.BORDER_UP, {})
+        result[0][3] = (CODE.BORDER_RIGHT_UP, {})
+        result[num_rows-1][1] = (CODE.BORDER_LEFT_DOWN, {})
+        result[num_rows-1][2] = (CODE.BORDER_DOWN, {})
+        result[num_rows-1][3] = (CODE.BORDER_RIGHT_DOWN, {})
         # configure first and last columns (input and output pins)
         self.__add_gui_pins_grid(result, self.__input_pins, 0, CODE.WIRE_RIGHT)
         self.__add_gui_pins_grid(result, self.__output_pins, 4, CODE.WIRE_LEFT)
         # add left and wight borders
         row_index: int = 1
         while row_index < num_rows - 1:
-            result[row_index][1] = (CODE.BORDER_LEFT, [])
-            result[row_index][3] = (CODE.BORDER_RIGHT, [])
+            result[row_index][1] = (CODE.BORDER_LEFT, {})
+            result[row_index][3] = (CODE.BORDER_RIGHT, {})
             row_index += 1
+        # add widget text
+        result[1][2] = (CODE.EMPTY, {"name": self.get_name()})
         return result
 
     # used by get_gui_grid to add input pins and output pins
