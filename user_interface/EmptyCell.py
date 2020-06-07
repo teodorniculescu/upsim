@@ -7,7 +7,7 @@ from user_interface.DataStructure import ParamElem
 class EmptyCell(BoxLayout):
     def __init__(
             self,
-            parameters: ParamElem = [],
+            parameters: ParamElem = None,
             **kwargs
     ):
         super(EmptyCell, self).__init__(**kwargs)

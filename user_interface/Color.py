@@ -2,7 +2,7 @@ from typing import Tuple, NewType
 from kivy.graphics import Color, Rectangle
 import kivy.utils as kivy_utils
 from kivy.uix.widget import Widget
-from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.label import Label
 
 ColorType = NewType("ColorType", Tuple[int, int, int, int])
 
@@ -18,6 +18,7 @@ WIRE_COLOR = MADANG
 
 class ColoredWidget(Widget):
     background_rectangle: Rectangle
+    text_widget: Label
     bg_col: ColorType
     new_bg_col: bool
 
@@ -39,4 +40,11 @@ class ColoredWidget(Widget):
         self.background_rectangle.pos = self.pos
         self.background_rectangle.size = self.size
 
+    def update_text_widget(self, *args):
+        self.text_widget.pos = self.pos
 
+    def add_text_widget(self, text: str) -> None:
+        self.text_widget = Label(text=text)
+        self.add_widget(self.text_widget)
+        self.bind(pos=self.update_text_widget,
+                  size=self.update_text_widget)

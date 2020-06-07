@@ -23,7 +23,7 @@ class BorderCell(BoxLayout):
                  rdc: ColorType = BACKGROUND_COLOR,
                  lr_size_hint: Tuple[float, float] = (1, 1),
                  ud_size_hint: Tuple[float, float] = (1, 1),
-                 parameters: ParamElem = [],
+                 parameters: ParamElem = None,
                  **kwargs):
         super(BorderCell, self).__init__(**kwargs)
         self.orientation = "horizontal"

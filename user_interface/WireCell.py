@@ -9,10 +9,8 @@ WIRE_THICKNESS: float = 0.05
 
 
 class BaseWireCell(BoxLayout):
-    rows: List[Widget]
-
     class Row(BoxLayout):
-        columns: List[Widget]
+        columns: List[ColoredWidget]
 
         def __init__(self,
                      column_colors: List[ColorType],
@@ -29,9 +27,11 @@ class BaseWireCell(BoxLayout):
                 self.add_widget(widget)
                 self.columns.append(widget)
 
+    rows: List[Row]
+
     def __init__(self,
                  matrix_colors: List[List[ColorType]],
-                 parameters: ParamElem = [],
+                 parameters: ParamElem = None,
                  **kwargs):
         super(BaseWireCell, self).__init__(**kwargs)
         self.orientation = "vertical"
@@ -46,6 +46,9 @@ class BaseWireCell(BoxLayout):
             )
             self.add_widget(widget)
             self.rows.append(widget)
+        if parameters is not None:
+            if "name" in parameters:
+                self.rows[1].columns[1].add_text_widget(parameters["name"])
 
 
 
