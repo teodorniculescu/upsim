@@ -12,6 +12,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
+from kivy.core.window import Window
 
 
 class Grid:
@@ -101,15 +102,32 @@ class ButtonBar(BoxLayout):
 
 class EdgeSection(BoxLayout):
     num_elements: int
+    all_widgets: List[Widget]
 
     def __init__(self,
                  num_elements=1,
                  **kwargs):
         super(EdgeSection, self).__init__(**kwargs)
         self.num_elements = num_elements
+        self.all_widgets = []
         for index in range(self.num_elements):
-            self.add_widget(
-                Button(text=str(index)))
+            self.add_indicator(index)
+
+    def add_indicator(self, index):
+        new_widget = Button(text=str(index))
+        self.add_widget(new_widget)
+        self.all_widgets.append(new_widget)
+
+    def zoom_out(self):
+        self.add_indicator(self.num_elements)
+        self.num_elements += 1
+
+    def zoom_in(self):
+        if self.num_elements <= 1:
+            return
+        removed_widget = self.all_widgets.pop()
+        self.remove_widget(removed_widget)
+        self.num_elements -= 1
 
 
 class RowsSection(EdgeSection):
@@ -143,21 +161,42 @@ class SimulationPanel(GridLayout):
         self.rows = 2
         self.margin_size = (40, 20)
         sim_size = (8, 8)
-        none_section = NoneSection(
+        self.none_section = NoneSection(
             size=self.margin_size)
-        rows_section = RowsSection(
+        self.rows_section = RowsSection(
             size=self.margin_size,
             num_elements=sim_size[0])
-        cols_section = ColumnsSection(
+        self.cols_section = ColumnsSection(
             size=self.margin_size,
             num_elements=sim_size[1])
-        sim_section = SimulationSection(
+        self.sim_section = SimulationSection(
             simulation=self.__simulation,
             sim_size=sim_size)
-        self.add_widget(none_section)
-        self.add_widget(cols_section)
-        self.add_widget(rows_section)
-        self.add_widget(sim_section)
+        self.add_widget(self.none_section)
+        self.add_widget(self.cols_section)
+        self.add_widget(self.rows_section)
+        self.add_widget(self.sim_section)
+        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self._on_keyboard_down)
+
+    def _keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
+        self._keyboard = None
+
+    def zoom_in(self):
+        self.rows_section.zoom_in()
+        self.cols_section.zoom_in()
+
+    def zoom_out(self):
+        self.rows_section.zoom_out()
+        self.cols_section.zoom_out()
+
+    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        if keycode[1] == '=':
+            self.zoom_out()
+        elif keycode[1] == '-':
+            self.zoom_in()
+        return True
 
 
 class SimulationUI(BoxLayout):
