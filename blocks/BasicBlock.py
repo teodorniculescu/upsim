@@ -2,9 +2,14 @@ from values.BaseValue import *
 from antlr.FileSyntaxErrorListener import *
 from typing import Dict
 from database.DBController import Column, Row
-from typing import List, Tuple
+from typing import List, Tuple, NewType
 
 from user_interface.PanelHandler import CODE
+
+
+ParamGridElem = NewType('ParamGridElem', Tuple[str, List[str]])
+ParamGridRow = NewType('ParamGridRow', List[ParamGridElem])
+ParamGrid = NewType('ParamGrid', List[ParamGridRow])
 
 
 class BasicBlock:
@@ -30,48 +35,47 @@ class BasicBlock:
         self.__name = name
         self.__position_is_set = False
 
-    def get_gui_grid(self) -> List[List[str]]:
-        result: List[List[str]] = []
+    def get_gui_grid(self) -> ParamGrid:
+        result: ParamGrid = ParamGrid([])
         height_pins = max(len(self.__input_pins), len(self.__output_pins))
         num_rows = height_pins * 2 + 1
         num_cols = 5
         for row_index in range(num_rows):
-            row: List[str] = []
+            row: ParamGridRow = ParamGridRow([])
             for col_index in range(num_cols):
-                row.append("")
+                row.append(ParamGridElem(("", [])))
             result.append(row)
         # configure the top and bottom rows
-        result[0][1] = CODE.BORDER_LEFT_UP
-        result[0][2] = CODE.BORDER_UP
-        result[0][3] = CODE.BORDER_RIGHT_UP
-        result[num_rows-1][1] = CODE.BORDER_LEFT_DOWN
-        result[num_rows-1][2] = CODE.BORDER_DOWN
-        result[num_rows-1][3] = CODE.BORDER_RIGHT_DOWN
+        result[0][1] = (CODE.BORDER_LEFT_UP, [])
+        result[0][2] = (CODE.BORDER_UP, [])
+        result[0][3] = (CODE.BORDER_RIGHT_UP, [])
+        result[num_rows-1][1] = (CODE.BORDER_LEFT_DOWN, [])
+        result[num_rows-1][2] = (CODE.BORDER_DOWN, [])
+        result[num_rows-1][3] = (CODE.BORDER_RIGHT_DOWN, [])
         # configure first and last columns (input and output pins)
         self.__add_gui_pins_grid(result, self.__input_pins, 0, CODE.WIRE_RIGHT)
         self.__add_gui_pins_grid(result, self.__output_pins, 4, CODE.WIRE_LEFT)
         # add left and wight borders
         row_index: int = 1
         while row_index < num_rows - 1:
-            result[row_index][1] = CODE.BORDER_LEFT
-            result[row_index][3] = CODE.BORDER_RIGHT
+            result[row_index][1] = (CODE.BORDER_LEFT, [])
+            result[row_index][3] = (CODE.BORDER_RIGHT, [])
             row_index += 1
-
         return result
 
     # used by get_gui_grid to add input pins and output pins
     def __add_gui_pins_grid(
             self,
-            grid: List[List[str]],
+            grid: ParamGrid,
             pins_dict: Dict[str, BaseValue],
             column: int,
             cell_type: str
     ):
-        row_index:int = 1
+        row_index: int = 1
         for pin in pins_dict.values():
-            grid[row_index][column] = cell_type
+            grid[row_index][column] = \
+                ParamGridElem((cell_type, ['#name', pin.get_name()]))
             row_index += 2
-
 
     def set_position(self, position: Tuple[int, int]) -> None:
         self.__position_is_set = True
@@ -90,7 +94,7 @@ class BasicBlock:
         pin: BaseValue
         for pin in self.__output_pins.values():
             stored_value: str
-            if pin.get_value_is_set() == False:
+            if not pin.get_value_is_set():
                 stored_value = str(None)
             else:
                 stored_value = str(pin.get_value())
@@ -214,4 +218,3 @@ class BasicBlock:
             result += pin + ' '
         result = result[:-1]
         return result
-
