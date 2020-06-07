@@ -42,6 +42,7 @@ class ColoredWidget(Widget):
 
     def update_text_widget(self, *args):
         self.text_widget.pos = self.pos
+        self.text_widget.size = self.size
 
     def add_text_widget(self, text: str) -> None:
         self.text_widget = Label(text=text)

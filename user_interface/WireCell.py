@@ -48,7 +48,9 @@ class BaseWireCell(BoxLayout):
             self.rows.append(widget)
         if parameters is not None:
             if "name" in parameters:
-                self.rows[1].columns[1].add_text_widget(parameters["name"])
+                pos_bias = parameters["name_pos_bias"] if "name_pos_bias" in parameters else (0, 0)
+                # TODO use pos bias to move the name to a much suitable position
+                self.rows[0].columns[0].add_text_widget(parameters["name"])
 
 
 
