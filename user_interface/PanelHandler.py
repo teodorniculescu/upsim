@@ -55,4 +55,6 @@ class PanelHandler:
         pass
 
     def get_cell(self, code: str) -> Widget:
+        # TODO strip param of each received parameter
+        # TODO add calling param
         return self.__code_dict[code]()
