@@ -1,10 +1,9 @@
 from kivy.uix.boxlayout import BoxLayout
-from user_interface.Color import ColoredWidget, ColorType, BACKGROUND_COLOR, MADANG
+from user_interface.Color import ColoredWidget, ColorType, BACKGROUND_COLOR, WIRE_COLOR
 from typing import List
 
 
-WIRE_THICKNESS = 0.05
-WIRE_COLOR = MADANG
+WIRE_THICKNESS: float = 0.05
 
 
 class BaseWireCell(BoxLayout):

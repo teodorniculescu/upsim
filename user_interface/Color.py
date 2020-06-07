@@ -12,7 +12,7 @@ MONA_LISA: ColorType = kivy_utils.get_color_from_hex("#FF9595ff")
 
 BACKGROUND_COLOR: ColorType = BLACKCURRANT
 BORDER_COLOR: ColorType = GULF_STREAM
-BORDER_THICKNESS: int = 0.05
+WIRE_COLOR = MADANG
 
 
 class ColoredWidget(Widget):

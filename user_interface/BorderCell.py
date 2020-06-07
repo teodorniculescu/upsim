@@ -1,6 +1,10 @@
 from kivy.uix.boxlayout import BoxLayout
 from typing import Tuple
-from user_interface.Color import ColoredWidget, ColorType, BACKGROUND_COLOR, BORDER_COLOR, BORDER_THICKNESS
+from user_interface.Color import \
+    ColoredWidget, ColorType, BACKGROUND_COLOR, BORDER_COLOR
+
+
+BORDER_THICKNESS: float = 0.05
 
 
 class BorderCell(BoxLayout):
