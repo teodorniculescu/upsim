@@ -10,6 +10,7 @@ BLACKCURRANT: ColorType = kivy_utils.get_color_from_hex("#342b38ff")
 GULF_STREAM: ColorType = kivy_utils.get_color_from_hex("#80BDABff")
 MADANG: ColorType = kivy_utils.get_color_from_hex("#bbf1c8ff")
 MONA_LISA: ColorType = kivy_utils.get_color_from_hex("#FF9595ff")
+TRANSPARENT: ColorType = ColorType((0, 0, 0, 0))
 
 BACKGROUND_COLOR: ColorType = BLACKCURRANT
 BORDER_COLOR: ColorType = GULF_STREAM

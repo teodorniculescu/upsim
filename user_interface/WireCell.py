@@ -1,13 +1,11 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
-from user_interface.Color import ColoredWidget, ColorType, WIRE_COLOR
+from user_interface.Color import ColoredWidget, ColorType, WIRE_COLOR, TRANSPARENT
 from user_interface.DataStructure import ParamElem
 from typing import List
 
 
 WIRE_THICKNESS: float = 0.05
-
-TRANSPARENT: ColorType = ColorType((0, 0, 0, 0))
 
 
 class BaseWireCell(BoxLayout):
@@ -61,7 +59,6 @@ class BaseWireCell(BoxLayout):
                 pos_bias = parameters["name_pos_bias"] if "name_pos_bias" in parameters else (0, 0)
                 # TODO use pos bias to move the name to a much suitable position
                 self.rows[1].columns[1].add_text_widget(parameters["name"])
-
 
 
 class WireCell:

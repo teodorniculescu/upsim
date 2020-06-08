@@ -1,7 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from typing import Tuple, List
 from user_interface.Color import \
-    ColoredWidget, ColorType, BACKGROUND_COLOR, BORDER_COLOR
+    ColoredWidget, ColorType, TRANSPARENT, BORDER_COLOR
 from user_interface.DataStructure import ParamElem
 
 
@@ -17,10 +17,10 @@ class BorderCell(BoxLayout):
     rd_aw: ColoredWidget
 
     def __init__(self,
-                 luc: ColorType = BACKGROUND_COLOR,
-                 ldc: ColorType = BACKGROUND_COLOR,
-                 ruc: ColorType = BACKGROUND_COLOR,
-                 rdc: ColorType = BACKGROUND_COLOR,
+                 luc: ColorType = TRANSPARENT,
+                 ldc: ColorType = TRANSPARENT,
+                 ruc: ColorType = TRANSPARENT,
+                 rdc: ColorType = TRANSPARENT,
                  lr_size_hint: Tuple[float, float] = (1, 1),
                  ud_size_hint: Tuple[float, float] = (1, 1),
                  parameters: ParamElem = None,
