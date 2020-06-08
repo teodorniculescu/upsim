@@ -14,8 +14,6 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.core.window import Window
 
-import gc
-
 
 class Grid:
     __size: Tuple[int, int]
@@ -226,7 +224,6 @@ class SimulationPanel(GridLayout):
         self.rows_section.zoom_in()
         self.cols_section.zoom_in()
         self.sim_section.zoom_in()
-        gc.collect()
 
     def zoom_out(self):
         self.rows_section.zoom_out()
