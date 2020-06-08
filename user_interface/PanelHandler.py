@@ -3,10 +3,13 @@ from typing import Dict, Callable, List, Any
 from user_interface.EmptyCell import EmptyCell
 from user_interface.BorderCell import *
 from user_interface.WireCell import WireCell
+from user_interface.VoidCell import VoidCell
 
 
 class CODE:
-    EMPTY: str = ""
+    VOID: str = ""
+
+    EMPTY: str = "e"
 
     BORDER_LEFT: str = "b_l"
     BORDER_RIGHT: str = "b_r"
@@ -48,7 +51,10 @@ class PanelHandler:
         CODE.WIRE_LEFT_RIGHT: WireCell.LeftRight,
         CODE.WIRE_UP_DOWN: WireCell.UpDown,
 
+        CODE.VOID: VoidCell,
+
         CODE.EMPTY: EmptyCell
+
     }
 
     def __init__(self):
