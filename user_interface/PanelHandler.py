@@ -1,15 +1,18 @@
 from kivy.uix.widget import Widget
-from typing import Dict, Callable, List, Any
-from user_interface.EmptyCell import EmptyCell
-from user_interface.BorderCell import *
-from user_interface.WireCell import WireCell
-from user_interface.VoidCell import VoidCell
+from typing import Dict, Any
+from user_interface.cell.EmptyCell import EmptyCell
+from user_interface.cell.BorderCell import *
+from user_interface.cell.WireCell import WireCell
+from user_interface.cell.VoidCell import VoidCell
+from user_interface.cell.TextCell import TextCell
 
 
 class CODE:
     VOID: str = ""
 
     EMPTY: str = "e"
+
+    TEXT: str = "t"
 
     BORDER_LEFT: str = "b_l"
     BORDER_RIGHT: str = "b_r"
@@ -51,10 +54,11 @@ class PanelHandler:
         CODE.WIRE_LEFT_RIGHT: WireCell.LeftRight,
         CODE.WIRE_UP_DOWN: WireCell.UpDown,
 
+        CODE.TEXT: TextCell,
+
         CODE.VOID: VoidCell,
 
         CODE.EMPTY: EmptyCell
-
     }
 
     def __init__(self):

@@ -3,6 +3,8 @@ from Simulation import Simulation
 from typing import Tuple, List, Dict
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
+from kivy.graphics import Color, Rectangle
+from user_interface.Color import BACKGROUND_COLOR, ColorType, TRANSPARENT
 
 
 class SimulationSection(BoxLayout):
@@ -12,6 +14,8 @@ class SimulationSection(BoxLayout):
     __ul_corner: Tuple[int, int]
     __cell_dict: Dict[Tuple[int, int], Widget]
     __row_dict: Dict[int, BoxLayout]
+    background_rectangle: Rectangle
+    bg_col: ColorType
 
     def __init__(self,
                  simulation: Simulation,
@@ -27,6 +31,18 @@ class SimulationSection(BoxLayout):
         self.__row_dict = {}
         self.build_grid()
         self.update_panel()
+        # create the background rectangle
+        self.bg_col = TRANSPARENT
+        with self.canvas.before:
+            Color(self.bg_col[0], self.bg_col[1], self.bg_col[2], self.bg_col[3])
+            self.background_rectangle = Rectangle(size=self.size,
+                                                  pos=self.pos)
+        self.bind(pos=self.update_background_rectangle,
+                  size=self.update_background_rectangle)
+
+    def update_background_rectangle(self, *args):
+        self.background_rectangle.pos = self.pos
+        self.background_rectangle.size = self.size
 
     def build_grid(self):
         self.__grid = Grid(size=(100, 100))

@@ -58,7 +58,7 @@ class BasicBlock:
             result[row_index][3] = (CODE.BORDER_RIGHT, {})
             row_index += 1
         # add widget text
-        result[1][2] = (CODE.EMPTY, {"name": self.get_name()})
+        result[1][2] = (CODE.TEXT, {"name": self.get_name()})
         return result
 
     # used by get_gui_grid to add input pins and output pins
