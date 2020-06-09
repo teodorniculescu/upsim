@@ -33,6 +33,12 @@ class EdgeSection(BoxLayout):
         self.remove_widget(removed_widget)
         self.num_elements -= 1
 
+    def set_size(self, size: int) -> None:
+        while size < self.num_elements:
+            self.zoom_in()
+        while size > self.num_elements:
+            self.zoom_out()
+
 
 class RowsSection(EdgeSection):
     def __init__(self, **kwargs):

@@ -10,6 +10,7 @@ from Simulation import Simulation
 from user_interface.section.EdgeSection import ColumnsSection, RowsSection
 from user_interface.section.SimulationSection import SimulationSection
 from user_interface.section.NoneSection import NoneSection
+from math import floor
 
 
 class ButtonBar(BoxLayout):
@@ -48,20 +49,34 @@ class SimulationPanel(GridLayout):
         self.add_widget(self.sim_section)
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
+        self.cell_wh = 128
+        self.bind(size=self.update_cell_count)
+
+    def update_cell_count(self, *args):
+        (w, h) = self.size
+        num_cols = floor(w / self.cell_wh)
+        num_rows = floor(h / self.cell_wh)
+        print("Num rows " + str(num_rows) + " num cols " + str(num_cols))
+        self.rows_section.set_size(num_rows)
+        self.cols_section.set_size(num_cols)
+        self.sim_section.set_rows(num_rows)
+        self.sim_section.set_cols(num_cols)
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
         self._keyboard = None
 
+    # How much does the zoom affect to cell width and height
+    const_wh: int = 1.1
+
     def zoom_in(self):
-        self.rows_section.zoom_in()
-        self.cols_section.zoom_in()
-        self.sim_section.zoom_in()
+        self.cell_wh *= self.const_wh
+        self.update_cell_count()
 
     def zoom_out(self):
-        self.rows_section.zoom_out()
-        self.cols_section.zoom_out()
-        self.sim_section.zoom_out()
+        if self.cell_wh > 20:
+            self.cell_wh /= self.const_wh
+            self.update_cell_count()
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == '=':
