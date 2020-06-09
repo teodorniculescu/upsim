@@ -59,8 +59,9 @@ class SimulationSection(BoxLayout):
         return row_widget
 
     def __create_cell(self, row_index, column_index) -> Widget:
+        index = (row_index + self.__ul_corner[0], column_index + self.__ul_corner[1])
         cell_widget: Widget = self.__grid.get_cell_widget(
-            index=(row_index, column_index)
+            index=index
         )
         self.__cell_dict[(row_index, column_index)] = cell_widget
         return cell_widget
@@ -71,7 +72,7 @@ class SimulationSection(BoxLayout):
             row_widget = self.__create_row(row_index)
             self.add_widget(row_widget)
 
-    def __increase_width(self) -> None:
+    def __add_end_column(self) -> None:
         # add last column
         for row_index in range(self.__sim_size[0]):
             cell_widget = self.__create_cell(row_index, self.__sim_size[1])
@@ -79,13 +80,13 @@ class SimulationSection(BoxLayout):
         # increment column number
         self.__sim_size = (self.__sim_size[0], self.__sim_size[1] + 1)
 
-    def __increase_height(self) -> None:
+    def __add_last_row(self) -> None:
         # add last row
         self.add_widget(self.__create_row(self.__sim_size[0]))
         # increment row number
         self.__sim_size = (self.__sim_size[0] + 1, self.__sim_size[1])
 
-    def __decrease_width(self) -> None:
+    def __remove_end_column(self) -> None:
         # remove last column
         for row_index in range(self.__sim_size[0]):
             widget = self.__cell_dict.pop((row_index, self.__sim_size[1] - 1))
@@ -94,7 +95,7 @@ class SimulationSection(BoxLayout):
         # decrement column number
         self.__sim_size = (self.__sim_size[0], self.__sim_size[1] - 1)
 
-    def __decrease_height(self) -> None:
+    def __remove_end_row(self) -> None:
         # remove last row
         widget = self.__row_dict.pop(self.__sim_size[0] - 1)
         self.remove_widget(widget)
@@ -102,22 +103,52 @@ class SimulationSection(BoxLayout):
         # decrement row number
         self.__sim_size = (self.__sim_size[0] - 1, self.__sim_size[1])
 
+    def __remove_beginning_column(self) -> None:
+        for row_index in range(self.__sim_size[0]):
+            widget = self.__cell_dict.pop((row_index, self.__ul_corner[1]))
+            self.__row_dict[row_index].remove_widget(widget)
+            del widget
+        self.__ul_corner = (self.__ul_corner[0], self.__ul_corner[1] + 1)
+
     def zoom_in(self):
-        self.__decrease_width()
-        self.__decrease_height()
+        self.__remove_end_column()
+        self.__remove_end_row()
 
     def zoom_out(self):
-        self.__increase_width()
-        self.__increase_height()
+        self.__add_end_column()
+        self.__add_last_row()
 
     def set_rows(self, num_rows: int):
         while num_rows < self.__sim_size[0]:
-            self.__decrease_height()
+            self.__remove_end_row()
         while num_rows > self.__sim_size[0]:
-            self.__increase_height()
+            self.__add_last_row()
 
     def set_cols(self, num_cols: int):
         while num_cols < self.__sim_size[1]:
-            self.__decrease_width()
+            self.__remove_end_column()
         while num_cols > self.__sim_size[1]:
-            self.__increase_width()
+            self.__add_end_column()
+
+    def __add_beginning_column(self):
+        self.__ul_corner = (self.__ul_corner[0], self.__ul_corner[1] - 1)
+        for row_index in range(self.__sim_size[0]):
+            cell_widget = self.__create_cell(row_index, self.__ul_corner[1])
+            row_widget = self.__row_dict[row_index]
+            row_widget.add_widget(cell_widget, len(row_widget.children))
+
+    def move_screen_left(self):
+        if self.__ul_corner[0] <= 0:
+            self.__add_beginning_column()
+            self.__remove_end_column()
+
+    def move_screen_right(self):
+        self.__add_end_column()
+        self.__remove_beginning_column()
+
+    def move_screen_up(self):
+        if self.__ul_corner[1] <= 0:
+            self.__ul_corner = (self.__ul_corner[0], self.__ul_corner[1] - 1)
+
+    def move_screen_down(self):
+        self.__ul_corner = (self.__ul_corner[0], self.__ul_corner[1] + 1)
