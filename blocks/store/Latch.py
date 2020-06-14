@@ -12,4 +12,18 @@ class D_LATCH(LogicalBlock):
         super().add_pin(BaseValue("Q", PIN_TYPE_OUTPUT))
 
     def calculate(self) -> None:
-        raise Exception("not yet calculate d latch")
+        d: BaseValue
+        clk: BaseValue
+        r: BaseValue
+        q: BaseValue
+        [d, clk, r] = self.get_all_pins_with_type(PIN_TYPE_INPUT).values()
+        [q] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
+        if r.is_high():
+            if clk.is_posedge():
+                if d.is_high():
+                    q.set_high()
+                elif d.is_low():
+                    q.set_low()
+        elif r.is_low():
+            q.set_low()
+

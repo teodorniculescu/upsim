@@ -21,11 +21,15 @@ class BaseValue:
     __value: int
     # Check if the current value has been previously set or not
     __value_is_set: bool
+    # What was the previous value of the pin
+    __prev_value: int
+    __prev_value_is_set: bool
 
     def __init__(self, name: str, pin_type: int):
         self.__set_name(name)
         self.__set_pin_type(pin_type)
         self.__value_is_set = False
+        self.__prev_value_is_set = False
 
     @staticmethod
     def __check_pin_type(pin_type: int) -> None:
@@ -62,11 +66,28 @@ class BaseValue:
         self.__value_is_set = True
         self.__value = value
 
+    def set_previous_value(self):
+        self.__prev_value_is_set = True
+        self.__prev_value = self.__value
+        print(str(self.__prev_value) + " " + self.__name)
+
     def get_value(self) -> int:
         return self.__value
 
     def get_value_is_set(self) -> bool:
         return self.__value_is_set
+
+    def set_low(self) -> None:
+        self.set_value(LOW)
+
+    def set_high(self) -> None:
+        self.set_value(HIGH)
+
+    def is_posedge(self) -> bool:
+        return self.__prev_value_is_set and self.__prev_value == LOW and self.__value == HIGH
+
+    def is_negedge(self) -> bool:
+        return self.__prev_value_is_set and self.__prev_value == HIGH and self.__value == LOW
 
     def is_low(self) -> bool:
         if self.__value == LOW:

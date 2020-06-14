@@ -171,6 +171,13 @@ class Simulation:
         propagate_blocks_list: List[str] = self.__graph.calculate_values_block(block_name)
         return propagate_blocks_list
 
+    def set_previous_value_all_blocks(self) -> None:
+        block: BasicBlock
+        pin: BaseValue
+        for block in self.__bh.get_all_blocks().values():
+            for pin in block.get_all_pins().values():
+                pin.set_previous_value()
+
     def run(self) -> None:
         """
         Creates a CSV with the following fields:
@@ -206,6 +213,7 @@ class Simulation:
                     self.__insert_execution((new_element, new_cmd))
                 # show circuit state, which means inserting a value in the table
                 self.__dbc.insert_row(self.table_name, self.get_run_line())
+            self.set_previous_value_all_blocks()
         self.__dbc.commit()
 
     def display(self, description: Tuple[str], values: List[Tuple]) -> None:

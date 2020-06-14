@@ -1,4 +1,29 @@
 INSERT BLOCKS
-    D_LATCH latch;
+    D_LATCH latch,
+    STATE OUT DATA,
+    STATE OUT CLK,
+    STATE OUT RST,
+    STATE IN Q;
 
-SHOW BLOCKS;
+INSERT EDGES
+    BTWN DATA.val AND latch.D,
+    BTWN CLK.val AND latch.C,
+    BTWN RST.val AND latch.R,
+    BTWN latch.Q AND Q.val;
+
+INSERT INITIAL CONDITIONS
+    (DATA.val=0, RST.val=0, CLK.val=0),
+    (DATA.val=0, RST.val=0, CLK.val=1),
+    (DATA.val=1, RST.val=1, CLK.val=0),
+    (CLK.val=1),
+    (DATA.val=0, CLK.val=0),
+    (CLK.val=1),
+    (DATA.val=1, CLK.val=0),
+    (CLK.val=1),
+    (RST.val=0, CLK.val=0)
+    ;
+
+
+RUN;
+
+SHOW RUN (DATA.val, RST.val, CLK.val, Q.val);
