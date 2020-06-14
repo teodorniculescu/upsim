@@ -42,6 +42,8 @@ class SimulationPanel(GridLayout):
         self.bind(size=self.update_cell_count)
 
     def update_cell_count(self, *args):
+        pass
+        """
         (w, h) = self.size
         num_cols = floor(w / self.cell_wh)
         num_rows = floor(h / self.cell_wh)
@@ -50,6 +52,7 @@ class SimulationPanel(GridLayout):
         self.cols_section.set_size(num_cols)
         self.sim_section.set_rows(num_rows)
         self.sim_section.set_cols(num_cols)
+        """
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
@@ -76,11 +79,12 @@ class SimulationPanel(GridLayout):
         self.cols_section.move_rd()
 
     def move_up(self):
+        self.sim_section.move_screen_up()
         self.rows_section.move_lu()
 
     def move_down(self):
-        self.rows_section.move_rd()
         self.sim_section.move_screen_down()
+        self.rows_section.move_rd()
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == '=':
