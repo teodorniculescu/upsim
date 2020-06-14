@@ -69,7 +69,6 @@ class BaseValue:
     def set_previous_value(self):
         self.__prev_value_is_set = True
         self.__prev_value = self.__value
-        print(str(self.__prev_value) + " " + self.__name)
 
     def get_value(self) -> int:
         return self.__value
