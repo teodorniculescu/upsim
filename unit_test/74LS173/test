@@ -3,13 +3,15 @@ INSERT BLOCKS
     STATE OUT DATA,
     STATE OUT CLK,
     STATE OUT RST,
-    STATE IN Q;
+    STATE IN Q,
+    STATE IN NQ;
 
 INSERT EDGES
     BTWN DATA.val AND latch.D,
     BTWN CLK.val AND latch.C,
     BTWN RST.val AND latch.R,
-    BTWN latch.Q AND Q.val;
+    BTWN latch.Q AND Q.val,
+    BTWN latch.NQ AND NQ.val;
 
 INSERT INITIAL CONDITIONS
     (DATA.val=0, RST.val=0, CLK.val=0),
@@ -26,4 +28,4 @@ INSERT INITIAL CONDITIONS
 
 RUN;
 
-SHOW RUN (DATA.val, RST.val, CLK.val, Q.val);
+SHOW RUN (DATA.val, RST.val, CLK.val, Q.val, NQ.val);
