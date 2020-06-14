@@ -54,6 +54,7 @@ class SimulationSection(BoxLayout):
     # If the cell already exists, the function returns the already existing cell
     def __get_cell(self, row_index: int, column_index: int) -> Widget:
         index = (row_index, column_index)
+        print("imma go " + str(index))
         # check if the cell already exists
         if index in self.__cell_dict:
             raise Exception(str(index) + " already exists in __cell_dict")
@@ -94,11 +95,17 @@ class SimulationSection(BoxLayout):
             # add widget to BoxLayout
             self.add_widget(row_widget)
 
+    def __num_rows(self) -> int:
+        return self.__sim_size[0]
+
+    def __num_cols(self) -> int:
+        return self.__sim_size[1]
+
     def __end_column_index(self) -> int:
-        return self.__sim_size[1] - 1
+        return self.__sim_size[1] + self.__ul_corner[1] - 1
 
     def __end_row_index(self) -> int:
-        return self.__sim_size[0] - 1
+        return self.__sim_size[0] + self.__ul_corner[0] - 1
 
     def __beginning_row_index(self) -> int:
         return self.__ul_corner[0]
@@ -129,12 +136,6 @@ class SimulationSection(BoxLayout):
 
     def __dec_size_row(self) -> None:
         self.__sim_size = (self.__sim_size[0] - 1, self.__sim_size[1])
-
-    def __num_rows(self) -> int:
-        return self.__sim_size[0]
-
-    def __num_cols(self) -> int:
-        return self.__sim_size[1]
 
     def __pop_cell(self, index: Tuple[int, int]) -> None:
         self.__cell_dict.pop(index)
@@ -174,6 +175,7 @@ class SimulationSection(BoxLayout):
         self.remove_widget(self.__row_dict[row_index])
         self.__pop_row(row_index)
         self.__inc_corner_row()
+        self.__dec_size_row()
 
     def __remove_end_column(self) -> None:
         # get the index of the column that will be deleted
@@ -220,6 +222,7 @@ class SimulationSection(BoxLayout):
             row_widget.add_widget(cell_widget, len(row_widget.children))
         # decrement the column number for the upper left corner of the screen
         self.__dec_corner_col()
+        self.__inc_size_col()
 
     def __remove_beginning_column(self) -> None:
         col_index = self.__beginning_column_index()
@@ -234,11 +237,13 @@ class SimulationSection(BoxLayout):
             self.__pop_cell(index)
         # increment column upper left corner
         self.__inc_corner_col()
+        self.__dec_size_col()
 
     def __add_beginning_row(self) -> None:
         row_index = self.__ul_corner[0] - 1
         self.add_widget(self.__create_row(row_index), len(self.children))
         self.__dec_corner_row()
+        self.__inc_size_row()
 
     def move_screen_left(self):
         if self.__ul_corner[1] > 0:
@@ -267,19 +272,13 @@ class SimulationSection(BoxLayout):
         self.__add_end_row()
 
     def set_rows(self, num_rows: int):
-        pass
-        """
-        while num_rows < self.__sim_size[0]:
+        while num_rows < self.__num_rows():
             self.__remove_end_row()
-        while num_rows > self.__sim_size[0]:
+        while num_rows > self.__num_rows():
             self.__add_end_row()
-        """
 
     def set_cols(self, num_cols: int):
-        pass
-        """
-        while num_cols < self.__sim_size[1]:
+        while num_cols < self.__num_cols():
             self.__remove_end_column()
-        while num_cols > self.__sim_size[1]:
+        while num_cols > self.__num_cols():
             self.__add_end_column()
-        """
