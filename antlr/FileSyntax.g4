@@ -45,7 +45,13 @@ create_block : create_state_block
              | create_not_gate
              | create_logic_gate_2_inputs
              | create_logic_gate_n_inputs
+             | create_d_latch
              ;
+
+create_d_latch : D_LATCH_KWD
+                 block_name
+               ;
+
 create_not_gate : NOT_KWD
                   block_name
                   input_pin_name
@@ -121,6 +127,7 @@ NOR_KWD : 'NOR';
 XOR_KWD : 'XOR';
 XNOR_KWD : 'XNOR';
 NOT_KWD : 'NOT';
+D_LATCH_KWD : 'D_LATCH';
 
 AND2_KWD : 'AND2';
 OR2_KWD : 'OR2';

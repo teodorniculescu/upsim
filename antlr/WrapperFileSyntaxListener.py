@@ -3,6 +3,7 @@ from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from Simulation import Simulation
 from blocks.store.LogicGates import *
+from blocks.store.Latch import D_LATCH
 from antlr4.Token import *
 from user_interface.UI import UI
 
@@ -273,4 +274,10 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         pos = ctx.block_position().val
         self.__sim.add_block_position(name, pos)
 
-
+    def exitCreate_d_latch(self, ctx:FileSyntaxParser.Create_d_latchContext):
+        block_name = ctx.block_name().text
+        try:
+            block = D_LATCH(block_name)
+            self.__sim.add_block(block)
+        except Exception as e:
+            self.__set_error(ctx, e)

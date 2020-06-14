@@ -1,0 +1,4 @@
+INSERT BLOCKS
+    D_LATCH latch;
+
+SHOW BLOCKS;

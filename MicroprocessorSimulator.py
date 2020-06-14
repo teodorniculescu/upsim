@@ -13,9 +13,9 @@ def main():
 
 def parse_test():
     # used for updating and checking test results
-    test = "mux_1_2"
+    test = "74LS173"
     FileInterpreter(
-        "unit_test/gui/%s/test" % test,
+        "unit_test/%s/test" % test,
         #"unit_test/%s/answer" % test,
         "",
         Simulation()
