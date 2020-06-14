@@ -45,7 +45,6 @@ class SimulationPanel(GridLayout):
         (w, h) = self.size
         num_cols = floor(w / self.cell_wh)
         num_rows = floor(h / self.cell_wh)
-        print("Num rows " + str(num_rows) + " num cols " + str(num_cols))
         self.rows_section.set_size(num_rows)
         self.cols_section.set_size(num_cols)
         self.sim_section.set_rows(num_rows)

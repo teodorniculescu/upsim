@@ -54,7 +54,6 @@ class SimulationSection(BoxLayout):
     # If the cell already exists, the function returns the already existing cell
     def __get_cell(self, row_index: int, column_index: int) -> Widget:
         index = (row_index, column_index)
-        print("imma go " + str(index))
         # check if the cell already exists
         if index in self.__cell_dict:
             raise Exception(str(index) + " already exists in __cell_dict")
