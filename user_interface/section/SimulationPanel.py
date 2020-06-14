@@ -6,6 +6,7 @@ from Simulation import Simulation
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
 
+
 class SimulationPanel(GridLayout):
 
     # when the screen resolution changes, increment the
