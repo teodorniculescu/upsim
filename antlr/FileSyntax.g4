@@ -20,7 +20,7 @@ investigate : (show | expect);
 
 command : (define | insert | run);
 
-define : DEFINE_KWD CUSTOM_KWD BLOCK_KWD block_name
+define : DEFINE_KWD CUSTOM_KWD BLOCK_KWD custom_block_keyword
          '(' define_input_pins define_output_pins ')'
          '{' ( (insert_blocks | insert_edges) ';')+ '}'
        ;
@@ -54,7 +54,12 @@ create_block : create_state_block
              | create_logic_gate_n_inputs
              | create_d_latch
              | create_digital_tri_state_buffer
+             | create_custom_block
              ;
+
+create_custom_block :
+    CUSTOM_KWD custom_block_keyword block_name
+    ;
 
 create_digital_tri_state_buffer :
     DIGITAL_TRI_STATE_BUFFER_KWD
@@ -117,6 +122,7 @@ condition : node '=' node_value;
 
 node : block_name '.' pin_name;
 block_name : NAME;
+custom_block_keyword : NAME;
 pin_name : NAME;
 
 node_value : UINT;

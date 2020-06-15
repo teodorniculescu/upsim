@@ -40,6 +40,8 @@ ERROR_REQUIRE_AT_LEAST_NUM_PINS: [str] = \
     "17:Must have at least \"%\" %s pins. Received instead \"%d\" pins."
 ERROR_POSITION_NOT_SET: [str] = \
     "18:The block position for \"%s\" is not set."
+ERROR_CUSTOM_TEMPLATE_DOES_NOT_EXIST: [str] = \
+    "19:The template \"%s\" has not been created."
 
 
 class FileSyntaxErrorListener(ErrorListener):

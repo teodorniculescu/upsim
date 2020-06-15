@@ -4,6 +4,7 @@ from blocks.LogicalBlock import LogicalBlock
 from blocks.StateBlock import StateBlock
 from values.BaseValue import *
 from typing import Dict
+from antlr.FileSyntaxErrorListener import ERROR_CUSTOM_TEMPLATE_DOES_NOT_EXIST
 
 
 class BlockHandler:
@@ -74,3 +75,9 @@ class BlockHandler:
 
     def create_custom_block_template(self, custom_template: CustomBlockTemplate) -> None:
         self.__template_dict[custom_template.get_name()] = custom_template
+
+    def create_custom_block(self, template_name: str, block_name: str) -> BasicBlock:
+        if template_name not in self.__template_dict:
+            raise Exception(ERROR_CUSTOM_TEMPLATE_DOES_NOT_EXIST % template_name)
+        return self.__template_dict[template_name].generate_custom_block(block_name)
+

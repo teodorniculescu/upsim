@@ -28,7 +28,7 @@ class Simulation:
     # A stack which contains tuples of 1. the block name 2. if the block should calculate its value or propagate it
     __execution_stack: List[Tuple[str, str]]
 
-    def __init__(self):
+    def __init__(self, use_db: bool=True):
         self.__execution_stack = []
         self.__bh = BlockHandler()
         self.__initial_conditions = []
@@ -37,7 +37,9 @@ class Simulation:
         self.__out_fw = sys.stdout
         self.__num_sss = 0
         self.__graph = Graph(self.__bh)
-        self.__dbc = DBController()
+        self.__use_db = use_db
+        if use_db:
+            self.__dbc = DBController()
         self.table_name = \
             "run_" + \
             datetime.now().strftime("%d%m%Y_%H%M%S_") + \
@@ -115,12 +117,12 @@ class Simulation:
         row += self.__graph.get_vertex_values()
         return row
 
-
     def __setup_run(self) -> None:
-        self.__dbc.create_table(
-            self.table_name,
-            self.get_run_table_description()
-        )
+        if self.__use_db:
+            self.__dbc.create_table(
+                self.table_name,
+                self.get_run_table_description()
+            )
         # reset all values - set as 0 and uninitialised
         block: BasicBlock
         for block in self.__bh.get_all_blocks().values():
@@ -149,8 +151,9 @@ class Simulation:
         self.__number_init_cond += 1
         # Used for showing the number of times the stage state was displayed
         self.__num_sss = 0
-        # Shows the state after initializing with the initial conditions
-        self.__dbc.insert_row(self.table_name, self.get_run_line())
+        if self.__use_db:
+            # Shows the state after initializing with the initial conditions
+            self.__dbc.insert_row(self.table_name, self.get_run_line())
 
     def __insert_execution(self, stack_value: Tuple[str, str]) -> None:
         self.__execution_stack.append(stack_value)
@@ -212,10 +215,12 @@ class Simulation:
                 # push execution stack
                 for new_element in new_stack_elements:
                     self.__insert_execution((new_element, new_cmd))
-                # show circuit state, which means inserting a value in the table
-                self.__dbc.insert_row(self.table_name, self.get_run_line())
+                if self.__use_db:
+                    # show circuit state, which means inserting a value in the table
+                    self.__dbc.insert_row(self.table_name, self.get_run_line())
             self.set_previous_value_all_blocks()
-        self.__dbc.commit()
+        if self.__use_db:
+            self.__dbc.commit()
 
     def display(self, description: Tuple[str], values: List[Tuple]) -> None:
         self.write(str(description) + "\n")
@@ -223,6 +228,9 @@ class Simulation:
             self.write(str(line) + "\n")
 
     def show_run_select_all(self) -> None:
+        if not self.__use_db:
+            # TODO create exception with proper error code
+            raise Exception("There is no database controler")
         description = self.__dbc.describe_table(self.table_name)
         names: Tuple[str] = tuple()
         for line in description:
@@ -231,6 +239,9 @@ class Simulation:
         self.display(names, values)
 
     def show_run_select_some(self, columns: List[str]) -> None:
+        if not self.__use_db:
+            # TODO create exception with proper error code
+            raise Exception("There is no database controler")
         values = self.__dbc.select_some_from_table(
             self.table_name,
             columns
@@ -311,4 +322,7 @@ class Simulation:
 
     def create_custom_block_template(self, custom_template: CustomBlockTemplate) -> None:
         self.__bh.create_custom_block_template(custom_template)
+
+    def create_custom_block(self, template_name: str, block_name: str) -> BasicBlock:
+        return self.__bh.create_custom_block(template_name, block_name)
 

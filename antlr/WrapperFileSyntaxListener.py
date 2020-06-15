@@ -117,6 +117,9 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                        .Block_nameContext):
         ctx.text = str(ctx.NAME())
 
+    def exitCustom_block_keyword(self, ctx:FileSyntaxParser.Custom_block_keywordContext):
+        ctx.text = str(ctx.NAME())
+
     def exitInput_pin_name(self, ctx: FileSyntaxParser
                            .Input_pin_nameContext):
         ctx.text = str(ctx.NAME())
@@ -341,7 +344,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     def exitDefine(self, ctx:FileSyntaxParser.DefineContext):
         if self.error_is_set():
             return
-        template_name = ctx.block_name().text
+        template_name = ctx.custom_block_keyword().text
         try:
             # create the custom block
             custom_block_template = CustomBlockTemplate(template_name)
@@ -379,3 +382,14 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             ctx.block = DIGITAL_TRI_STATE_BUFFER(block_name)
         except Exception as e:
             self.__set_error(ctx, e)
+
+    def exitCreate_custom_block(self, ctx:FileSyntaxParser.Create_custom_blockContext):
+        template_name = ctx.custom_block_keyword().text
+        block_name = ctx.block_name().text
+        try:
+            self.__sim.create
+            ctx.block = StateBlock(block_name, pin_type, io_name)
+        except Exception as e:
+            self.__set_error(ctx, e)
+
+
