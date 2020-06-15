@@ -13,11 +13,11 @@ def main():
 
 def parse_test():
     # used for updating and checking test results
-    test = "74LS173"
+    test = "insert_edge_errors"
     FileInterpreter(
         "unit_test/%s/test" % test,
-        #"unit_test/%s/answer" % test,
-        "",
+        "unit_test/%s/answer" % test,
+        #"",
         Simulation()
     ).parse()
 

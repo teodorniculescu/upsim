@@ -150,11 +150,9 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                         .Create_edgeContext):
         output_node: str = ctx.node().text
         input_nodes: List[str] = ctx.one_or_multiple_nodes().input_nodes
-        try:
-            for input_node in input_nodes:
-                self.__sim.add_edge(output_node, input_node)
-        except Exception as e:
-            self.__set_error(ctx, e)
+        ctx.edges_list = []
+        for input_node in input_nodes:
+            ctx.edges_list.append((output_node, input_node))
 
     def exitNode_value(self, ctx: FileSyntaxParser
                        .Node_valueContext):
@@ -299,11 +297,27 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         # insert blocks
         if ctx.insert_blocks() is not None:
             for block in ctx.insert_blocks().all_blocks_list:
-                if self.error_is_set():
-                    return
                 try:
                     self.__sim.add_block(block)
                 except Exception as e:
+                    # in this case we set the error and stop
+                    # the execution in order to prevent the
+                    # addition of further problematic blocks
                     self.__set_error(ctx, e)
+                    return
         # insert edges
+        if ctx.insert_edges() is not None:
+            for (output_node, input_node) in ctx.insert_edges().all_edges_list:
+                try:
+                    self.__sim.add_edge(output_node, input_node)
+                except Exception as e:
+                    self.__set_error(ctx, e)
+                    return
         # insert initial conditions
+
+    def exitInsert_edges(self, ctx:FileSyntaxParser.Insert_edgesContext):
+        if self.error_is_set():
+            return
+        ctx.all_edges_list = []
+        for context in ctx.create_edge():
+            ctx.all_edges_list += context.edges_list
