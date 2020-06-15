@@ -2,17 +2,9 @@ from blocks.LogicalBlock import LogicalBlock
 from blocks.BasicBlock import BasicBlock
 from values.BaseValue import BaseValue, PIN_TYPE_INPUT, PIN_TYPE_OUTPUT
 from typing import List, Tuple
-#from Simulation import Simulation
 
 
 class CustomBlock(LogicalBlock):
-    class Core:
-        def __init__(self):
-            pass
-
-        def calculate(self):
-            pass
-
     def __init__(self,
                  block_name: str,
                  input_names: List[str],

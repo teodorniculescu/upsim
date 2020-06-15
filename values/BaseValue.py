@@ -104,7 +104,7 @@ class BaseValue:
 
     def reset(self) -> None:
         self.__value_is_set = False
-        self.__value = LOW;
+        self.__value = LOW
 
     def is_set(self):
         return self.__value_is_set

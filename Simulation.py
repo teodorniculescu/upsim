@@ -1,5 +1,9 @@
-from blocks.BlockHandler import *
+from blocks.BlockHandler import BlockHandler
 from blocks.CustomBlock import CustomBlockTemplate
+from blocks.LogicalBlock import LogicalBlock
+from values.BaseValue import BaseValue, PIN_TYPE_INPUT, HIGH, LOW
+from blocks.BasicBlock import BasicBlock
+from blocks.StateBlock import StateBlock
 from Node import Node
 from Graph import Graph
 from typing import Dict, Tuple
@@ -28,7 +32,8 @@ class Simulation:
     # A stack which contains tuples of 1. the block name 2. if the block should calculate its value or propagate it
     __execution_stack: List[Tuple[str, str]]
 
-    def __init__(self, use_db: bool=True):
+    def __init__(self,
+                 use_db: bool = True):
         self.__execution_stack = []
         self.__bh = BlockHandler()
         self.__initial_conditions = []
@@ -325,4 +330,3 @@ class Simulation:
 
     def create_custom_block(self, template_name: str, block_name: str) -> BasicBlock:
         return self.__bh.create_custom_block(template_name, block_name)
-
