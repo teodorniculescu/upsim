@@ -5,6 +5,7 @@ from Simulation import Simulation
 from blocks.store.LogicGates import *
 from blocks.store.Latch import D_LATCH
 from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER
+from blocks.CustomBlock import CustomBlock, CustomBlockTemplate
 from antlr4.Token import *
 from user_interface.UI import UI
 
@@ -338,19 +339,37 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             ctx.all_init_cond_dict_list.append(context.conditions_dict)
 
     def exitDefine(self, ctx:FileSyntaxParser.DefineContext):
-        pass
+        if self.error_is_set():
+            return
+        template_name = ctx.block_name().text
+        try:
+            # create the custom block
+            custom_block_template = CustomBlockTemplate(template_name)
+            # add all pins
+            custom_block_template.add_input_pins(ctx.define_input_pins().pin_list)
+            custom_block_template.add_output_pins(ctx.define_output_pins().pin_list)
+            # add all blocks
+            if ctx.insert_blocks() is not None:
+                for context in ctx.insert_blocks():
+                    custom_block_template.add_blocks(context.all_blocks_list)
+            # add all edges
+            if ctx.insert_edges() is not None:
+                for context in ctx.insert_edges():
+                    custom_block_template.add_edges(context.all_edges_list)
+            # add the custom block template
+            self.__sim.create_custom_block_template(custom_block_template)
+        except Exception as e:
+            self.__set_error(ctx, e)
 
     def exitDefine_input_pins(self, ctx:FileSyntaxParser.Define_input_pinsContext):
-        pass
+        ctx.pin_list = []
+        for context in ctx.input_pin_name():
+            ctx.pin_list.append(context.text)
 
     def exitDefine_output_pins(self, ctx:FileSyntaxParser.Define_output_pinsContext):
-        pass
-
-    def exitBlock_definition(self, ctx:FileSyntaxParser.Block_definitionContext):
-        if ctx.insert_blocks() is not None:
-            pass
-        elif ctx.insert_edges() is not None:
-            pass
+        ctx.pin_list = []
+        for context in ctx.output_pin_name():
+            ctx.pin_list.append(context.text)
 
     def exitCreate_digital_tri_state_buffer(self, ctx:FileSyntaxParser.Create_digital_tri_state_bufferContext):
         if self.error_is_set():

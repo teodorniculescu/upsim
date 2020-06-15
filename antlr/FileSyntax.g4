@@ -22,11 +22,10 @@ command : (define | insert | run);
 
 define : DEFINE_KWD CUSTOM_KWD BLOCK_KWD block_name
          '(' define_input_pins define_output_pins ')'
-         '{' block_definition '}'
+         '{' ( (insert_blocks | insert_edges) ';')+ '}'
        ;
 define_input_pins : INPUT_KWD input_pin_name+ ;
 define_output_pins : OUTPUT_KWD output_pin_name+ ;
-block_definition : ( (insert_blocks | insert_edges) ';')+;
 
 expect: EXPECT_KWD ERROR_KWD UINT;
 

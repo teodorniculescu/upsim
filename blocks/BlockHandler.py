@@ -1,4 +1,5 @@
 from blocks.BasicBlock import BasicBlock
+from blocks.CustomBlock import CustomBlockTemplate
 from blocks.LogicalBlock import LogicalBlock
 from blocks.StateBlock import StateBlock
 from values.BaseValue import *
@@ -8,10 +9,12 @@ from typing import Dict
 class BlockHandler:
     __logical_blocks: Dict[str, BasicBlock]
     __state_blocks: Dict[str, BasicBlock]
+    __template_dict: Dict[str, CustomBlockTemplate]
 
     def __init__(self):
         self.__logical_blocks = {}
         self.__state_blocks = {}
+        self.__template_dict = {}
 
     def get_all_blocks(self) -> Dict[str, BasicBlock]:
         return {**self.__logical_blocks, **self.__state_blocks}
@@ -68,3 +71,6 @@ class BlockHandler:
             result += line
         result += '\n'
         return result
+
+    def create_custom_block_template(self, custom_template: CustomBlockTemplate) -> None:
+        self.__template_dict[custom_template.get_name()] = custom_template

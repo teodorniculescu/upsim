@@ -1,4 +1,5 @@
 from blocks.BlockHandler import *
+from blocks.CustomBlock import CustomBlockTemplate
 from Node import Node
 from Graph import Graph
 from typing import Dict, Tuple
@@ -307,3 +308,7 @@ class Simulation:
                     result += ','
                 result = result[:-1] + '\n'
             self.write(result)
+
+    def create_custom_block_template(self, custom_template: CustomBlockTemplate) -> None:
+        self.__bh.create_custom_block_template(custom_template)
+
