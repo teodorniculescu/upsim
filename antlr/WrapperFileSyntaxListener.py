@@ -387,8 +387,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         template_name = ctx.custom_block_keyword().text
         block_name = ctx.block_name().text
         try:
-            self.__sim.create
-            ctx.block = StateBlock(block_name, pin_type, io_name)
+            ctx.block = self.__sim.create_custom_block(template_name, block_name)
         except Exception as e:
             self.__set_error(ctx, e)
 
