@@ -1,10 +1,10 @@
 from user_interface.Grid import Grid
-from Simulation import Simulation
-from typing import Tuple, List, Dict
+from simulation.Simulation import Simulation
+from typing import Tuple, Dict
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Rectangle
-from user_interface.Color import BACKGROUND_COLOR, ColorType, TRANSPARENT
+from user_interface.Color import BACKGROUND_COLOR, ColorType
 
 
 class SimulationSection(BoxLayout):

@@ -2,7 +2,7 @@ import os
 from gen.FileSyntaxLexer import *
 from gen.FileSyntaxParser import *
 from antlr.WrapperFileSyntaxListener import WrapperFileSyntaxListener
-from Simulation import Simulation
+from simulation.Simulation import Simulation
 from antlr.FileSyntaxErrorListener import FileSyntaxErrorListener
 
 

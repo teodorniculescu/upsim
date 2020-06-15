@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # finding the parent directory automatically
 from antlr.FileInterpreter import FileInterpreter
-from Simulation import Simulation
+from simulation.Simulation import Simulation
 from typing import Tuple
 import unittest
 import difflib

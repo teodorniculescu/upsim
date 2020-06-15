@@ -1,11 +1,11 @@
 from blocks.StateBlock import StateBlock
 from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
-from Simulation import Simulation
+from simulation.Simulation import Simulation
 from blocks.store.LogicGates import *
 from blocks.store.Latch import D_LATCH
 from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER
-from blocks.CustomBlock import CustomBlock, CustomBlockTemplate
+from blocks.CustomBlock import CustomBlockTemplate
 from antlr4.Token import *
 from user_interface.UI import UI
 

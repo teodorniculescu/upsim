@@ -4,8 +4,8 @@ from blocks.LogicalBlock import LogicalBlock
 from values.BaseValue import BaseValue, PIN_TYPE_INPUT, HIGH, LOW
 from blocks.BasicBlock import BasicBlock
 from blocks.StateBlock import StateBlock
-from Node import Node
-from Graph import Graph
+from simulation.Node import Node
+from simulation.Graph import Graph
 from typing import Dict, Tuple
 from database.DBController import *
 from datetime import datetime

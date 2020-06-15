@@ -2,7 +2,7 @@ from user_interface.section.EdgeSection import ColumnsSection, RowsSection
 from user_interface.section.SimulationSection import SimulationSection
 from user_interface.section.NoneSection import NoneSection
 from math import floor
-from Simulation import Simulation
+from simulation.Simulation import Simulation
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
 

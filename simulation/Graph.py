@@ -1,7 +1,7 @@
 from blocks.BasicBlock import BasicBlock
 from blocks.StateBlock import StateBlock
 from values.BaseValue import *
-from Node import Node
+from simulation.Node import Node
 from blocks.BlockHandler import BlockHandler
 from antlr.FileSyntaxErrorListener import *
 from database.DBController import Column, Row

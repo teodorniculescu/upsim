@@ -5,6 +5,7 @@ from typing import List, Tuple
 
 
 class CustomBlock(LogicalBlock):
+
     def __init__(self,
                  block_name: str,
                  input_names: List[str],
