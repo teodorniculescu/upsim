@@ -18,7 +18,15 @@ block_position : UINT ':' UINT;
 
 investigate : (show | expect);
 
-command : (insert | run);
+command : (define | insert | run);
+
+define : DEFINE_KWD CUSTOM_KWD BLOCK_KWD block_name
+         '(' define_input_pins define_output_pins ')'
+         '{' block_definition '}'
+       ;
+define_input_pins : INPUT_KWD input_pin_name+ ;
+define_output_pins : OUTPUT_KWD output_pin_name+ ;
+block_definition : ( (insert_blocks | insert_edges) ';')+;
 
 expect: EXPECT_KWD ERROR_KWD UINT;
 
@@ -152,6 +160,8 @@ INSERT_KWD : 'INSERT';
 BETWEEN_KWD : 'BETWEEN' | 'BTWN';
 RUN_KWD : 'RUN';
 DISPLAY_KWD : 'DISPLAY';
+DEFINE_KWD : 'DEFINE';
+CUSTOM_KWD : 'CUSTOM';
 
 VERBOSE_PRM : '-' ('VERBOSE' | 'V');
 

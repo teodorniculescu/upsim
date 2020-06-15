@@ -327,7 +327,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             ctx.all_edges_list += context.edges_list
 
 
-    def exitInsert_initial_conditions(self, ctx:FileSyntaxParser.Insert_initial_conditionsContext):
+    def exitInsert_initial_conditions(self, ctx: FileSyntaxParser.Insert_initial_conditionsContext):
         if self.error_is_set():
             return
         ctx.all_init_cond_dict_list = []
