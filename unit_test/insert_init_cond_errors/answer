@@ -12,13 +12,13 @@ and0.in1,IN,sb.out,OUT
 and1.in1,IN,sc.out,OUT
 and1.out,OUT,soutput.in,IN
 and0.out,OUT,and1.in0,IN
-21:4 ERROR 12:Initial condition block must be a state block for "and0.in0".
+20:0 ERROR 12:Initial condition block must be a state block for "and0.in0".
 
-27:4 ERROR 12:Initial condition block must be a state block for "and0.out".
+26:0 ERROR 12:Initial condition block must be a state block for "and0.out".
 
-33:4 ERROR 9:Block "sdoesntexist" does not exist.
+32:0 ERROR 9:Block "sdoesntexist" does not exist.
 
-39:4 ERROR 13:Pin cannot have value "2". Pin must have either HIGH "1" or LOW "0" values.
+38:0 ERROR 13:Pin cannot have value "2". Pin must have either HIGH "1" or LOW "0" values.
 
 sa.out,sb.out,sc.out
 0,0,0

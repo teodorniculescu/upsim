@@ -169,10 +169,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         conditions = {}
         for cond in ctx.condition():
             conditions[cond.node] = cond.number
-        try:
-            self.__sim.add_condition(conditions)
-        except Exception as e:
-            self.__set_error(ctx, e)
+        ctx.conditions_dict = conditions
 
     def exitRun(self, ctx: FileSyntaxParser.RunContext):
         self.__sim.run()
@@ -314,6 +311,13 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                     self.__set_error(ctx, e)
                     return
         # insert initial conditions
+        if ctx.insert_initial_conditions() is not None:
+            for conditions_dict in ctx.insert_initial_conditions().all_init_cond_dict_list:
+                try:
+                    self.__sim.add_condition(conditions_dict)
+                except Exception as e:
+                    self.__set_error(ctx, e)
+                    return
 
     def exitInsert_edges(self, ctx:FileSyntaxParser.Insert_edgesContext):
         if self.error_is_set():
@@ -321,3 +325,11 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         ctx.all_edges_list = []
         for context in ctx.create_edge():
             ctx.all_edges_list += context.edges_list
+
+
+    def exitInsert_initial_conditions(self, ctx:FileSyntaxParser.Insert_initial_conditionsContext):
+        if self.error_is_set():
+            return
+        ctx.all_init_cond_dict_list = []
+        for context in ctx.initial_condition():
+            ctx.all_init_cond_dict_list.append(context.conditions_dict)
