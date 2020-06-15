@@ -80,5 +80,5 @@ class UnitTestUPSIM(unittest.TestCase):
     def test_jk_flip_flop(self) -> None:
         self.run_test()
 
-    def test_74LS173(self) -> None:
+    def test_d_latch_block(self) -> None:
         self.run_test()

@@ -4,6 +4,7 @@ from gen.FileSyntaxParser import FileSyntaxParser
 from Simulation import Simulation
 from blocks.store.LogicGates import *
 from blocks.store.Latch import D_LATCH
+from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER
 from antlr4.Token import *
 from user_interface.UI import UI
 
@@ -303,7 +304,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                     self.__set_error(ctx, e)
                     return
         # insert edges
-        if ctx.insert_edges() is not None:
+        elif ctx.insert_edges() is not None:
             for (output_node, input_node) in ctx.insert_edges().all_edges_list:
                 try:
                     self.__sim.add_edge(output_node, input_node)
@@ -311,13 +312,16 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
                     self.__set_error(ctx, e)
                     return
         # insert initial conditions
-        if ctx.insert_initial_conditions() is not None:
+        elif ctx.insert_initial_conditions() is not None:
             for conditions_dict in ctx.insert_initial_conditions().all_init_cond_dict_list:
                 try:
                     self.__sim.add_condition(conditions_dict)
                 except Exception as e:
                     self.__set_error(ctx, e)
                     return
+        else:
+            # TODO add proper exception
+            raise Exception("insert rule impossible")
 
     def exitInsert_edges(self, ctx:FileSyntaxParser.Insert_edgesContext):
         if self.error_is_set():
@@ -326,10 +330,33 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         for context in ctx.create_edge():
             ctx.all_edges_list += context.edges_list
 
-
     def exitInsert_initial_conditions(self, ctx: FileSyntaxParser.Insert_initial_conditionsContext):
         if self.error_is_set():
             return
         ctx.all_init_cond_dict_list = []
         for context in ctx.initial_condition():
             ctx.all_init_cond_dict_list.append(context.conditions_dict)
+
+    def exitDefine(self, ctx:FileSyntaxParser.DefineContext):
+        pass
+
+    def exitDefine_input_pins(self, ctx:FileSyntaxParser.Define_input_pinsContext):
+        pass
+
+    def exitDefine_output_pins(self, ctx:FileSyntaxParser.Define_output_pinsContext):
+        pass
+
+    def exitBlock_definition(self, ctx:FileSyntaxParser.Block_definitionContext):
+        if ctx.insert_blocks() is not None:
+            pass
+        elif ctx.insert_edges() is not None:
+            pass
+
+    def exitCreate_digital_tri_state_buffer(self, ctx:FileSyntaxParser.Create_digital_tri_state_bufferContext):
+        if self.error_is_set():
+            return
+        block_name = ctx.block_name().text
+        try:
+            ctx.block = DIGITAL_TRI_STATE_BUFFER(block_name)
+        except Exception as e:
+            self.__set_error(ctx, e)

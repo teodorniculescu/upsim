@@ -54,7 +54,13 @@ create_block : create_state_block
              | create_logic_gate_2_inputs
              | create_logic_gate_n_inputs
              | create_d_latch
+             | create_digital_tri_state_buffer
              ;
+
+create_digital_tri_state_buffer :
+    DIGITAL_TRI_STATE_BUFFER_KWD
+    block_name
+    ;
 
 create_d_latch : D_LATCH_KWD
                  block_name
@@ -162,6 +168,7 @@ RUN_KWD : 'RUN';
 DISPLAY_KWD : 'DISPLAY';
 DEFINE_KWD : 'DEFINE';
 CUSTOM_KWD : 'CUSTOM';
+DIGITAL_TRI_STATE_BUFFER_KWD : 'DTS_BUFFER';
 
 VERBOSE_PRM : '-' ('VERBOSE' | 'V');
 

@@ -108,3 +108,9 @@ class BaseValue:
 
     def is_set(self):
         return self.__value_is_set
+
+    def set_high_impedance(self) -> None:
+        self.__value_is_set = False
+        self.__prev_value_is_set = False
+        self.__value = LOW
+        self.__prev_value = LOW

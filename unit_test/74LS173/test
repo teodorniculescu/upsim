@@ -1,31 +1,21 @@
-INSERT BLOCKS
-    D_LATCH latch,
-    STATE OUT DATA,
-    STATE OUT CLK,
-    STATE OUT RST,
-    STATE IN Q,
-    STATE IN NQ;
-
-INSERT EDGES
-    BTWN DATA.val AND latch.D,
-    BTWN CLK.val AND latch.C,
-    BTWN RST.val AND latch.R,
-    BTWN latch.Q AND Q.val,
-    BTWN latch.NQ AND NQ.val;
-
-INSERT INITIAL CONDITIONS
-    (DATA.val=0, RST.val=0, CLK.val=0),
-    (DATA.val=0, RST.val=0, CLK.val=1),
-    (DATA.val=1, RST.val=1, CLK.val=0),
-    (CLK.val=1),
-    (DATA.val=0, CLK.val=0),
-    (CLK.val=1),
-    (DATA.val=1, CLK.val=0),
-    (CLK.val=1),
-    (RST.val=0, CLK.val=0)
-    ;
-
-
-RUN;
-
-SHOW RUN (DATA.val, RST.val, CLK.val, Q.val, NQ.val);
+DEFINE CUSTOM BLOCK latchHandler (IN d de nde clk clr en OUT q) {
+    BLOCK
+        AND and1 q nde o,
+        AND and2 d de o,
+        OR or a1 a2 o,
+        D_LATCH latch,
+        DTS_BUFFER buf;
+    EDGES
+        BTWN THIS.d AND and2.d,
+        BTWN THIS.de AND and2.de,
+        BTWN THIS.nde AND and1.nde,
+        BTWN and1.o AND or.a1,
+        BTWN and2.o AND or.a2,
+        BTWN or.o AND latch.D,
+        BTWN THIS.clk AND latch.CLK,
+        BTWN THIS.clr AND latch.R,
+        BTWN latch.Q AND and1.q,
+        BTWN latch.NQ AND buf.in,
+        BTWN THIS.en AND buf.en,
+        BTWN buf.out AND THIS.q;
+};
