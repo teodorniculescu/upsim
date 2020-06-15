@@ -67,10 +67,6 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         self.__expecting_error = True
         self.__error_number = int(str(ctx.UINT()))
 
-    def exitInsert_blocks(self, ctx: FileSyntaxParser.Insert_blocksContext):
-        if self.error_is_set():
-            return
-
     def exitLogic_gate_types(self, ctx:FileSyntaxParser.Logic_gate_typesContext):
         ctx.text = str(ctx.getText())
 
@@ -96,8 +92,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         output_name = ctx.output_pin_name().text
         try:
             func = self.lg2i.get(block_type)
-            self.__sim.add_block(
-                func(block_name, [input0_name, input1_name], [output_name]))
+            ctx.block = func(block_name, [input0_name, input1_name], [output_name])
         except Exception as e:
             self.__set_error(ctx, e)
 
@@ -112,8 +107,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         else:
             io_name = ctx.io_pin_name().text
         try:
-            self.__sim.add_block(
-                StateBlock(block_name, pin_type, io_name))
+            ctx.block = StateBlock(block_name, pin_type, io_name)
         except Exception as e:
             self.__set_error(ctx, e)
 
@@ -241,8 +235,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         output_name = ctx.output_pin_name().text
         try:
             func = self.lgNi.get(block_type)
-            self.__sim.add_block(
-                func(block_name, input_names, [output_name]))
+            ctx.block = func(block_name, input_names, [output_name])
         except Exception as e:
             self.__set_error(ctx, e)
 
@@ -256,8 +249,7 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         input_name = ctx.input_pin_name().text
         output_name = ctx.output_pin_name().text
         try:
-            self.__sim.add_block(
-                NOT(block_name, [input_name], [output_name]))
+            ctx.block = NOT(block_name, [input_name], [output_name])
         except Exception as e:
             self.__set_error(ctx, e)
 
@@ -275,9 +267,43 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         self.__sim.add_block_position(name, pos)
 
     def exitCreate_d_latch(self, ctx:FileSyntaxParser.Create_d_latchContext):
+        if self.error_is_set():
+            return
         block_name = ctx.block_name().text
         try:
-            block = D_LATCH(block_name)
-            self.__sim.add_block(block)
+            ctx.block = D_LATCH(block_name)
         except Exception as e:
             self.__set_error(ctx, e)
+
+    def exitCreate_block(self, ctx:FileSyntaxParser.Create_blockContext):
+        if self.error_is_set():
+            return
+        ctx.block_list = []
+        # the create block method always has one children because it
+        # has to choose between the types of blocks that were created
+        # which means that it always returns a list with one element
+        # inside
+        for context in ctx.children:
+            ctx.block_list.append(context.block)
+
+    def exitInsert_blocks(self, ctx: FileSyntaxParser.Insert_blocksContext):
+        if self.error_is_set():
+            return
+        ctx.all_blocks_list = []
+        for context in ctx.create_block():
+            ctx.all_blocks_list += context.block_list
+
+    def exitInsert(self, ctx:FileSyntaxParser.InsertContext):
+        if self.error_is_set():
+            return
+        # insert blocks
+        if ctx.insert_blocks() is not None:
+            for block in ctx.insert_blocks().all_blocks_list:
+                if self.error_is_set():
+                    return
+                try:
+                    self.__sim.add_block(block)
+                except Exception as e:
+                    self.__set_error(ctx, e)
+        # insert edges
+        # insert initial conditions
