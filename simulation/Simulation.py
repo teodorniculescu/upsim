@@ -56,49 +56,6 @@ class Simulation:
     def add_block_position(self, block_name: str, block_position: Tuple[int, int]) -> None:
         self.__bh.get_block_with_name(block_name).set_position(block_position)
 
-    def __read_stage(self) -> None:
-        block: LogicalBlock
-        for block in self.__bh.get_all_blocks().values():
-            input_pin: BaseValue
-            for input_pin in block.get_all_pins_with_type(PIN_TYPE_INPUT).values():
-                input_vertex: Node =\
-                    self.__graph.get_node(block.get_name() + '.' + input_pin.get_name())
-                if input_vertex in self.__graph.get_edges():
-                    connected_vertex: Node = self.__graph.get_edges()[input_vertex]
-                    connected_pin: BaseValue = connected_vertex.get_pin()
-                    if connected_pin.is_set():
-                        input_pin.set_value(connected_pin.get_value())
-                        if input_pin.changed_state_from_last_time_step():
-                            self.__changed_state = True
-                else:
-                    # todo create exception for when a input vertex is not connected
-                    raise Exception(str(input_vertex) + " is not connected.")
-
-    def __calculate_stage(self) -> None:
-        block: LogicalBlock
-        for block in self.__bh.get_logical_blocks().values():
-            block.calculate()
-            if block.output_changed_state():
-                self.__changed_state = True
-
-    def __init_stage(self) -> None:
-        if self.__finished_all_init_cond():
-            raise Exception("Exceeded length of __initial_conditions.")
-        ic_curr: dict = self.__initial_conditions[self.__number_init_cond]
-        self.__ic = {**self.__ic, **ic_curr}
-        " now __ic contains the initial conditions of this current time frame "
-        block: BasicBlock
-        for block in self.__bh.get_all_blocks().values():
-            block.reset()
-        vertex_name: str
-        vertex_value_str: str
-        for vertex_name, vertex_value_str in self.__ic.items():
-            vertex_value: int = int(vertex_value_str)
-            # todo exception if the vertex value is invalid
-            self.__graph.set_vertex_value(vertex_name, vertex_value)
-        " continue to the next initial condition "
-        self.__number_init_cond += 1
-
     def __finished_all_init_cond(self) -> bool:
         if self.__number_init_cond >= len(self.__initial_conditions):
             return True
