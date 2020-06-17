@@ -20,7 +20,7 @@ INSERT EDGES
 SHOW EDGES;
 
 /* Insert between two output vertices. */
-EXPECT ERROR 7;
+EXPECT ERROR 20;
 INSERT EDGES
     BETWEEN and1.out AND sa.out;
 SHOW EDGES;

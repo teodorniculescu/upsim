@@ -61,8 +61,8 @@ class Graph:
         node1_type: int = self.get_node(node1_name).get_pin().get_pin_type()
         if node0_type == PIN_TYPE_INPUT and node1_type == PIN_TYPE_INPUT:
             raise Exception(ERROR_EDGE_BETWEEN_INPUTS % (node0_name, node1_name))
-        if node0_type != PIN_TYPE_INPUT and node1_type != PIN_TYPE_INPUT:
-            raise Exception(ERROR_NO_INPUT_VERTEX % (node0_name, node1_name))
+        if node0_type == PIN_TYPE_OUTPUT and node1_type == PIN_TYPE_OUTPUT:
+            raise Exception(ERROR_EDGE_BETWEEN_OUTPUTS % (node0_name, node1_name))
         if node0_name in self.__edges[node1_name] or node1_name in self.__edges[node0_name]:
             raise Exception(ERROR_INPUT_VERTEX_EXISTS
                             % (node0_name, node1_name, self.__edges[node0_name]))

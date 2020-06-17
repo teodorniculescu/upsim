@@ -21,11 +21,12 @@ investigate : (show | expect);
 command : (define | insert | run);
 
 define : DEFINE_KWD CUSTOM_KWD BLOCK_KWD custom_block_keyword
-         '(' define_input_pins define_output_pins ')'
+         '(' define_input_pins? define_output_pins? define_io_pins?')'
          '{' ( INSERT_KWD (insert_blocks | insert_edges) ';')+ '}'
        ;
 define_input_pins : INPUT_KWD input_pin_name+ ;
 define_output_pins : OUTPUT_KWD output_pin_name+ ;
+define_io_pins: INPUT_OUTPUT_KWD io_pin_name+ ;
 
 expect: EXPECT_KWD ERROR_KWD UINT;
 

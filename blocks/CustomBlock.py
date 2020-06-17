@@ -1,7 +1,7 @@
 from blocks.LogicalBlock import LogicalBlock
 from blocks.BasicBlock import BasicBlock
 from blocks.StateBlock import StateBlock
-from values.BaseValue import BaseValue, PIN_TYPE_INPUT, PIN_TYPE_OUTPUT
+from values.BaseValue import BaseValue, PIN_TYPE_INPUT, PIN_TYPE_OUTPUT, PIN_TYPE_IO
 from typing import List, Tuple, Dict
 import simulation.Simulation
 import copy
@@ -10,6 +10,7 @@ import copy
 class CustomBlock(LogicalBlock):
     __INPUT_PINS: str = "IN"
     __OUTPUT_PINS: str = "OUT"
+    __IO_PINS: str = "IO"
     # contains two dictionaries at the keys specified by __INPUT_PINS and __OUTPUT_PINS
     __pin_block_dict: Dict[str, Dict[str, StateBlock]]
 
@@ -17,6 +18,7 @@ class CustomBlock(LogicalBlock):
                  block_name: str,
                  input_names: List[str],
                  output_names: List[str],
+                 io_names: List[str],
                  original_blocks: List[BasicBlock],
                  original_edges: List[Tuple[str, str]]
                  ):
@@ -25,14 +27,21 @@ class CustomBlock(LogicalBlock):
             self.add_pin(BaseValue(input_name, PIN_TYPE_INPUT))
         for output_name in output_names:
             self.add_pin(BaseValue(output_name, PIN_TYPE_OUTPUT))
+        for io_name in io_names:
+            self.add_pin(BaseValue(io_name, PIN_TYPE_IO))
         self.__sim = simulation.Simulation.Simulation(use_db=False)
 
         # initialize the pin block dictionary
-        self.__pin_block_dict = {self.__INPUT_PINS: {}, self.__OUTPUT_PINS: {}}
+        self.__pin_block_dict = {
+            self.__INPUT_PINS: {},
+            self.__OUTPUT_PINS: {},
+            self.__IO_PINS: {}
+        }
 
         # add state blocks that link to pins
         self.__add_to_pin_block_dict(input_names, PIN_TYPE_OUTPUT, self.__INPUT_PINS)
         self.__add_to_pin_block_dict(output_names, PIN_TYPE_INPUT, self.__OUTPUT_PINS)
+        self.__add_to_pin_block_dict(io_names, PIN_TYPE_IO, self.__IO_PINS)
 
         # add copies of the original blocks
         for block in original_blocks:
@@ -114,6 +123,7 @@ class CustomBlockTemplate:
     __edges: List[Tuple[str, str]]
     __input_names: List[str]
     __output_names: List[str]
+    __io_names: List[str]
 
     def __init__(self, name: str):
         self.__name = name
@@ -121,6 +131,7 @@ class CustomBlockTemplate:
         self.__edges = []
         self.__input_names = []
         self.__output_names = []
+        self.__io_names = []
 
     def get_name(self) -> str:
         return self.__name
@@ -137,11 +148,15 @@ class CustomBlockTemplate:
     def add_output_pins(self, pin_list: List[str]) -> None:
         self.__output_names += pin_list
 
+    def add_io_pins(self, pin_list: List[str]) -> None:
+        self.__io_names += pin_list
+
     def generate_custom_block(self, block_name: str) -> CustomBlock:
         return CustomBlock(
             block_name=block_name,
             input_names=self.__input_names,
             output_names=self.__output_names,
+            io_names=self.__io_names,
             original_blocks=self.__blocks,
             original_edges=self.__edges
         )

@@ -42,6 +42,8 @@ ERROR_POSITION_NOT_SET: [str] = \
     "18:The block position for \"%s\" is not set."
 ERROR_CUSTOM_TEMPLATE_DOES_NOT_EXIST: [str] = \
     "19:The template \"%s\" has not been created."
+ERROR_EDGE_BETWEEN_OUTPUTS: [str] = \
+    "20:Cannot create edge \"%s - %s\" between two output pins."
 
 
 class FileSyntaxErrorListener(ErrorListener):

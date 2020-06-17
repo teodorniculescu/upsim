@@ -12,7 +12,7 @@ and1.out,OUT,soutput.in,IN
 
 From,From Type,To,To Type
 and1.out,OUT,soutput.in,IN
-24:0 ERROR 7:Cannot create edge "and1.out - sa.out" without an input vertex.
+24:0 ERROR 20:Cannot create edge "and1.out - sa.out" between two output pins.
 
 From,From Type,To,To Type
 and1.out,OUT,soutput.in,IN

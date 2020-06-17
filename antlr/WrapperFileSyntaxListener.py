@@ -347,8 +347,12 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             # create the custom block
             custom_block_template = CustomBlockTemplate(template_name)
             # add all pins
-            custom_block_template.add_input_pins(ctx.define_input_pins().pin_list)
-            custom_block_template.add_output_pins(ctx.define_output_pins().pin_list)
+            if ctx.define_input_pins() is not None:
+                custom_block_template.add_input_pins(ctx.define_input_pins().pin_list)
+            if ctx.define_output_pins() is not None:
+                custom_block_template.add_output_pins(ctx.define_output_pins().pin_list)
+            if ctx.define_io_pins() is not None:
+                custom_block_template.add_io_pins(ctx.define_io_pins().pin_list)
             # add all blocks
             if ctx.insert_blocks() is not None:
                 for context in ctx.insert_blocks():
@@ -370,6 +374,11 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     def exitDefine_output_pins(self, ctx:FileSyntaxParser.Define_output_pinsContext):
         ctx.pin_list = []
         for context in ctx.output_pin_name():
+            ctx.pin_list.append(context.text)
+
+    def exitDefine_io_pins(self, ctx:FileSyntaxParser.Define_io_pinsContext):
+        ctx.pin_list = []
+        for context in ctx.io_pin_name():
             ctx.pin_list.append(context.text)
 
     def exitCreate_digital_tri_state_buffer(self, ctx:FileSyntaxParser.Create_digital_tri_state_bufferContext):

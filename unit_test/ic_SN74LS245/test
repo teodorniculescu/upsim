@@ -1,0 +1,31 @@
+
+DEFINE CUSTOM BLOCK SN74LS245 (IN nen dir INOUT a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8) {
+    INSERT BLOCKS
+        AND btoa en ndir o,
+        AND atob en dir o,
+        NOT notnen i o;
+};
+
+INSERT BLOCKS
+    CUSTOM SN74LS245 tr,
+    STATE INOUT a1,
+    STATE INOUT a2,
+    STATE INOUT a3,
+    STATE INOUT a4,
+    STATE INOUT a5,
+    STATE INOUT a6,
+    STATE INOUT a7,
+    STATE INOUT a8,
+    STATE INOUT b1,
+    STATE INOUT b2,
+    STATE INOUT b3,
+    STATE INOUT b4,
+    STATE INOUT b5,
+    STATE INOUT b6,
+    STATE INOUT b7,
+    STATE INOUT b8,
+    STATE OUT nen,
+    STATE OUT dir;
+
+INSERT EDGES
+    BTWN a1.val AND tr.a1;
