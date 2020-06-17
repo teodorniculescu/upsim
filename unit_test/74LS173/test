@@ -1,11 +1,11 @@
 DEFINE CUSTOM BLOCK latchHandler (IN d de nde clk clr en OUT q) {
-    BLOCKS
+    INSERT BLOCKS
         AND and1 q nde o,
         AND and2 d de o,
         OR or a1 a2 o,
         D_LATCH latch,
         DTS_BUFFER buf;
-    EDGES
+    INSERT EDGES
         BTWN THIS.d AND and2.d,
         BTWN THIS.de AND and2.de,
         BTWN THIS.nde AND and1.nde,
@@ -20,10 +20,32 @@ DEFINE CUSTOM BLOCK latchHandler (IN d de nde clk clr en OUT q) {
         BTWN buf.out AND THIS.q;
 };
 
+/* other necessary pins */
+
+/* data inputs for the latches */
+
+
+/* the output control pins */
 INSERT BLOCKS
-    CUSTOM latchHandler h1,
     STATE OUT M,
-    STATE OUT N
-    STATE OUT G1,
-    STATE OUT G2,
-    STATE OUT D1;
+    STATE OUT N,
+    NOT notM i o,
+    NOT notN i o,
+    AND andmn M N o;
+
+INSERT EDGES
+    BTWN M.val AND notM.i,
+    BTWN N.val AND notN.i,
+    BTWN notM.o AND andmn.M,
+    BTWN notN.o AND andmn.N;
+
+/* the blocks where the d latches are located */
+/*
+INSERT BLOCKS
+    CUSTOM latchHandler h1;
+INSERT EDGES
+    BTWN andmn.o AND h1.en;
+*/
+
+/* the data enable pins */
+

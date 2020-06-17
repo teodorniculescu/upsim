@@ -22,7 +22,7 @@ command : (define | insert | run);
 
 define : DEFINE_KWD CUSTOM_KWD BLOCK_KWD custom_block_keyword
          '(' define_input_pins define_output_pins ')'
-         '{' ( (insert_blocks | insert_edges) ';')+ '}'
+         '{' ( INSERT_KWD (insert_blocks | insert_edges) ';')+ '}'
        ;
 define_input_pins : INPUT_KWD input_pin_name+ ;
 define_output_pins : OUTPUT_KWD output_pin_name+ ;

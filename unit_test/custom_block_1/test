@@ -1,8 +1,8 @@
 DEFINE CUSTOM BLOCK internal1 (IN a b c OUT o) {
-    BLOCKS
+    INSERT BLOCKS
         AND b1 a b o,
         AND b2 b1o c o;
-    EDGES
+    INSERT EDGES
         BTWN THIS.a AND b1.a,
         BTWN THIS.b AND b1.b,
         BTWN THIS.c AND b2.c,
