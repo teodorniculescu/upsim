@@ -238,6 +238,12 @@ class Simulation:
 
         self.__initial_conditions.append(conditions)
 
+    def pop_condition(self) -> None:
+        # remove the first element
+        self.__initial_conditions.pop()
+        # decrement the counter
+        self.__number_init_cond -= 1
+
     def add_output_wrapper(self, out_fw: type(sys.stdout)) -> None:
         """
         Adds the wrapper that handles the output to the file or sys.stdout

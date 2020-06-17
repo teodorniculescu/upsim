@@ -104,6 +104,8 @@ class CustomBlock(LogicalBlock):
         self.__sim.progress_run()
         # load the values form the OUTPUT pins to the
         self.__store_output_pins()
+        # remove the initial condition
+        self.__sim.pop_condition()
 
 
 class CustomBlockTemplate:
