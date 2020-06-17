@@ -1,26 +1,23 @@
 INSERT BLOCKS
-    DTS_BUFFER bufa,
-    DTS_BUFFER bufb,
+    BUS_TRAN_RECV btr,
     STATE INOUT a,
     STATE INOUT b,
-    STATE OUT btoaen,
-    STATE OUT atoben;
+    STATE OUT ENbtoa,
+    STATE OUT ENatob;
 
 INSERT EDGES
-    BTWN btoaen.val AND bufb.en,
-    BTWN atoben.val AND bufa.en,
-    BTWN a.val AND (bufa.in, bufb.out),
-    BTWN b.val AND (bufb.in, bufa.out);
+    BTWN ENbtoa.val AND btr.ENbtoa,
+    BTWN ENatob.val AND btr.ENatob,
+    BTWN a.val AND btr.a,
+    BTWN b.val AND btr.b;
 
 INSERT INIT COND
-    (atoben.val=0, btoaen.val=0),
-    (a.val=0, atoben.val=1),
-    (atoben.val=0),
-    (b.val=1, atoben.val=1),
-    (b.val=1, atoben.val=0, btoaen.val=1),
-    (b.val=1, atoben.val=0, btoaen.val=1),
-    (b.val=1, atoben.val=0, btoaen.val=1);
+    (ENatob.val=0, ENbtoa.val=0),
+    (a.val=0, ENatob.val=1),
+    (ENatob.val=0),
+    (b.val=1, ENatob.val=1),
+    (b.val=1, ENatob.val=0, ENbtoa.val=1);
 
 RUN;
 
-SHOW RUN (atoben.val, btoaen.val, a.val, b.val);
+SHOW RUN (ENatob.val, ENbtoa.val, a.val, b.val);

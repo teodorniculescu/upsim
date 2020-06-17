@@ -151,6 +151,7 @@ class Simulation:
         print(self.__number_init_cond)
         while not self.__execution_stack_is_empty():
             print(self.__execution_stack)
+            self.show_all_blocks_current_values()
             # increment the number of steps the initial conditions took to completion
             self.__num_sss += 1
             # pop execution stack

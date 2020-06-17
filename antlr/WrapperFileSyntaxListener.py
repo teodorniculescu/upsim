@@ -4,7 +4,7 @@ from gen.FileSyntaxParser import FileSyntaxParser
 from simulation.Simulation import Simulation
 from blocks.store.LogicGates import *
 from blocks.store.Latch import D_LATCH
-from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER
+from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER, BUS_TRANSMITTER_RECEIVER
 from blocks.CustomBlock import CustomBlockTemplate
 from antlr4.Token import *
 
@@ -398,4 +398,12 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         except Exception as e:
             self.__set_error(ctx, e)
 
+    def exitCreate_bus_transmitter_receiver(self, ctx:FileSyntaxParser.Create_bus_transmitter_receiverContext):
+        if self.error_is_set():
+            return
+        block_name = ctx.block_name().text
+        try:
+            ctx.block = BUS_TRANSMITTER_RECEIVER(block_name)
+        except Exception as e:
+            self.__set_error(ctx, e)
 

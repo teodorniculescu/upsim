@@ -55,8 +55,13 @@ create_block : create_state_block
              | create_logic_gate_n_inputs
              | create_d_latch
              | create_digital_tri_state_buffer
+             | create_bus_transmitter_receiver
              | create_custom_block
              ;
+
+create_bus_transmitter_receiver :
+    BUS_TRANSMITTER_RECEIVER_KWD block_name
+    ;
 
 create_custom_block :
     CUSTOM_KWD custom_block_keyword block_name
@@ -139,7 +144,7 @@ fragment UPPERCASE_LETTER : [A-Z];
 fragment NUMBER : [0-9];
 fragment LETTER : LOWERCASE_LETTER | UPPERCASE_LETTER;
 
-
+BUS_TRANSMITTER_RECEIVER_KWD : 'BUS_TRAN_RECV';
 OR_KWD : 'OR';
 AND_KWD : 'AND';
 NAND_KWD : 'NAND';
