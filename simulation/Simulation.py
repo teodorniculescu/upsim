@@ -39,16 +39,16 @@ class Simulation:
         self.__initial_conditions = []
         self.__number_init_cond = 0
         self.__ic = {}
-        self.__out_fw = sys.stdout
         self.__num_sss = 0
         self.__graph = Graph(self.__bh)
         self.__use_db = use_db
         if use_db:
+            self.__out_fw = sys.stdout
             self.__dbc = DBController()
-        self.table_name = \
-            "run_" + \
-            datetime.now().strftime("%d%m%Y_%H%M%S_") + \
-            str(int(random() * 1000000))
+            self.table_name = \
+                "run_" + \
+                datetime.now().strftime("%d%m%Y_%H%M%S_") + \
+                str(int(random() * 1000000))
 
     def get_positionable_blocks(self):
         return self.__bh.get_positionable_blocks()
