@@ -1,5 +1,5 @@
 DEFINE CUSTOM BLOCK latchHandler (IN d de nde clk clr en OUT q) {
-    BLOCK
+    BLOCKS
         AND and1 q nde o,
         AND and2 d de o,
         OR or a1 a2 o,
@@ -12,10 +12,18 @@ DEFINE CUSTOM BLOCK latchHandler (IN d de nde clk clr en OUT q) {
         BTWN and1.o AND or.a1,
         BTWN and2.o AND or.a2,
         BTWN or.o AND latch.D,
-        BTWN THIS.clk AND latch.CLK,
+        BTWN THIS.clk AND latch.C,
         BTWN THIS.clr AND latch.R,
         BTWN latch.Q AND and1.q,
         BTWN latch.NQ AND buf.in,
         BTWN THIS.en AND buf.en,
         BTWN buf.out AND THIS.q;
 };
+
+INSERT BLOCKS
+    CUSTOM latchHandler h1,
+    STATE OUT M,
+    STATE OUT N
+    STATE OUT G1,
+    STATE OUT G2,
+    STATE OUT D1;

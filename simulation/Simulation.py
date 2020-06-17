@@ -79,7 +79,7 @@ class Simulation:
         row += self.__graph.get_vertex_values()
         return row
 
-    def __setup_run(self) -> None:
+    def setup_run(self) -> None:
         if self.__use_db:
             self.__dbc.create_table(
                 self.table_name,
@@ -144,6 +144,33 @@ class Simulation:
             for pin in block.get_all_pins().values():
                 pin.set_previous_value()
 
+    def progress_run(self) -> None:
+        self.__setup_init_cond()
+        while not self.__execution_stack_is_empty():
+            # increment the number of steps the initial conditions took to completion
+            self.__num_sss += 1
+            # pop execution stack
+            (block, cmd) = self.__remove_execution()
+            new_stack_elements: List[str]
+            new_cmd: str
+            # propagate or calculate
+            if cmd == PROPAGATE_CMD:
+                new_stack_elements = self.__propagate(block)
+                new_cmd = CALCULATE_CMD
+            elif cmd == CALCULATE_CMD:
+                new_stack_elements = self.__calculate(block)
+                new_cmd = PROPAGATE_CMD
+            else:
+                # Create exception for undefined cmd from execution stack
+                raise Exception("UNDEFINED")
+            # push execution stack
+            for new_element in new_stack_elements:
+                self.__insert_execution((new_element, new_cmd))
+            if self.__use_db:
+                # show circuit state, which means inserting a value in the table
+                self.__dbc.insert_row(self.table_name, self.get_run_line())
+        self.set_previous_value_all_blocks()
+
     def run(self) -> None:
         """
         Creates a CSV with the following fields:
@@ -153,34 +180,9 @@ class Simulation:
         :return: None
         """
 
-        self.__setup_run()
+        self.setup_run()
         while not self.__finished_all_init_cond():
-            self.__setup_init_cond()
-            while not self.__execution_stack_is_empty():
-                # increment the number of steps the initial conditions took to completion
-                self.__num_sss += 1
-                # print(str(self.__number_init_cond) + "\t" + str(self.__num_sss) + "\t" + str(self.__execution_stack))
-                # pop execution stack
-                (block, cmd) = self.__remove_execution()
-                new_stack_elements: List[str]
-                new_cmd: str
-                # propagate or calculate
-                if cmd == PROPAGATE_CMD:
-                    new_stack_elements = self.__propagate(block)
-                    new_cmd = CALCULATE_CMD
-                elif cmd == CALCULATE_CMD:
-                    new_stack_elements = self.__calculate(block)
-                    new_cmd = PROPAGATE_CMD
-                else:
-                    # Create exception for undefined cmd from execution stack
-                    raise Exception("UNDEFINED")
-                # push execution stack
-                for new_element in new_stack_elements:
-                    self.__insert_execution((new_element, new_cmd))
-                if self.__use_db:
-                    # show circuit state, which means inserting a value in the table
-                    self.__dbc.insert_row(self.table_name, self.get_run_line())
-            self.set_previous_value_all_blocks()
+            self.progress_run()
         if self.__use_db:
             self.__dbc.commit()
 
