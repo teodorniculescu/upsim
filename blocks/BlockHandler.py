@@ -81,3 +81,6 @@ class BlockHandler:
             raise Exception(ERROR_CUSTOM_TEMPLATE_DOES_NOT_EXIST % template_name)
         return self.__template_dict[template_name].generate_custom_block(block_name)
 
+    def show_all_blocks_current_values(self) -> None:
+        for block in self.get_all_blocks().values():
+            print("\t" + block.get_all_block_current_values())

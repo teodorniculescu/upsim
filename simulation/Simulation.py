@@ -289,3 +289,10 @@ class Simulation:
 
     def create_custom_block(self, template_name: str, block_name: str) -> BasicBlock:
         return self.__bh.create_custom_block(template_name, block_name)
+
+    def show_all_blocks_current_values(self) -> None:
+        self.__bh.show_all_blocks_current_values()
+
+    def show_last_condition(self) -> None:
+        print("dimensiune " + str(len(self.__initial_conditions)))
+        print(self.__initial_conditions[-1])

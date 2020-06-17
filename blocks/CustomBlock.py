@@ -85,8 +85,8 @@ class CustomBlock(LogicalBlock):
             state_block_pin: BaseValue = state_block.get_pin_with_name("val")
             # generate the node name by merging the block and pin names
             node_name: str = state_block.get_name() + "." + state_block_pin.get_name()
-            # generate the value of the val pin
-            node_value_str: str = str(state_block_pin.get_value())
+            # generate the value of the val pin from the shell not the the interior
+            node_value_str: str = str(pin.get_value())
             # store in the dictionary of initial conditions
             cond_dict[node_name] = node_value_str
         # add the initial condition

@@ -25,12 +25,8 @@ INSERT EDGES
 
 INSERT INIT COND
     (a.val=0, b.val=0, c.val=0),
-    (a.val=0, b.val=0, c.val=1),
+    (a.val=1, b.val=1, c.val=1),
     (a.val=0, b.val=1, c.val=0),
-    (a.val=0, b.val=1, c.val=1),
-    (a.val=1, b.val=0, c.val=0),
-    (a.val=1, b.val=0, c.val=1),
-    (a.val=1, b.val=1, c.val=0),
     (a.val=1, b.val=1, c.val=1);
 
 RUN;
