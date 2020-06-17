@@ -77,7 +77,7 @@ INSERT EDGES
 
 /* initial conditions */
 INSERT INIT COND
-    (clk.val=0, m.val=0, n.val=0, ng1.val=0, ng2.val=0, clr.val=1, 1d.val=0, 1q.val=0),
+    (clk.val=0, m.val=0, n.val=0, ng1.val=0, ng2.val=0, clr.val=1, 1d.val=0),
     (clk.val=1),
     (clk.val=0, clr.val=0),
     (clk.val=1),

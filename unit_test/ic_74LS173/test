@@ -57,11 +57,17 @@ INSERT EDGES
 
 /* input data pins */
 INSERT BLOCKS
-    STATE OUT 1d;
+    STATE OUT 1d,
+    STATE OUT 2d,
+    STATE OUT 3d,
+    STATE OUT 4d;
 
 /* output data pins */
 INSERT BLOCKS
-    STATE IN 1q;
+    STATE IN 1q,
+    STATE IN 2q,
+    STATE IN 3q,
+    STATE IN 4q;
 
 /* the blocks where the d latches are located */
 INSERT BLOCKS
@@ -74,22 +80,55 @@ INSERT EDGES
     BTWN clr.val AND h1.clr,
     BTWN oc.o AND h1.en,
     BTWN h1.q AND 1q.val;
+INSERT BLOCKS
+    CUSTOM latchHandler h2;
+INSERT EDGES
+    BTWN 2d.val AND h2.d,
+    BTWN de.o AND h2.de,
+    BTWN nde.o AND h2.nde,
+    BTWN clk.val AND h2.clk,
+    BTWN clr.val AND h2.clr,
+    BTWN oc.o AND h2.en,
+    BTWN h2.q AND 2q.val;
+INSERT BLOCKS
+    CUSTOM latchHandler h3;
+INSERT EDGES
+    BTWN 3d.val AND h3.d,
+    BTWN de.o AND h3.de,
+    BTWN nde.o AND h3.nde,
+    BTWN clk.val AND h3.clk,
+    BTWN clr.val AND h3.clr,
+    BTWN oc.o AND h3.en,
+    BTWN h3.q AND 3q.val;
+INSERT BLOCKS
+    CUSTOM latchHandler h4;
+INSERT EDGES
+    BTWN 4d.val AND h4.d,
+    BTWN de.o AND h4.de,
+    BTWN nde.o AND h4.nde,
+    BTWN clk.val AND h4.clk,
+    BTWN clr.val AND h4.clr,
+    BTWN oc.o AND h4.en,
+    BTWN h4.q AND 4q.val;
 
 /* initial conditions */
 INSERT INIT COND
-    (clk.val=0, m.val=0, n.val=0, ng1.val=0, ng2.val=0, clr.val=1, 1d.val=0, 1q.val=0),
+    (clk.val=0, m.val=0, n.val=0, ng1.val=0, ng2.val=0, clr.val=1,
+    1d.val=0, 2d.val=0, 3d.val=0, 4d.val=0),
     (clk.val=1),
     (clk.val=0, clr.val=0),
     (clk.val=1),
-    (clk.val=0, 1d.val=1),
+    (clk.val=0, 1d.val=1, 2d.val=0, 3d.val=0, 4d.val=1),
     (clk.val=1),
-    (clk.val=0, 1d.val=0),
+    (clk.val=0, 1d.val=0, 2d.val=1, 3d.val=1, 4d.val=0),
     (clk.val=1),
-    (clk.val=0, 1d.val=1),
+    (clk.val=0, 1d.val=1, 2d.val=0, 3d.val=1, 4d.val=1),
     (clk.val=1),
     (clk.val=0, clr.val=1);
 
 /* run and show results */
 RUN;
 SHOW RUN
-(m.val, n.val, ng1.val, ng2.val, clk.val, clr.val, 1d.val, 1q.val);
+(m.val, n.val, ng1.val, ng2.val, clk.val, clr.val,
+1d.val, 2d.val, 3d.val, 4d.val,
+1q.val, 2q.val, 3q.val, 4q.val);
