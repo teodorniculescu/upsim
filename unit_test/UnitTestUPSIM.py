@@ -82,3 +82,6 @@ class UnitTestUPSIM(unittest.TestCase):
 
     def test_d_latch_block(self) -> None:
         self.run_test()
+
+    def test_custom_block_1(self) -> None:
+        self.run_test()

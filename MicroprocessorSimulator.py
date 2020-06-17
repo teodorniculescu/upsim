@@ -16,8 +16,8 @@ def parse_test():
     test = "custom_block_1"
     FileInterpreter(
         "unit_test/%s/test" % test,
-        #"unit_test/%s/answer" % test,
-        "",
+        "unit_test/%s/answer" % test,
+        #"",
         Simulation()
     ).parse()
 
