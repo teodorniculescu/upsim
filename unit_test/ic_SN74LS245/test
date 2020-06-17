@@ -1,9 +1,27 @@
+DEFINE CUSTOM BLOCK BusTranRecv (IN btoaen atoben IO a b) {
+    INSERT BLOCKS
+        DTS_BUFFER bufa,
+        DTS_BUFFER bufb;
+    INSERT EDGES
+        BTWN THIS.btoaen AND bufb.en;
+
+};
 
 DEFINE CUSTOM BLOCK SN74LS245 (IN nen dir INOUT a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8) {
     INSERT BLOCKS
         AND btoa en ndir o,
         AND atob en dir o,
-        NOT notnen i o;
+        NOT notnen i o,
+        NOT notdir i o
+        ;
+    INSERT EDGES
+        BTWN THIS.nen AND notnen.i,
+        BTWN THIS.dir AND notdir.i,
+        BTWN THIS.dir AND atob.dir,
+        BTWN notnen.o AND atob.en,
+        BTWN notnen.o AND btoa.en,
+        BTWN notdir.o AND btoa.ndir
+        ;
 };
 
 INSERT BLOCKS
@@ -28,4 +46,33 @@ INSERT BLOCKS
     STATE OUT dir;
 
 INSERT EDGES
-    BTWN a1.val AND tr.a1;
+    BTWN a1.val AND tr.a1,
+    BTWN a2.val AND tr.a2,
+    BTWN a3.val AND tr.a3,
+    BTWN a4.val AND tr.a4,
+    BTWN a5.val AND tr.a5,
+    BTWN a6.val AND tr.a6,
+    BTWN a7.val AND tr.a7,
+    BTWN a8.val AND tr.a8,
+    BTWN b1.val AND tr.b1,
+    BTWN b2.val AND tr.b2,
+    BTWN b3.val AND tr.b3,
+    BTWN b4.val AND tr.b4,
+    BTWN b5.val AND tr.b5,
+    BTWN b6.val AND tr.b6,
+    BTWN b7.val AND tr.b7,
+    BTWN b8.val AND tr.b8,
+    BTWN nen.val AND tr.nen,
+    BTWN dir.val AND tr.dir;
+
+INSERT INIT COND
+    (nen.val=0, dir.val=1,
+    a1.val=0,a2.val=0,a3.val=0,a4.val=0,a5.val=0,a6.val=0,a7.val=0,a8.val=0);
+
+RUN;
+
+SHOW RUN (
+nen.val, dir.val,
+a1.val,a2.val,a3.val,a4.val,a5.val,a6.val,a7.val,a8.val,
+b1.val,b2.val,b3.val,b4.val,b5.val,b6.val,b7.val,b8.val
+);

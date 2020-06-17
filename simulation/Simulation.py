@@ -146,7 +146,9 @@ class Simulation:
 
     def progress_run(self) -> None:
         self.__setup_init_cond()
+        print(self.__number_init_cond)
         while not self.__execution_stack_is_empty():
+            print(self.__execution_stack)
             # increment the number of steps the initial conditions took to completion
             self.__num_sss += 1
             # pop execution stack
