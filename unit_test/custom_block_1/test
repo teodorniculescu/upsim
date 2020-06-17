@@ -1,0 +1,39 @@
+DEFINE CUSTOM BLOCK internal1 (IN a b c OUT o) {
+    BLOCKS
+        AND b1 a b o,
+        AND b2 b1o c o;
+    EDGES
+        BTWN THIS.a AND b1.a,
+        BTWN THIS.b AND b1.b,
+        BTWN THIS.c AND b2.c,
+        BTWN b1.o AND b2.b1o,
+        BTWN b2.o AND THIS.o;
+};
+
+INSERT BLOCKS
+    CUSTOM internal1 in1,
+    STATE OUT a,
+    STATE OUT b,
+    STATE OUT c,
+    STATE IN o;
+
+INSERT EDGES
+    BTWN a.val AND in1.a,
+    BTWN b.val AND in1.b,
+    BTWN c.val AND in1.c,
+    BTWN in1.o AND o.val;
+
+INSERT INIT COND
+    (a.val=0, b.val=0, c.val=0),
+    (a.val=0, b.val=0, c.val=1),
+    (a.val=0, b.val=1, c.val=0),
+    (a.val=0, b.val=1, c.val=1),
+    (a.val=1, b.val=0, c.val=0),
+    (a.val=1, b.val=0, c.val=1),
+    (a.val=1, b.val=1, c.val=0),
+    (a.val=1, b.val=1, c.val=1);
+
+RUN;
+
+SHOW RUN (a.val, b.val, c.val, o.val);
+

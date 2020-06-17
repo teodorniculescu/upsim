@@ -8,9 +8,9 @@ import copy
 
 
 class CustomBlock(LogicalBlock):
-    __INPUT: str = "IN"
-    __OUTPUT: str = "OUT"
-    # contains two dictionaries at the keys specified by __INPUT and __OUTPUT
+    __INPUT_PINS: str = "IN"
+    __OUTPUT_PINS: str = "OUT"
+    # contains two dictionaries at the keys specified by __INPUT_PINS and __OUTPUT_PINS
     __pin_block_dict: Dict[str, Dict[str, StateBlock]]
 
     def __init__(self,
@@ -28,11 +28,11 @@ class CustomBlock(LogicalBlock):
         self.__sim = simulation.Simulation.Simulation(use_db=False)
 
         # initialize the pin block dictionary
-        self.__pin_block_dict = {self.__INPUT: {}, self.__OUTPUT: {}}
+        self.__pin_block_dict = {self.__INPUT_PINS: {}, self.__OUTPUT_PINS: {}}
 
         # add state blocks that link to pins
-        self.__add_to_pin_block_dict(input_names, PIN_TYPE_OUTPUT, self.__INPUT)
-        self.__add_to_pin_block_dict(output_names, PIN_TYPE_INPUT, self.__OUTPUT)
+        self.__add_to_pin_block_dict(input_names, PIN_TYPE_OUTPUT, self.__INPUT_PINS)
+        self.__add_to_pin_block_dict(output_names, PIN_TYPE_INPUT, self.__OUTPUT_PINS)
 
         # add copies of the original blocks
         for block in original_blocks:
@@ -80,7 +80,7 @@ class CustomBlock(LogicalBlock):
         cond_dict: Dict[str, str] = {}
         for pin in self.get_all_pins_with_type(PIN_TYPE_INPUT).values():
             # get the state block
-            state_block: StateBlock = self.__pin_block_dict[self.__OUTPUT][pin.get_name()]
+            state_block: StateBlock = self.__pin_block_dict[self.__INPUT_PINS][pin.get_name()]
             # get the val pin of the state block
             state_block_pin: BaseValue = state_block.get_pin_with_name("val")
             # generate the node name by merging the block and pin names
@@ -94,7 +94,7 @@ class CustomBlock(LogicalBlock):
 
     def __store_output_pins(self) -> None:
         for pin in self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values():
-            from_pin = self.__pin_block_dict[self.__INPUT][pin.get_name()].get_pin_with_name("val")
+            from_pin = self.__pin_block_dict[self.__OUTPUT_PINS][pin.get_name()].get_pin_with_name("val")
             self.__transfer_pin(from_pin=from_pin, to_pin=pin)
 
     def calculate(self) -> None:
