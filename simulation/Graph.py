@@ -96,6 +96,12 @@ class Graph:
     def set_vertex_value(self, vertex_name: str, vertex_value: int) -> None:
         self.get_node(vertex_name).get_pin().set_value(vertex_value)
 
+    def get_vertex_value(self, vertex_name: str) -> str:
+        pin = self.get_node(vertex_name).get_pin()
+        if pin.is_set():
+            return str(pin.get_value())
+        return "N"
+
     def calculate_values_block(self, block_name: str) -> List[str]:
         result: List[str] = []
         block: BasicBlock = self.__bh.get_block_with_name(block_name)

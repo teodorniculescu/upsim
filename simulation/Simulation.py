@@ -97,6 +97,8 @@ class Simulation:
         vertex_name: str
         vertex_value_str: str
         for vertex_name, vertex_value_str in current_init_cont.items():
+            if self.__graph.get_vertex_value(vertex_name) == vertex_value_str:
+                continue
             # obtains the integer value from the stored string
             vertex_value: int = int(vertex_value_str)
             # TODO exception if the vertex value is invalid
