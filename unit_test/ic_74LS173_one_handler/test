@@ -1,0 +1,95 @@
+DEFINE CUSTOM BLOCK latchHandler (IN d de nde clk clr en OUT q) {
+    INSERT BLOCKS
+        AND a1 Q nde o,
+        AND a2 d de o,
+        OR or a1o a2o D,
+        D_LATCH latch,
+        NOT q i o,
+        DTS_BUFFER buf;
+    INSERT EDGES
+        BTWN latch.Q AND a1.Q,
+        BTWN THIS.nde AND a1.nde,
+        BTWN THIS.d AND a2.d,
+        BTWN THIS.de AND a2.de,
+        BTWN THIS.clk AND latch.C,
+        BTWN THIS.clr AND latch.R,
+        BTWN a1.o AND or.a1o,
+        BTWN a2.o AND or.a2o,
+        BTWN or.D AND latch.D,
+        BTWN latch.NQ AND q.i,
+        BTWN q.o AND buf.in,
+        BTWN THIS.en AND buf.en,
+        BTWN buf.out AND THIS.q;
+};
+
+/* other necessary pins */
+INSERT BLOCKS
+    STATE OUT clr,
+    STATE OUT clk;
+
+/* the output control pins */
+INSERT BLOCKS
+    STATE OUT m,
+    STATE OUT n,
+    NOT notm i o,
+    NOT notn i o,
+    AND oc m n o;
+INSERT EDGES
+    BTWN m.val AND notm.i,
+    BTWN n.val AND notn.i,
+    BTWN notm.o AND oc.m,
+    BTWN notn.o AND oc.n;
+
+/* the data enable pins */
+INSERT BLOCKS
+    STATE OUT ng1,
+    STATE OUT ng2,
+    NOT notng1 i o,
+    NOT notng2 i o,
+    AND de g1 g2 o,
+    NOT nde i o;
+INSERT EDGES
+    BTWN ng1.val AND notng1.i,
+    BTWN ng2.val AND notng2.i,
+    BTWN notng1.o AND de.g1,
+    BTWN notng2.o AND de.g2,
+    BTWN de.o AND nde.i;
+
+/* input data pins */
+INSERT BLOCKS
+    STATE OUT 1d;
+
+/* output data pins */
+INSERT BLOCKS
+    STATE IN 1q;
+
+/* the blocks where the d latches are located */
+INSERT BLOCKS
+    CUSTOM latchHandler h1;
+INSERT EDGES
+    BTWN 1d.val AND h1.d,
+    BTWN de.o AND h1.de,
+    BTWN nde.o AND h1.nde,
+    BTWN clk.val AND h1.clk,
+    BTWN clr.val AND h1.clr,
+    BTWN oc.o AND h1.en,
+    BTWN h1.q AND 1q.val;
+
+/* initial conditions */
+INSERT INIT COND
+    (clk.val=0, m.val=0, n.val=0, ng1.val=0, ng2.val=0, clr.val=1, 1d.val=0, 1q.val=0),
+    (clk.val=1),
+    (clk.val=0, clr.val=0),
+    (clk.val=1),
+    (clk.val=0, 1d.val=1),
+    (clk.val=1),
+    (clk.val=0, 1d.val=0),
+    (clk.val=1),
+    (clk.val=0, 1d.val=1),
+    (clk.val=1),
+    (clk.val=0, clr.val=1);
+
+/* run and show results */
+RUN;
+SHOW RUN
+(m.val, n.val, ng1.val, ng2.val, clk.val, clr.val, 1d.val, 1q.val);
