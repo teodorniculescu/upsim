@@ -59,7 +59,7 @@ class BUS_TRANSMITTER_RECEIVER(LogicalBlock):
             a.set_high_impedance()
             b.set_high_impedance()
         else:
-            if enable_atob.is_high() and a.get_value_is_set():
+            if enable_atob.is_high() and a.is_set():
                 b.set_value(a.get_value())
-            elif enable_btoa.is_high() and b.get_value_is_set():
+            elif enable_btoa.is_high() and b.is_set():
                 a.set_value(b.get_value())

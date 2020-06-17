@@ -91,7 +91,8 @@ class BasicBlock:
     def get_output_values(self) -> Dict[str, str]:
         result: Dict[str, str] = {}
         pin: BaseValue
-        for pin in self.__output_pins.values():
+        output_and_io_pins = {**self.__output_pins, **self.__io_pins}
+        for pin in output_and_io_pins.values():
             stored_value: str
             if not pin.get_value_is_set():
                 stored_value = str(None)

@@ -16,7 +16,8 @@ INSERT INIT COND
     (a.val=0, ENatob.val=1),
     (ENatob.val=0),
     (b.val=1, ENatob.val=1),
-    (b.val=1, ENatob.val=0, ENbtoa.val=1);
+    (b.val=1, ENatob.val=0, ENbtoa.val=1),
+    (b.val=1, ENbtoa.val=1);
 
 RUN;
 
