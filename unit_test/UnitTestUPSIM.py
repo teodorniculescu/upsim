@@ -88,3 +88,6 @@ class UnitTestUPSIM(unittest.TestCase):
 
     def test_ic_74LS173_one_handler(self) -> None:
         self.run_test()
+
+    def test_ic_74LS173_four_handlers(self) -> None:
+        self.run_test()
