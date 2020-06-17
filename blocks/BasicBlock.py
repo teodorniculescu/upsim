@@ -222,5 +222,6 @@ class BasicBlock:
     def get_all_block_current_values(self) -> str:
         result: str = self.get_name() + ":"
         for pin in self.get_all_pins().values():
-            result += pin.get_name() + "=" + str(pin.get_value()) + "|"
+            result += pin.get_name() + "[" +pin.get_pin_type_str() + "]"
+            result += "=" + str(pin.get_value()) + "|"
         return result

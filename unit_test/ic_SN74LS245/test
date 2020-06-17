@@ -1,20 +1,59 @@
-DEFINE CUSTOM BLOCK BusTranRecv (IN btoaen atoben IO a b) {
-    INSERT BLOCKS
-        DTS_BUFFER bufa,
-        DTS_BUFFER bufb;
-    INSERT EDGES
-        BTWN THIS.btoaen AND bufb.en;
-
-};
-
 DEFINE CUSTOM BLOCK SN74LS245 (IN nen dir INOUT a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8) {
     INSERT BLOCKS
         AND btoa en ndir o,
         AND atob en dir o,
         NOT notnen i o,
-        NOT notdir i o
+        NOT notdir i o,
+        BUS_TRAN_RECV btr1,
+        BUS_TRAN_RECV btr2,
+        BUS_TRAN_RECV btr3,
+        BUS_TRAN_RECV btr4,
+        BUS_TRAN_RECV btr5,
+        BUS_TRAN_RECV btr6,
+        BUS_TRAN_RECV btr7,
+        BUS_TRAN_RECV btr8
         ;
     INSERT EDGES
+        BTWN btoa.o AND btr1.ENbtoa,
+        BTWN atob.o AND btr1.ENatob,
+        BTWN THIS.a1 AND btr1.a,
+        BTWN THIS.b1 AND btr1.b,
+
+        BTWN btoa.o AND btr2.ENbtoa,
+        BTWN atob.o AND btr2.ENatob,
+        BTWN THIS.a2 AND btr2.a,
+        BTWN THIS.b2 AND btr2.b,
+
+        BTWN btoa.o AND btr3.ENbtoa,
+        BTWN atob.o AND btr3.ENatob,
+        BTWN THIS.a3 AND btr3.a,
+        BTWN THIS.b3 AND btr3.b,
+
+        BTWN btoa.o AND btr4.ENbtoa,
+        BTWN atob.o AND btr4.ENatob,
+        BTWN THIS.a4 AND btr4.a,
+        BTWN THIS.b4 AND btr4.b,
+
+        BTWN btoa.o AND btr5.ENbtoa,
+        BTWN atob.o AND btr5.ENatob,
+        BTWN THIS.a5 AND btr5.a,
+        BTWN THIS.b5 AND btr5.b,
+
+        BTWN btoa.o AND btr6.ENbtoa,
+        BTWN atob.o AND btr6.ENatob,
+        BTWN THIS.a6 AND btr6.a,
+        BTWN THIS.b6 AND btr6.b,
+
+        BTWN btoa.o AND btr7.ENbtoa,
+        BTWN atob.o AND btr7.ENatob,
+        BTWN THIS.a7 AND btr7.a,
+        BTWN THIS.b7 AND btr7.b,
+
+        BTWN btoa.o AND btr8.ENbtoa,
+        BTWN atob.o AND btr8.ENatob,
+        BTWN THIS.a8 AND btr8.a,
+        BTWN THIS.b8 AND btr8.b,
+
         BTWN THIS.nen AND notnen.i,
         BTWN THIS.dir AND notdir.i,
         BTWN THIS.dir AND atob.dir,
@@ -54,6 +93,7 @@ INSERT EDGES
     BTWN a6.val AND tr.a6,
     BTWN a7.val AND tr.a7,
     BTWN a8.val AND tr.a8,
+
     BTWN b1.val AND tr.b1,
     BTWN b2.val AND tr.b2,
     BTWN b3.val AND tr.b3,
@@ -62,12 +102,16 @@ INSERT EDGES
     BTWN b6.val AND tr.b6,
     BTWN b7.val AND tr.b7,
     BTWN b8.val AND tr.b8,
+
     BTWN nen.val AND tr.nen,
     BTWN dir.val AND tr.dir;
 
 INSERT INIT COND
     (nen.val=0, dir.val=1,
-    a1.val=0,a2.val=0,a3.val=0,a4.val=0,a5.val=0,a6.val=0,a7.val=0,a8.val=0);
+    a1.val=0,a2.val=0,a3.val=0,a4.val=0,a5.val=0,a6.val=0,a7.val=0,a8.val=0),
+    (a1.val=0,a2.val=0,a3.val=0,a4.val=0,a5.val=0,a6.val=1,a7.val=0,a8.val=0),
+    (dir.val=0,
+    b1.val=1,b2.val=0,b3.val=1,b4.val=0,b5.val=0,b6.val=1,b7.val=0,b8.val=1);
 
 RUN;
 

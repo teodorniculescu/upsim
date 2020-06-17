@@ -56,14 +56,6 @@ class CustomBlock(LogicalBlock):
         # setup the internal pins
         self.__sim.setup_run()
 
-        """
-        # dbg
-        print("blocks")
-        self.__sim.show_all_blocks()
-        print("edges")
-        self.__sim.show_all_edges()
-        """
-
     def __transform_THIS_node(self, node_name: str) -> str:
         [block_name, pin_name] = node_name.split(".")
         if block_name == "THIS":
@@ -85,11 +77,23 @@ class CustomBlock(LogicalBlock):
         to_pin.set_value(from_pin.get_value())
 
     def __load_input_pins(self) -> None:
+        in_and_io_pins = {
+            **self.get_all_pins_with_type(PIN_TYPE_INPUT),
+            **self.get_all_pins_with_type(PIN_TYPE_IO)
+        }
         # create the initial condition
         cond_dict: Dict[str, str] = {}
-        for pin in self.get_all_pins_with_type(PIN_TYPE_INPUT).values():
+        for pin in in_and_io_pins.values():
             # get the state block
-            state_block: StateBlock = self.__pin_block_dict[self.__INPUT_PINS][pin.get_name()]
+            pin_name = pin.get_name()
+            if pin_name in self.__pin_block_dict[self.__INPUT_PINS]:
+                dict_pin_name = self.__pin_block_dict[self.__INPUT_PINS]
+            elif pin_name in self.__pin_block_dict[self.__IO_PINS]:
+                dict_pin_name = self.__pin_block_dict[self.__IO_PINS]
+            else:
+                # TODO create an exception with error code
+                raise Exception("pin does not exist")
+            state_block: StateBlock = dict_pin_name[pin_name]
             # get the val pin of the state block
             state_block_pin: BaseValue = state_block.get_pin_with_name("val")
             # generate the node name by merging the block and pin names
@@ -102,8 +106,21 @@ class CustomBlock(LogicalBlock):
         self.__sim.add_condition(cond_dict)
 
     def __store_output_pins(self) -> None:
-        for pin in self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values():
-            from_pin = self.__pin_block_dict[self.__OUTPUT_PINS][pin.get_name()].get_pin_with_name("val")
+        io_and_out_pins = {
+            **self.get_all_pins_with_type(PIN_TYPE_OUTPUT),
+            **self.get_all_pins_with_type(PIN_TYPE_IO)
+        }
+        for pin in io_and_out_pins.values():
+            # get the state block
+            pin_name = pin.get_name()
+            if pin_name in self.__pin_block_dict[self.__OUTPUT_PINS]:
+                dict_pin_name = self.__pin_block_dict[self.__OUTPUT_PINS]
+            elif pin_name in self.__pin_block_dict[self.__IO_PINS]:
+                dict_pin_name = self.__pin_block_dict[self.__IO_PINS]
+            else:
+                # TODO create an exception with error code
+                raise Exception("pin does not exist")
+            from_pin = dict_pin_name[pin_name].get_pin_with_name("val")
             self.__transfer_pin(from_pin=from_pin, to_pin=pin)
 
     def calculate(self) -> None:
