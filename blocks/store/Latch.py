@@ -13,13 +13,17 @@ class D_LATCH(LogicalBlock):
         super().add_pin(BaseValue("NQ", PIN_TYPE_OUTPUT))
 
     def calculate(self) -> None:
+        # the data pin provides the data that will be saved in the latch
         d: BaseValue
+        # clock signal
         clk: BaseValue
-        r: BaseValue
+        # reset signal - when kept high clears the data - when kept low
+        # provides the data stored inside
+        reset: BaseValue
         q: BaseValue
-        [d, clk, r] = self.get_all_pins_with_type(PIN_TYPE_INPUT).values()
+        [d, clk, reset] = self.get_all_pins_with_type(PIN_TYPE_INPUT).values()
         [q, nq] = self.get_all_pins_with_type(PIN_TYPE_OUTPUT).values()
-        if r.is_high():
+        if reset.is_low():
             if clk.is_posedge():
                 if d.is_high():
                     q.set_high()
@@ -27,7 +31,7 @@ class D_LATCH(LogicalBlock):
                 elif d.is_low():
                     q.set_low()
                     nq.set_high()
-        elif r.is_low():
+        elif reset.is_high():
             q.set_low()
             nq.set_high()
 

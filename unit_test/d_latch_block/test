@@ -14,15 +14,15 @@ INSERT EDGES
     BTWN latch.NQ AND NQ.val;
 
 INSERT INITIAL CONDITIONS
-    (DATA.val=0, RST.val=0, CLK.val=0),
-    (DATA.val=0, RST.val=0, CLK.val=1),
-    (DATA.val=1, RST.val=1, CLK.val=0),
+    (DATA.val=0, RST.val=1, CLK.val=0),
+    (DATA.val=0, RST.val=1, CLK.val=1),
+    (DATA.val=1, RST.val=0, CLK.val=0),
     (CLK.val=1),
     (DATA.val=0, CLK.val=0),
     (CLK.val=1),
     (DATA.val=1, CLK.val=0),
     (CLK.val=1),
-    (RST.val=0, CLK.val=0)
+    (RST.val=1, CLK.val=0)
     ;
 
 
