@@ -7,12 +7,10 @@ from blocks.store.Latch import D_LATCH
 from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER
 from blocks.CustomBlock import CustomBlockTemplate
 from antlr4.Token import *
-from user_interface.UI import UI
 
 
 class WrapperFileSyntaxListener(FileSyntaxListener):
     __sim: Simulation
-    __ui: UI
     __output: type(sys.stdout)
     """
      Specifies if an error has occurred in some block which renders the block
@@ -27,7 +25,6 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
 
     def __init__(self, sim: Simulation, output: type(sys.stdout)):
         self.__sim = sim
-        self.__ui = UI(simulation=sim)
         self.__output = output
         self.__error_occ = False
         self.__error_message = ""
@@ -254,7 +251,8 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
             self.__set_error(ctx, e)
 
     def exitDisplay(self, ctx:FileSyntaxParser.DisplayContext):
-        self.__ui.run()
+        import user_interface.UI
+        user_interface.UI.UI(simulation=self.__sim).run()
 
     def exitBlock_position(self, ctx:FileSyntaxParser.Block_positionContext):
         index_line = int(str(ctx.UINT(0)))

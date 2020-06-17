@@ -32,12 +32,26 @@ INSERT BLOCKS
     NOT notM i o,
     NOT notN i o,
     AND andmn M N o;
-
 INSERT EDGES
     BTWN M.val AND notM.i,
     BTWN N.val AND notN.i,
     BTWN notM.o AND andmn.M,
     BTWN notN.o AND andmn.N;
+
+/* the data enable pins */
+INSERT BLOCKS
+    STATE OUT ng1,
+    STATE OUT ng2,
+    NOT notng1 i o,
+    NOT notng2 i o,
+    AND andg12 g1 g2 o,
+    NOT notandg12 i o;
+INSERT EDGES
+    BTWN ng1.val AND notng1.i,
+    BTWN ng2.val AND notng2.i,
+    BTWN notng1.o AND andg12.g1,
+    BTWN notng2.o AND andg12.g2,
+    BTWN andg12.o AND notandg12.i;
 
 /* the blocks where the d latches are located */
 /*
@@ -47,5 +61,4 @@ INSERT EDGES
     BTWN andmn.o AND h1.en;
 */
 
-/* the data enable pins */
 
