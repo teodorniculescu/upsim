@@ -108,6 +108,16 @@ class Simulation:
                  PROPAGATE_CMD)
             # setup execution stack
             self.__insert_execution(stack_value)
+        # set all the ground pins to 0
+        gnd_node: Node
+        for gnd_node in self.__graph.get_ground_nodes():
+            gnd_node.get_pin().set_low()
+            stack_value: Tuple[str, str] = \
+                (gnd_node.__str__(),
+                 PROPAGATE_CMD)
+            self.__insert_execution(stack_value)
+
+
 
         # increment initial condition counter
         self.__number_init_cond += 1

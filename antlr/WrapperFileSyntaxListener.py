@@ -1,4 +1,4 @@
-from blocks.StateBlock import StateBlock
+from blocks.StateBlock import StateBlock, GroundBlock
 from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from simulation.Simulation import Simulation
@@ -404,6 +404,17 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         block_name = ctx.block_name().text
         try:
             ctx.block = BUS_TRANSMITTER_RECEIVER(block_name)
+        except Exception as e:
+            self.__set_error(ctx, e)
+
+
+    def exitCreate_ground_block(self, ctx:FileSyntaxParser.Create_ground_blockContext):
+        if self.error_is_set():
+            return
+        block_name = ctx.block_name().text
+        io_name = "val"
+        try:
+            ctx.block = GroundBlock(name=block_name, pin_name=io_name)
         except Exception as e:
             self.__set_error(ctx, e)
 

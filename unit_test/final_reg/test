@@ -91,43 +91,118 @@ DEFINE CUSTOM BLOCK 74LS173 (IN m n ng1 ng2 clk clr 1d 2d 3d 4d OUT 1q 2q 3q 4q)
         BTWN h4.q AND THIS.4q;
 };
 
-/* Buffer register
- a low nLb and posedge clk loads W into the register
-*/
-DEFINE CUSTOM BLOCK BREG (
-    IN nlb clk clr input0 input1 input2 input3 input4 input5 input6 input7 input8
-    OUT output0 output1 output2 output3 output4 output5 output6 output7 output8
-) {
-    INSERT BLOCKS
-        CUSTOM 74LS173 l1,
-        CUSTOM 74LS173 l2,
-        GND g
-    ;
-    INSERT EDGES
-        BTWN g.val AND (l1.m, l1.n, l2.m, l2.n),
-        BTWN THIS.nlb AND (l1.ng1, l1.ng2, l2.ng1, l2.ng2),
-        BTWN THIS.clr AND (l1.clr, l2.clr),
-        BTWN THIS.clk AND (l1.clk, l2.clk),
+INSERT BLOCKS
+    STATE OUT nlb,
+    STATE OUT clr,
+    STATE OUT clk,
 
-        BTWN THIS.input0 AND l1.1d,
-        BTWN THIS.input1 AND l1.2d,
-        BTWN THIS.input2 AND l1.3d,
-        BTWN THIS.input3 AND l1.4d,
-        BTWN THIS.input4 AND l2.1d,
-        BTWN THIS.input5 AND l2.2d,
-        BTWN THIS.input6 AND l2.3d,
-        BTWN THIS.input7 AND l2.4d,
+    STATE OUT input0,
+    STATE OUT input1,
+    STATE OUT input2,
+    STATE OUT input3,
+    STATE OUT input4,
+    STATE OUT input5,
+    STATE OUT input6,
+    STATE OUT input7,
 
-        BTWN THIS.output0 AND l1.1q,
-        BTWN THIS.output1 AND l1.2q,
-        BTWN THIS.output2 AND l1.3q,
-        BTWN THIS.output3 AND l1.4q,
-        BTWN THIS.output4 AND l2.1q,
-        BTWN THIS.output5 AND l2.2q,
-        BTWN THIS.output6 AND l2.3q,
-        BTWN THIS.output7 AND l2.4q
-    ;
-};
+    STATE IN output0,
+    STATE IN output1,
+    STATE IN output2,
+    STATE IN output3,
+    STATE IN output4,
+    STATE IN output5,
+    STATE IN output6,
+    STATE IN output7
+;
 
 INSERT BLOCKS
-    CUSTOM BREG bregister;
+    CUSTOM 74LS173 l1,
+    CUSTOM 74LS173 l2,
+    GND g
+;
+
+INSERT EDGES
+    BTWN g.val AND (l1.m, l1.n, l2.m, l2.n),
+    BTWN nlb.val AND (l1.ng1, l1.ng2, l2.ng1, l2.ng2),
+    BTWN clr.val AND (l1.clr, l2.clr),
+    BTWN clk.val AND (l1.clk, l2.clk),
+
+    BTWN input0.val AND l1.1d,
+    BTWN input1.val AND l1.2d,
+    BTWN input2.val AND l1.3d,
+    BTWN input3.val AND l1.4d,
+    BTWN input4.val AND l2.1d,
+    BTWN input5.val AND l2.2d,
+    BTWN input6.val AND l2.3d,
+    BTWN input7.val AND l2.4d,
+
+    BTWN output0.val AND l1.1q,
+    BTWN output1.val AND l1.2q,
+    BTWN output2.val AND l1.3q,
+    BTWN output3.val AND l1.4q,
+    BTWN output4.val AND l2.1q,
+    BTWN output5.val AND l2.2q,
+    BTWN output6.val AND l2.3q,
+    BTWN output7.val AND l2.4q
+;
+
+INSERT INIT COND
+    ( nlb.val=0, clr.val=0, clk.val=0,
+    input0.val=0,
+    input1.val=0,
+    input2.val=0,
+    input3.val=0,
+    input4.val=0,
+    input5.val=0,
+    input6.val=0,
+    input7.val=0 ),
+    ( clk.val=1,
+    input0.val=1,
+    input1.val=0,
+    input2.val=1,
+    input3.val=0,
+    input4.val=0,
+    input5.val=1,
+    input6.val=1,
+    input7.val=1 ),
+    ( clk.val=0,
+    input0.val=1,
+    input1.val=1,
+    input2.val=1,
+    input3.val=1,
+    input4.val=1,
+    input5.val=1,
+    input6.val=1,
+    input7.val=1 ),
+    ( clk.val=1 ),
+    ( clk.val=0, clr.val=1 ),
+    ( clk.val=1, clr.val=0, nlb.val=1 ),
+    ( clk.val=0 ),
+    ( clk.val=1 ),
+    ( clk.val=0 ),
+    ( clk.val=1 ),
+    ( clk.val=0, nlb.val=0 ),
+    ( clk.val=1 );
+
+RUN;
+SHOW RUN (
+    nlb.val,
+    clr.val,
+    clk.val,
+    input0.val,
+    input1.val,
+    input2.val,
+    input3.val,
+    input4.val,
+    input5.val,
+    input6.val,
+    input7.val,
+    output0.val,
+    output1.val,
+    output2.val,
+    output3.val,
+    output4.val,
+    output5.val,
+    output6.val,
+    output7.val
+);

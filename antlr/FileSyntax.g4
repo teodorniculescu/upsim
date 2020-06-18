@@ -57,7 +57,12 @@ create_block : create_state_block
              | create_digital_tri_state_buffer
              | create_bus_transmitter_receiver
              | create_custom_block
+             | create_ground_block
              ;
+
+create_ground_block :
+    GROUND_KWD block_name
+    ;
 
 create_bus_transmitter_receiver :
     BUS_TRANSMITTER_RECEIVER_KWD block_name
@@ -180,6 +185,7 @@ DISPLAY_KWD : 'DISPLAY';
 DEFINE_KWD : 'DEFINE';
 CUSTOM_KWD : 'CUSTOM';
 DIGITAL_TRI_STATE_BUFFER_KWD : 'DTS_BUFFER';
+GROUND_KWD: 'GND';
 
 VERBOSE_PRM : '-' ('VERBOSE' | 'V');
 
