@@ -1,0 +1,37 @@
+DEFINE CUSTOM BLOCK btrtest (IN ENatob ENbtoa INOUT a b) {
+    INSERT BLOCKS
+        BUS_TRAN_RECV btr;
+    INSERT EDGES
+        BTWN THIS.ENatob AND btr.ENatob,
+        BTWN THIS.ENbtoa AND btr.ENbtoa,
+        BTWN THIS.a AND btr.a,
+        BTWN THIS.b AND btr.b;
+};
+
+INSERT BLOCKS
+    CUSTOM btrtest btr,
+    STATE INOUT a,
+    STATE INOUT b,
+    STATE OUT ENbtoa,
+    STATE OUT ENatob;
+
+INSERT EDGES
+    BTWN ENbtoa.val AND btr.ENbtoa,
+    BTWN ENatob.val AND btr.ENatob,
+    BTWN a.val AND btr.a,
+    BTWN b.val AND btr.b;
+
+INSERT INIT COND
+    (ENatob.val=0, ENbtoa.val=0),
+    (a.val=0, ENatob.val=1),
+    (ENatob.val=0),
+    (b.val=1, ENatob.val=1),
+    (b.val=1, ENatob.val=0, ENbtoa.val=1),
+    (b.val=1, ENbtoa.val=1),
+    (a.val=0, ENatob.val=1, ENbtoa.val=0),
+    (ENbtoa.val=1),
+    (a.val=0, ENatob.val=0, ENbtoa.val=0);
+
+RUN;
+
+SHOW RUN (ENatob.val, ENbtoa.val, a.val, b.val);

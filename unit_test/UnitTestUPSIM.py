@@ -86,6 +86,9 @@ class UnitTestUPSIM(unittest.TestCase):
     def test_custom_block_1(self) -> None:
         self.run_test()
 
+    def test_ic_74LS173(self) -> None:
+        self.run_test()
+
     def test_ic_74LS173_one_handler(self) -> None:
         self.run_test()
 

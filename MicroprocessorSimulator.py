@@ -13,7 +13,7 @@ def main():
 
 def parse_test():
     # used for updating and checking test results
-    test = "ic_SN74LS245"
+    test = "BusTranRecv_inside_custom"
     FileInterpreter(
         "unit_test/%s/test" % test,
         #"unit_test/%s/answer" % test,

@@ -88,7 +88,7 @@ class BasicBlock:
     def is_positionable(self) -> bool:
         return self.__position_is_set
 
-    def get_output_values(self) -> Dict[str, str]:
+    def get_io_and_output_values(self) -> Dict[str, str]:
         result: Dict[str, str] = {}
         pin: BaseValue
         output_and_io_pins = {**self.__output_pins, **self.__io_pins}

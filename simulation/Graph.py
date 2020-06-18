@@ -105,9 +105,9 @@ class Graph:
     def calculate_values_block(self, block_name: str) -> List[str]:
         result: List[str] = []
         block: BasicBlock = self.__bh.get_block_with_name(block_name)
-        old_outputs: Dict[str, str] = block.get_output_values()
+        old_outputs: Dict[str, str] = block.get_io_and_output_values()
         block.calculate()
-        new_outputs: Dict[str, str] = block.get_output_values()
+        new_outputs: Dict[str, str] = block.get_io_and_output_values()
         key: str
         value: str
         for key, value in old_outputs.items():
