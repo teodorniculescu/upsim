@@ -206,3 +206,15 @@ SHOW RUN (
     output6.val,
     output7.val
 );
+
+DRAW BLOCKS
+    input0 0:0,
+    input1 3:0,
+    input2 6:0,
+    input3 9:0,
+    input4 12:0,
+    input5 15:0,
+    input6 18:0,
+    input7 21:0;
+
+DISPLAY;

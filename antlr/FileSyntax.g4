@@ -10,7 +10,7 @@ screen : draw | display;
 display : DISPLAY_KWD;
 draw : DRAW_KWD draw_blocks;
 
-draw_blocks : BLOCK_KWD draw_one_block;
+draw_blocks : BLOCK_KWD draw_one_block (',' draw_one_block)*;
 
 draw_one_block : block_name block_position;
 
