@@ -114,3 +114,6 @@ class BaseValue:
         self.__prev_value_is_set = False
         self.__value = LOW
         self.__prev_value = LOW
+
+    def set_is_state(self, value_is_set: bool) -> None:
+        self.__value_is_set = value_is_set

@@ -75,6 +75,7 @@ class CustomBlock(LogicalBlock):
 
     def __transfer_pin(self, from_pin: BaseValue, to_pin: BaseValue) -> None:
         to_pin.set_value(from_pin.get_value())
+        to_pin.set_is_state(from_pin.is_set())
 
     def __load_input_pins(self) -> None:
         in_and_io_pins = {

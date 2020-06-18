@@ -1,3 +1,4 @@
+/* Inside of teh 74LS173 are 4 latch handlers connected in order to store 4 bits of data */
 DEFINE CUSTOM BLOCK latchHandler (IN d de nde clk clr en OUT q) {
     INSERT BLOCKS
         AND a1 Q nde o,
@@ -88,4 +89,43 @@ DEFINE CUSTOM BLOCK 74LS173 (IN m n ng1 ng2 clk clr 1d 2d 3d 4d OUT 1q 2q 3q 4q)
         BTWN THIS.clr AND h4.clr,
         BTWN oc.o AND h4.en,
         BTWN h4.q AND THIS.4q;
+};
+
+/* Buffer register
+ a low nLb and posedge clk loads W into the register
+*/
+DEFINE CUSTOM BLOCK Bregister (
+    IN nlb clk clr input0 input1 input2 input3 input4 input5 input6 input7 input8
+    OUT output0 output1 output2 output3 output4 output5 output6 output7 output8
+) {
+    INSERT BLOCKS
+        CUSTOM 74LS173 l1,
+        CUSTOM 74LS173 l2,
+        GND g
+        ;
+    INSERT EDGES
+        BTWN g.val AND (l1.m, l1.n, l2.m, l2.n),
+        BTWN THIS.nlb AND (l1.ng1, l1.ng2, l2.ng1, l2.ng2),
+        BTWN THIS.clr AND (l1.clr, l2.clr),
+        BTWN THIS.clk AND (l1.clk, l2.clk),
+
+        BTWN THIS.input0 AND l1.1d,
+        BTWN THIS.input1 AND l1.2d,
+        BTWN THIS.input2 AND l1.3d,
+        BTWN THIS.input3 AND l1.4d,
+        BTWN THIS.input4 AND l2.1d,
+        BTWN THIS.input5 AND l2.2d,
+        BTWN THIS.input6 AND l2.3d,
+        BTWN THIS.input7 AND l2.4d
+
+        BTWN THIS.input0 AND l1.1d,
+        BTWN THIS.input1 AND l1.2d,
+        BTWN THIS.input2 AND l1.3d,
+        BTWN THIS.input3 AND l1.4d,
+        BTWN THIS.input4 AND l2.1d,
+        BTWN THIS.input5 AND l2.2d,
+        BTWN THIS.input6 AND l2.3d,
+        BTWN THIS.input7 AND l2.4d
+        ;
+
 };
