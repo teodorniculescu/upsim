@@ -5,7 +5,7 @@ from user_interface.Color import \
 from user_interface.DataStructure import ParamElem
 
 
-BORDER_THICKNESS: float = 0.05
+BORDER_THICKNESS: float = 0.5
 
 
 class BorderCell(BoxLayout):

@@ -217,4 +217,17 @@ DRAW BLOCKS
     input6 18:0,
     input7 21:0;
 
+DRAW BLOCKS
+    l1 0:5;
+
+DRAW BLOCKS
+    output0 0:10,
+    output1 3:10,
+    output2 6:10,
+    output3 9:10,
+    output4 12:10,
+    output5 15:10,
+    output6 18:10,
+    output7 21:10;
+
 DISPLAY;

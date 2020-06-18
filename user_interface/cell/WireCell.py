@@ -5,7 +5,7 @@ from user_interface.DataStructure import ParamElem
 from typing import List
 
 
-WIRE_THICKNESS: float = 0.05
+WIRE_THICKNESS: float = 0.1
 
 
 class BaseWireCell(BoxLayout):
