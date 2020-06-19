@@ -71,6 +71,11 @@ class BasicBlock:
     ):
         row_index: int = 1
         for pin in pins_dict.values():
+            pin.set_original_position(
+                original_position=
+                (row_index + self.__position[0],
+                 column + self.__position[1]
+                 ))
             cell_param = ParamElem({"name": pin.get_name()})
             grid[row_index][column] = \
                 ParamGridElem((cell_type, cell_param))

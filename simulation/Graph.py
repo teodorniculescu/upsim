@@ -163,3 +163,13 @@ class Graph:
             if isinstance(node.get_block(), GroundBlock):
                 ground_nodes_list.append(node)
         return ground_nodes_list
+
+    def draw_node_edge(self, node_name: str, direction_list: List[str]) -> None:
+        self.get_node(node_name).get_pin().add_directions_list(direction_list)
+
+    def get_positionable_nodes(self) -> Dict[str, Node]:
+        positionable_nodes: Dict[str, Node] = {}
+        for key, value in self.__nodes.items():
+            if value.get_pin().original_position_is_set():
+                positionable_nodes[key] = value
+        return positionable_nodes

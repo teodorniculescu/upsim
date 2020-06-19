@@ -47,6 +47,7 @@ class SimulationSection(BoxLayout):
     def __build_grid(self):
         self.__grid = Grid(size=(200, 400))
         self.__grid.add_blocks(self.__simulation.get_positionable_blocks())
+        self.__grid.add_edges(self.__simulation.get_positionable_nodes())
 
     # Returns the cell widget corresponding to the given row and column index
     # If the function creates a new cell, it automatically adds it to the

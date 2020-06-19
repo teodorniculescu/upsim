@@ -1,4 +1,5 @@
 from antlr.FileSyntaxErrorListener import *
+from typing import List, Tuple, Dict
 HIGH: int = 1
 LOW: int = 0
 
@@ -14,6 +15,25 @@ pin_switcher: dict = {
 }
 
 
+RIGHT: int = 0
+LEFT: int = 1
+UP: int = 2
+DOWN: int = 3
+
+direction_dict: Dict[str, int] = {
+    'RIGHT': RIGHT,
+    'LEFT': LEFT,
+    'UP': UP,
+    'DOWN': DOWN
+}
+
+
+def _get_direction(string: str) -> int:
+    if string in direction_dict:
+        return direction_dict[string]
+    raise Exception(ERROR_INVALID_DIRECTION_STRING % string)
+
+
 class BaseValue:
     # How the pin is identified among other pins on the block
     __name: str
@@ -24,12 +44,18 @@ class BaseValue:
     # What was the previous value of the pin
     __prev_value: int
     __prev_value_is_set: bool
+    __direction_list: List[int]
+
+    __original_position: Tuple[int, int]
+    __original_position_is_set: bool
 
     def __init__(self, name: str, pin_type: int):
         self.__set_name(name)
         self.__set_pin_type(pin_type)
         self.__value_is_set = False
         self.__prev_value_is_set = False
+        self.__direction_list = []
+        self.__original_position_is_set = False
 
     @staticmethod
     def __check_pin_type(pin_type: int) -> None:
@@ -117,3 +143,25 @@ class BaseValue:
 
     def set_is_state(self, value_is_set: bool) -> None:
         self.__value_is_set = value_is_set
+
+    def add_directions_list(self, direction_list: List[str]) -> None:
+        for direction in direction_list:
+            self.__direction_list.append(_get_direction(direction))
+
+    def get_directions_list(self) -> List[int]:
+        return self.__direction_list
+
+    def set_original_position(self, original_position: Tuple[int, int]) -> None:
+        self.__original_position_is_set = True
+        self.__original_position = original_position
+
+    def original_position_is_set(self) -> bool:
+        return self.__original_position_is_set
+
+    def get_original_position(self) -> Tuple[int, int]:
+        if self.__original_position_is_set:
+            return self.__original_position
+        raise Exception(ERROR_PIN_INVALID_ORIGINAL_POSITION % self.__name)
+
+
+

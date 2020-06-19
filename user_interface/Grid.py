@@ -3,7 +3,12 @@ from user_interface.DataStructure import ParamElem
 from user_interface.PanelHandler import PanelHandler, CODE
 from blocks.BasicBlock import BasicBlock
 from kivy.uix.widget import Widget
+from values.BaseValue import BaseValue
+from simulation.Node import Node
+from values.BaseValue import RIGHT, UP, DOWN, LEFT
+from antlr.FileSyntaxErrorListener import ERROR_INVALID_DIRECTION_STRING
 
+from gen.FileSyntaxLexer import FileSyntaxLexer
 
 class Grid:
     __size: Tuple[int, int]
@@ -47,3 +52,19 @@ class Grid:
         str_code: str = self.__matrix[index[0]][index[1]]
         parameters: ParamElem = self.__parameter[index] if index in self.__parameter else {}
         return self.__ph.get_cell(str_code, parameters)
+
+    def add_edges(self, nodes_dict: Dict[str, Node]) -> None:
+        for node in nodes_dict.values():
+            pin = node.get_pin()
+            original_position = pin.get_original_position()
+            for direction in pin.get_directions_list():
+                if direction == RIGHT:
+                    print("right nigga")
+                elif direction == LEFT:
+                    print("left nigga")
+                elif direction == DOWN:
+                    print("down nigga")
+                elif direction == UP:
+                    print("up nigga")
+                else:
+                    raise Exception(ERROR_INVALID_DIRECTION_STRING)

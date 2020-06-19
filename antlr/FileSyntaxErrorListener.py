@@ -44,6 +44,10 @@ ERROR_CUSTOM_TEMPLATE_DOES_NOT_EXIST: [str] = \
     "19:The template \"%s\" has not been created."
 ERROR_EDGE_BETWEEN_OUTPUTS: [str] = \
     "20:Cannot create edge \"%s - %s\" between two output pins."
+ERROR_PIN_INVALID_ORIGINAL_POSITION: [str] = \
+    "21:The original position for the pin \"%s\" is not set!"
+ERROR_INVALID_DIRECTION_STRING: [str] = \
+    "22: The provided direction string: \"%s\" is invalid!"
 
 
 class FileSyntaxErrorListener(ErrorListener):

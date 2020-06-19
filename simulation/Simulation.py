@@ -315,3 +315,12 @@ class Simulation:
     def show_last_condition(self) -> None:
         print("dimensiune " + str(len(self.__initial_conditions)))
         print(self.__initial_conditions[-1])
+
+    def draw_node_edge(self, node_name: str, direction_list: List[str]) -> None:
+        self.__graph.draw_node_edge(
+            node_name=node_name,
+            direction_list=direction_list
+        )
+
+    def get_positionable_nodes(self) -> Dict[str, Node]:
+        return self.__graph.get_positionable_nodes()

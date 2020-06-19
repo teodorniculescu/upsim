@@ -418,3 +418,18 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         except Exception as e:
             self.__set_error(ctx, e)
 
+    def exitDraw_one_edge(self, ctx:FileSyntaxParser.Draw_one_edgeContext):
+        self.__sim.draw_node_edge(
+            node_name=ctx.node().text,
+            direction_list=ctx.draw_direction_snake_edge().direction_list
+        )
+
+    def exitDraw_direction_snake_edge(self, ctx:FileSyntaxParser.Draw_direction_snake_edgeContext):
+        ctx.direction_list = []
+        for context in ctx.draw_direction_snake():
+            ctx.direction_list.append(context.text)
+
+    def exitDraw_direction_snake(self, ctx:FileSyntaxParser.Draw_direction_snakeContext):
+        ctx.text = str(ctx.getText())
+
+
