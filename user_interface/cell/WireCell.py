@@ -62,6 +62,26 @@ class BaseWireCell(BoxLayout):
 
 
 class WireCell:
+    class Up(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [TRANSPARENT, WIRE_COLOR, TRANSPARENT],
+                    [TRANSPARENT, WIRE_COLOR, TRANSPARENT],
+                    [TRANSPARENT, TRANSPARENT, TRANSPARENT]
+                ]
+            super(WireCell.Up, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+    class Down(BaseWireCell):
+        def __init__(self, **kwargs):
+            matrix_colors: List[List[ColorType]] = \
+                [
+                    [TRANSPARENT, TRANSPARENT, TRANSPARENT],
+                    [TRANSPARENT, WIRE_COLOR, TRANSPARENT],
+                    [TRANSPARENT, WIRE_COLOR, TRANSPARENT]
+                ]
+            super(WireCell.Down, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
     class Right(BaseWireCell):
         def __init__(self, **kwargs):
             matrix_colors: List[List[ColorType]] = \

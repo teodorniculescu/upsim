@@ -48,6 +48,9 @@ ERROR_PIN_INVALID_ORIGINAL_POSITION: [str] = \
     "21:The original position for the pin \"%s\" is not set!"
 ERROR_INVALID_DIRECTION_STRING: [str] = \
     "22: The provided direction string: \"%s\" is invalid!"
+ERROR_GRID_OUT_OF_BOUNDS: [str] = \
+    "23: Cannot move node \"%s\" in the \"%s\" direction to because it is " \
+    "in the position \"%s\"!"
 
 
 class FileSyntaxErrorListener(ErrorListener):

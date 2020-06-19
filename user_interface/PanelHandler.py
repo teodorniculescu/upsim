@@ -31,6 +31,8 @@ class CODE:
     WIRE_RIGHT: str = "w_r"
     WIRE_RIGHT_UP: str = "w_ru"
     WIRE_RIGHT_DOWN: str = "w_rd"
+    WIRE_UP: str = "w_u"
+    WIRE_DOWN: str = "w_d"
 
 
 class PanelHandler:
@@ -53,6 +55,8 @@ class PanelHandler:
         CODE.WIRE_LEFT_UP: WireCell.LeftUp,
         CODE.WIRE_LEFT_RIGHT: WireCell.LeftRight,
         CODE.WIRE_UP_DOWN: WireCell.UpDown,
+        CODE.WIRE_UP: WireCell.Down,
+        CODE.WIRE_DOWN: WireCell.Up,
 
         CODE.TEXT: TextCell,
 
