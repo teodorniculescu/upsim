@@ -1,6 +1,6 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
-from user_interface.Color import ColoredWidget, ColorType, WIRE_COLOR, TRANSPARENT
+from user_interface.Color import TextWidget, ColoredWidget, ColorType, WIRE_COLOR, TRANSPARENT
 from user_interface.DataStructure import ParamElem
 from typing import List
 
@@ -24,7 +24,7 @@ class BaseWireCell(BoxLayout):
                 bg_col = column_colors[column_index]
                 # if the background is transparent
                 if bg_col[3] == 0:
-                    widget = Widget(
+                    widget = TextWidget(
                         size_hint=size_hint
                     )
                 else:
@@ -54,11 +54,19 @@ class BaseWireCell(BoxLayout):
             )
             self.add_widget(widget)
             self.rows.append(widget)
+
+        column_position_text: int = 0
+        if matrix_colors[1][2] == WIRE_COLOR:
+            if matrix_colors[1][0] == WIRE_COLOR:
+                column_position_text: int = 1
+            else:
+                column_position_text: int = 2
+
         if parameters is not None:
             if "name" in parameters:
                 pos_bias = parameters["name_pos_bias"] if "name_pos_bias" in parameters else (0, 0)
                 # TODO use pos bias to move the name to a much suitable position
-                self.rows[1].columns[1].add_text_widget(parameters["name"])
+                self.rows[0].columns[column_position_text].add_text_widget(parameters["name"])
 
 
 class WireCell:

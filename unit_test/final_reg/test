@@ -218,11 +218,13 @@ DRAW BLOCKS
     input7 21:0;
 
 DRAW BLOCKS
-    l1 0:5;
+    l1 0:6;
 
 DRAW EDGES
-    SNAKE input0.val RIGHT;
+    SNAKE input0.val RIGHT, RIGHT,
+    SNAKE input1.val UP, RIGHT;
 
+/*
 DRAW BLOCKS
     output0 0:10,
     output1 3:10,
@@ -232,5 +234,6 @@ DRAW BLOCKS
     output5 15:10,
     output6 18:10,
     output7 21:10;
+*/
 
 DISPLAY;

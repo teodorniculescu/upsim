@@ -1,7 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
 from typing import Tuple, List
 from user_interface.Color import \
-    ColoredWidget, ColorType, TRANSPARENT, BORDER_COLOR
+    TextWidget, ColoredWidget, ColorType, TRANSPARENT, BORDER_COLOR
 from user_interface.DataStructure import ParamElem
 
 
@@ -124,3 +124,89 @@ class RightDownBorderCell(RightBorderCell):
             ldc=BORDER_COLOR,
             ud_size_hint=(1, BORDER_THICKNESS),
             **kwargs)
+
+class BaseBorderRows(BoxLayout):
+    class Row(BoxLayout):
+        columns: List[ColoredWidget]
+
+        def __init__(self,
+                     column_colors: List[ColorType],
+                     column_width_hint: List[float],
+                     **kwargs):
+            super(BaseBorderRows.Row, self).__init__(**kwargs)
+            self.orientation = "horizontal"
+            self.columns = []
+            for column_index in range(3):
+                size_hint = (column_width_hint[column_index], 1)
+                bg_col = column_colors[column_index]
+                # if the background is transparent
+                if bg_col[3] == 0:
+                    widget = TextWidget(
+                        size_hint=size_hint
+                    )
+                else:
+                    widget = ColoredWidget(
+                        bg_col=bg_col,
+                        size_hint=size_hint
+                    )
+                self.add_widget(widget)
+                self.columns.append(widget)
+
+    rows: List[Row]
+
+    def __init__(self,
+                 matrix_colors: List[List[ColorType]],
+                 parameters: ParamElem = None,
+                 **kwargs):
+        super(BaseBorderRows, self).__init__(**kwargs)
+        self.orientation = "vertical"
+        rest_thickness: float = (1 - BORDER_THICKNESS) / 2
+        size_hints: List[float] = [rest_thickness, BORDER_THICKNESS, rest_thickness]
+        self.rows = []
+        for row_index in range(3):
+            widget = BaseBorderRows.Row(
+                column_colors=matrix_colors[row_index],
+                column_width_hint=size_hints,
+                size_hint=(1, size_hints[row_index])
+            )
+            self.add_widget(widget)
+            self.rows.append(widget)
+
+        if parameters is not None:
+            if "name" in parameters:
+                pos_bias = parameters["name_pos_bias"] if "name_pos_bias" in parameters else (0, 0)
+                # TODO use pos bias to move the name to a much suitable position
+                self.rows[1].columns[1].add_text_widget(parameters["name"])
+
+
+class UpDownBorder(BaseBorderRows):
+    def __init__(self, **kwargs):
+        matrix_colors: List[List[ColorType]] = \
+            [
+                [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR],
+                [TRANSPARENT, TRANSPARENT, TRANSPARENT],
+                [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR]
+            ]
+        super(UpDownBorder, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+
+class UpDownLeftBorder(BaseBorderRows):
+    def __init__(self, **kwargs):
+        matrix_colors: List[List[ColorType]] = \
+            [
+                [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR],
+                [BORDER_COLOR, TRANSPARENT, TRANSPARENT],
+                [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR]
+            ]
+        super(UpDownLeftBorder, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+
+class UpDownRightBorder(BaseBorderRows):
+    def __init__(self, **kwargs):
+        matrix_colors: List[List[ColorType]] = \
+            [
+                [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR],
+                [TRANSPARENT, TRANSPARENT, BORDER_COLOR],
+                [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR]
+            ]
+        super(UpDownRightBorder, self).__init__(matrix_colors=matrix_colors, **kwargs)

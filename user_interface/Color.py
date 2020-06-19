@@ -17,9 +17,26 @@ BORDER_COLOR: ColorType = GULF_STREAM
 WIRE_COLOR = MADANG
 
 
-class ColoredWidget(Widget):
-    background_rectangle: Rectangle
+class TextWidget(Widget):
     text_widget: Label
+
+    def __init__(self,
+                 **kwargs):
+        super(TextWidget, self).__init__(**kwargs)
+
+    def update_text_widget(self, *args):
+        self.text_widget.pos = self.pos
+        self.text_widget.size = self.size
+
+    def add_text_widget(self, text: str) -> None:
+        self.text_widget = Label(text=text)
+        self.add_widget(self.text_widget)
+        self.bind(pos=self.update_text_widget,
+                  size=self.update_text_widget)
+
+
+class ColoredWidget(TextWidget):
+    background_rectangle: Rectangle
     bg_col: ColorType
     new_bg_col: bool
 
@@ -40,13 +57,3 @@ class ColoredWidget(Widget):
     def update_background_rectangle(self, *args):
         self.background_rectangle.pos = self.pos
         self.background_rectangle.size = self.size
-
-    def update_text_widget(self, *args):
-        self.text_widget.pos = self.pos
-        self.text_widget.size = self.size
-
-    def add_text_widget(self, text: str) -> None:
-        self.text_widget = Label(text=text)
-        self.add_widget(self.text_widget)
-        self.bind(pos=self.update_text_widget,
-                  size=self.update_text_widget)
