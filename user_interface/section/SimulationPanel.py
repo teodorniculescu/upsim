@@ -1,11 +1,12 @@
 from user_interface.section.EdgeSection import ColumnsSection, RowsSection
 from user_interface.section.SimulationSection import SimulationSection
 from user_interface.section.NoneSection import NoneSection
+from user_interface.cell.WireCell import *
 from math import floor
 from simulation.Simulation import Simulation
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 
 class SimulationPanel(GridLayout):
@@ -19,6 +20,7 @@ class SimulationPanel(GridLayout):
     __animation_frames: List[Tuple[str]]
     __frame_description: List[str]
     __animation_frame_num: int
+    __wire_widget_dict: Dict[str, List[BaseWireCell]]
 
     def __init__(self,
                  simulation: Simulation,
@@ -100,19 +102,22 @@ class SimulationPanel(GridLayout):
 
     def next_simulation_frame(self) -> None:
         if self.__animate:
-            print('next')
             if self.__animation_frame_num < len(self.__animation_frames) - 1:
-                print('frame')
                 self.__animation_frame_num += 1
-                print(self.get_current_animation_frame())
+                for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
+                    for widget_list in self.__wire_widget_dict[node_name].values():
+                        for widget in widget_list:
+                            if node_value == "1":
+                                pass
+                            else:
+                                pass
 
     def prev_simulation_frame(self) -> None:
         if self.__animate:
-            print('prev')
             if self.__animation_frame_num > 0:
-                print('frame')
                 self.__animation_frame_num -= 1
-                print(self.get_current_animation_frame())
+                for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
+                    print(node_name, node_value)
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == '=':
