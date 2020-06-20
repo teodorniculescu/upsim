@@ -6,7 +6,6 @@ from user_interface.Grid import Grid
 from math import floor
 from simulation.Simulation import Simulation
 from kivy.uix.gridlayout import GridLayout
-from kivy.core.window import Window
 from typing import List, Tuple, Dict
 
 
@@ -50,8 +49,6 @@ class SimulationPanel(GridLayout):
         self.add_widget(self.cols_section)
         self.add_widget(self.rows_section)
         self.add_widget(self.sim_section)
-        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
-        self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.cell_wh = 40
         self.bind(size=self.update_cell_count)
         if self.__animate:
@@ -67,10 +64,6 @@ class SimulationPanel(GridLayout):
         self.sim_section.set_rows(num_rows)
         self.sim_section.set_cols(num_cols)
         self.__animate_frame()
-
-    def _keyboard_closed(self):
-        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
-        self._keyboard = None
 
     # How much does the zoom affect to cell width and height
     const_wh: int = 1.1
@@ -136,24 +129,5 @@ class SimulationPanel(GridLayout):
             if self.__animation_frame_num > 0:
                 self.__animation_frame_num -= 1
                 self.__animate_frame()
-
-    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        if keycode[1] == '=':
-            self.zoom_out()
-        elif keycode[1] == '-':
-            self.zoom_in()
-        elif keycode[1] == 'd':
-            self.move_right()
-        elif keycode[1] == 'a':
-            self.move_left()
-        elif keycode[1] == 'w':
-            self.move_up()
-        elif keycode[1] == 's':
-            self.move_down()
-        elif keycode[1] == '1':
-            self.prev_simulation_frame()
-        elif keycode[1] == '2':
-            self.next_simulation_frame()
-        return True
 
 
