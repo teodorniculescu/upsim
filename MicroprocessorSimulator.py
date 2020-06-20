@@ -13,7 +13,7 @@ def main():
 
 def parse_test():
     # used for updating and checking test results
-    test = "final_reg"
+    test = "SAP_up"
     FileInterpreter(
         "unit_test/%s/test" % test,
         #"unit_test/%s/answer" % test,

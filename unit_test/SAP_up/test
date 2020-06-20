@@ -91,43 +91,47 @@ DEFINE CUSTOM BLOCK 74LS173 (IN m n ng1 ng2 clk clr 1d 2d 3d 4d OUT 1q 2q 3q 4q)
         BTWN h4.q AND THIS.4q;
 };
 
-/* Buffer register
- a low nLb and posedge clk loads W into the register
-*/
-DEFINE CUSTOM BLOCK BREG (
-    IN nlb clk clr input0 input1 input2 input3 input4 input5 input6 input7 input8
-    OUT output0 output1 output2 output3 output4 output5 output6 output7 output8
+DEFINE CUSTOM BLOCK 8BITREGISTER (
+    IN nlb clr clk in0 in1 in2 in3 in4 in5 in6 in7
+    OUT out0 out1 out2 out3 out4 out5 out6 out7
 ) {
     INSERT BLOCKS
         CUSTOM 74LS173 l1,
         CUSTOM 74LS173 l2,
         GND g
     ;
+
     INSERT EDGES
         BTWN g.val AND (l1.m, l1.n, l2.m, l2.n),
         BTWN THIS.nlb AND (l1.ng1, l1.ng2, l2.ng1, l2.ng2),
         BTWN THIS.clr AND (l1.clr, l2.clr),
         BTWN THIS.clk AND (l1.clk, l2.clk),
 
-        BTWN THIS.input0 AND l1.1d,
-        BTWN THIS.input1 AND l1.2d,
-        BTWN THIS.input2 AND l1.3d,
-        BTWN THIS.input3 AND l1.4d,
-        BTWN THIS.input4 AND l2.1d,
-        BTWN THIS.input5 AND l2.2d,
-        BTWN THIS.input6 AND l2.3d,
-        BTWN THIS.input7 AND l2.4d,
+        BTWN THIS.in0 AND l1.1d,
+        BTWN THIS.in1 AND l1.2d,
+        BTWN THIS.in2 AND l1.3d,
+        BTWN THIS.in3 AND l1.4d,
+        BTWN THIS.in4 AND l2.1d,
+        BTWN THIS.in5 AND l2.2d,
+        BTWN THIS.in6 AND l2.3d,
+        BTWN THIS.in7 AND l2.4d,
 
-        BTWN THIS.output0 AND l1.1q,
-        BTWN THIS.output1 AND l1.2q,
-        BTWN THIS.output2 AND l1.3q,
-        BTWN THIS.output3 AND l1.4q,
-        BTWN THIS.output4 AND l2.1q,
-        BTWN THIS.output5 AND l2.2q,
-        BTWN THIS.output6 AND l2.3q,
-        BTWN THIS.output7 AND l2.4q
+        BTWN THIS.out0 AND l1.1q,
+        BTWN THIS.out1 AND l1.2q,
+        BTWN THIS.out2 AND l1.3q,
+        BTWN THIS.out3 AND l1.4q,
+        BTWN THIS.out4 AND l2.1q,
+        BTWN THIS.out5 AND l2.2q,
+        BTWN THIS.out6 AND l2.3q,
+        BTWN THIS.out7 AND l2.4q
     ;
 };
 
 INSERT BLOCKS
-    CUSTOM BREG bregister;
+    CUSTOM 8BITREGISTER breg;
+
+DRAW BLOCKS
+    breg 0:0;
+
+DISPLAY;
+

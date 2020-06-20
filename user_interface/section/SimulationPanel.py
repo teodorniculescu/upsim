@@ -104,6 +104,8 @@ class SimulationPanel(GridLayout):
         return self.__animation_frames[self.__animation_frame_num]
 
     def __animate_frame(self) -> None:
+        if not self.__animate:
+            return
         wire_widget_dict: Dict[str, List[Tuple[int, int]]] = self.__grid.get_wire_widget_dict()
         for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
             for widget_index in wire_widget_dict[node_name]:

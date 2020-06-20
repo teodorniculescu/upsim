@@ -15,6 +15,7 @@ class ButtonBar(BoxLayout):
 
     def __init__(self,
                  simulation_panel: SimulationPanel,
+                 animate: bool,
                  **kwargs):
         super(ButtonBar, self).__init__(**kwargs)
         self.simulation_panel = simulation_panel
@@ -25,16 +26,18 @@ class ButtonBar(BoxLayout):
         zoom_widget.add_widget(Button(size_hint=(None, 1), text='Out', on_press=self.callback_zoom_out))
         self.add_widget(zoom_widget)
 
-        self.prev_frame = Button(size_hint=(None, 1), text='Prev', on_press=self.callback_prev_frame)
-        self.next_frame = Button(size_hint=(None, 1), text='Next', on_press=self.callback_next_frame)
-        self.frame_counter = Label(size_hint=(None, 1), text='0/1')
-        frame_widget = BoxLayout()
-        frame_widget.add_widget(Label(size_hint=(None, 1), text='Frame'))
-        frame_widget.add_widget(self.prev_frame)
-        frame_widget.add_widget(self.next_frame)
-        frame_widget.add_widget(self.frame_counter)
-        self.add_widget(frame_widget)
-        self.change_frame_counter()
+        self.animate = animate
+        if animate:
+            self.prev_frame = Button(size_hint=(None, 1), text='Prev', on_press=self.callback_prev_frame)
+            self.next_frame = Button(size_hint=(None, 1), text='Next', on_press=self.callback_next_frame)
+            self.frame_counter = Label(size_hint=(None, 1), text='0/1')
+            frame_widget = BoxLayout()
+            frame_widget.add_widget(Label(size_hint=(None, 1), text='Frame'))
+            frame_widget.add_widget(self.prev_frame)
+            frame_widget.add_widget(self.next_frame)
+            frame_widget.add_widget(self.frame_counter)
+            self.add_widget(frame_widget)
+            self.change_frame_counter()
 
     def callback_zoom_in(self, instance):
         self.simulation_panel.zoom_in()
@@ -64,7 +67,7 @@ class SimulationUI(BoxLayout):
         super(SimulationUI, self).__init__(**kwargs)
         self.orientation = "vertical"
         self.simulation_panel = SimulationPanel(simulation=simulation, animate=animate)
-        self.button_bar = ButtonBar(simulation_panel=self.simulation_panel)
+        self.button_bar = ButtonBar(animate=animate, simulation_panel=self.simulation_panel)
         self.add_widget(self.button_bar)
         self.add_widget(self.simulation_panel)
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
