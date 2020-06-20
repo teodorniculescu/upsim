@@ -57,7 +57,6 @@ class SimulationPanel(GridLayout):
         if self.__animate:
             (self.__frame_description, self.__animation_frames) = self.__simulation.get_animation_frames()
             self.__animation_frame_num = 0
-            self.__animate_frame()
 
     def update_cell_count(self, *args):
         (w, h) = self.size
@@ -67,6 +66,7 @@ class SimulationPanel(GridLayout):
         self.cols_section.set_size(num_cols)
         self.sim_section.set_rows(num_rows)
         self.sim_section.set_cols(num_cols)
+        self.__animate_frame()
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
@@ -87,25 +87,28 @@ class SimulationPanel(GridLayout):
     def move_left(self):
         self.sim_section.move_screen_left()
         self.cols_section.move_lu()
+        self.__animate_frame()
 
     def move_right(self):
         self.sim_section.move_screen_right()
         self.cols_section.move_rd()
+        self.__animate_frame()
 
     def move_up(self):
         self.sim_section.move_screen_up()
         self.rows_section.move_lu()
+        self.__animate_frame()
 
     def move_down(self):
         self.sim_section.move_screen_down()
         self.rows_section.move_rd()
+        self.__animate_frame()
 
     def get_current_animation_frame(self) -> Tuple[str]:
         return self.__animation_frames[self.__animation_frame_num]
 
     def __animate_frame(self) -> None:
         wire_widget_dict: Dict[str, List[Tuple[int, int]]] = self.__grid.get_wire_widget_dict()
-        print(wire_widget_dict)
         for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
             for widget_index in wire_widget_dict[node_name]:
                 if not self.sim_section.index_within_bounds(widget_index):
@@ -115,8 +118,12 @@ class SimulationPanel(GridLayout):
                     raise Exception('animate_frame retrieved widget is not a basewirecell')
                 if node_value == "1":
                     widget.set_on_color()
-                else:
+                elif node_value == "0":
                     widget.set_off_color()
+                elif node_value == "N":
+                    widget.set_high_impedance_color()
+                else:
+                    raise Exception("invalid node value")
 
     def next_simulation_frame(self) -> None:
         if self.__animate:

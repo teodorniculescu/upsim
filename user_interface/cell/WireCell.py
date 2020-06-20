@@ -69,10 +69,22 @@ class BaseWireCell(BoxLayout):
                 self.rows[0].columns[column_position_text].add_text_widget(parameters["name"])
 
     def set_on_color(self) -> None:
-        print("turn me ON")
+        for row in self.rows:
+            for cell in row.columns:
+                if isinstance(cell, ColoredWidget):
+                    cell.set_on_color()
 
     def set_off_color(self) -> None:
-        print("turn me OFF")
+        for row in self.rows:
+            for cell in row.columns:
+                if isinstance(cell, ColoredWidget):
+                    cell.set_off_color()
+
+    def set_high_impedance_color(self) -> None:
+        for row in self.rows:
+            for cell in row.columns:
+                if isinstance(cell, ColoredWidget):
+                    cell.set_high_impedance_color()
 
 class WireCell:
     class Up(BaseWireCell):

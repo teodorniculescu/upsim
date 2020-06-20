@@ -11,10 +11,14 @@ GULF_STREAM: ColorType = kivy_utils.get_color_from_hex("#80BDABff")
 MADANG: ColorType = kivy_utils.get_color_from_hex("#bbf1c8ff")
 MONA_LISA: ColorType = kivy_utils.get_color_from_hex("#FF9595ff")
 TRANSPARENT: ColorType = ColorType((0, 0, 0, 0))
+RED: ColorType = ColorType((1, 0, 0, 1))
+GREEN: ColorType = ColorType((0, 1, 0, 1))
 
 BACKGROUND_COLOR: ColorType = BLACKCURRANT
 BORDER_COLOR: ColorType = GULF_STREAM
 WIRE_COLOR = MADANG
+WIRE_ON_COLOR: ColorType = GREEN
+WIRE_OFF_COLOR: ColorType = RED
 
 
 class TextWidget(Widget):
@@ -38,6 +42,7 @@ class TextWidget(Widget):
 class ColoredWidget(TextWidget):
     background_rectangle: Rectangle
     bg_col: ColorType
+    default_col: ColorType
     new_bg_col: bool
 
     def __init__(self,
@@ -46,6 +51,7 @@ class ColoredWidget(TextWidget):
         super(ColoredWidget, self).__init__(**kwargs)
         self.orientation = "horizontal"
         self.bg_col = bg_col
+        self.default_col = bg_col
         self.new_bg_col = False
         with self.canvas.before:
             Color(self.bg_col[0], self.bg_col[1], self.bg_col[2], self.bg_col[3])
@@ -57,3 +63,21 @@ class ColoredWidget(TextWidget):
     def update_background_rectangle(self, *args):
         self.background_rectangle.pos = self.pos
         self.background_rectangle.size = self.size
+
+    def __set_color(self, color: ColorType) -> None:
+        if self.default_col != BACKGROUND_COLOR:
+            self.canvas.before.clear()
+            self.bg_col = color
+            self.canvas.before.add(Color(self.bg_col[0], self.bg_col[1], self.bg_col[2], self.bg_col[3]))
+            self.background_rectangle = Rectangle(size=self.size, pos=self.pos)
+            self.canvas.before.add(self.background_rectangle)
+
+    def set_on_color(self) -> None:
+        self.__set_color(WIRE_ON_COLOR)
+
+    def set_off_color(self) -> None:
+        self.__set_color(WIRE_OFF_COLOR)
+
+    def set_high_impedance_color(self) -> None:
+        self.__set_color(self.default_col)
+
