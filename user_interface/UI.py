@@ -12,23 +12,32 @@ class ButtonBar(BoxLayout):
 
 
 class SimulationUI(BoxLayout):
-    __simulation: Simulation
-
-    def __init__(self, simulation: Simulation, **kwargs):
+    def __init__(self,
+                 simulation: Simulation,
+                 animate: bool,
+                 **kwargs):
         super(SimulationUI, self).__init__(**kwargs)
-        self.__simulation = simulation
         self.orientation = "vertical"
-        self.add_widget(ButtonBar())
-        self.add_widget(SimulationPanel(simulation=self.__simulation))
+        #self.add_widget(ButtonBar())
+        self.add_widget(
+            SimulationPanel(simulation=simulation, animate=animate))
 
 
 class UI(App):
     __simulation: Simulation
+    __animate: bool
 
-    def __init__(self, simulation: Simulation, **kwargs):
+    def __init__(self,
+                 simulation: Simulation,
+                 animate: bool,
+                 **kwargs):
         super(UI, self).__init__(**kwargs)
         self.__simulation = simulation
+        self.__animate = animate
 
     def build(self):
-        sim_ui = SimulationUI(simulation=self.__simulation)
+        sim_ui = SimulationUI(
+            simulation=self.__simulation,
+            animate=self.__animate
+        )
         return sim_ui

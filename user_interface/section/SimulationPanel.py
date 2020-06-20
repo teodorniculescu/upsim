@@ -5,6 +5,7 @@ from math import floor
 from simulation.Simulation import Simulation
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
+from typing import List, Tuple
 
 
 class SimulationPanel(GridLayout):
@@ -14,10 +15,18 @@ class SimulationPanel(GridLayout):
     # size divided by the size of the screen
     margin_size: tuple
     __simulation: Simulation
+    __animate: bool
+    __animation_frames: List[Tuple[str]]
+    __frame_description: List[str]
+    __animation_frame_num: int
 
-    def __init__(self, simulation: Simulation, **kwargs):
+    def __init__(self,
+                 simulation: Simulation,
+                 animate: bool,
+                 **kwargs):
         super(SimulationPanel, self).__init__(**kwargs)
         self.__simulation = simulation
+        self.__animate = animate
         self.cols = 2
         self.rows = 2
         self.margin_size = (40, 20)
@@ -41,6 +50,9 @@ class SimulationPanel(GridLayout):
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.cell_wh = 40
         self.bind(size=self.update_cell_count)
+        if self.__animate:
+            (self.__frame_description, self.__animation_frames) = self.__simulation.get_animation_frames()
+            self.__animation_frame_num = 0
 
     def update_cell_count(self, *args):
         (w, h) = self.size
@@ -83,6 +95,25 @@ class SimulationPanel(GridLayout):
         self.sim_section.move_screen_down()
         self.rows_section.move_rd()
 
+    def get_current_animation_frame(self) -> Tuple[str]:
+        return self.__animation_frames[self.__animation_frame_num]
+
+    def next_simulation_frame(self) -> None:
+        if self.__animate:
+            print('next')
+            if self.__animation_frame_num < len(self.__animation_frames) - 1:
+                print('frame')
+                self.__animation_frame_num += 1
+                print(self.get_current_animation_frame())
+
+    def prev_simulation_frame(self) -> None:
+        if self.__animate:
+            print('prev')
+            if self.__animation_frame_num > 0:
+                print('frame')
+                self.__animation_frame_num -= 1
+                print(self.get_current_animation_frame())
+
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == '=':
             self.zoom_out()
@@ -96,6 +127,10 @@ class SimulationPanel(GridLayout):
             self.move_up()
         elif keycode[1] == 's':
             self.move_down()
+        elif keycode[1] == '1':
+            self.prev_simulation_frame()
+        elif keycode[1] == '2':
+            self.next_simulation_frame()
         return True
 
 

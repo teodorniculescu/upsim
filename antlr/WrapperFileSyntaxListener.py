@@ -250,9 +250,10 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         except Exception as e:
             self.__set_error(ctx, e)
 
-    def exitDisplay(self, ctx:FileSyntaxParser.DisplayContext):
+    def exitDisplay(self, ctx: FileSyntaxParser.DisplayContext):
+        animate = False if (ctx.ANIMATE_KWD() is None) else True
         import user_interface.UI
-        user_interface.UI.UI(simulation=self.__sim).run()
+        user_interface.UI.UI(simulation=self.__sim, animate=animate).run()
 
     def exitBlock_position(self, ctx:FileSyntaxParser.Block_positionContext):
         index_line = int(str(ctx.UINT(0)))

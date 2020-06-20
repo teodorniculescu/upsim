@@ -31,9 +31,11 @@ class Simulation:
     table_name: str
     # A stack which contains tuples of 1. the block name 2. if the block should calculate its value or propagate it
     __execution_stack: List[Tuple[str, str]]
+    __drawn_blocks_list: List[BasicBlock]
 
     def __init__(self,
                  use_db: bool = True):
+        self.__drawn_blocks_list = []
         self.__execution_stack = []
         self.__bh = BlockHandler()
         self.__initial_conditions = []
@@ -54,7 +56,9 @@ class Simulation:
         return self.__bh.get_positionable_blocks()
 
     def add_block_position(self, block_name: str, block_position: Tuple[int, int]) -> None:
-        self.__bh.get_block_with_name(block_name).set_position(block_position)
+        block: BasicBlock = self.__bh.get_block_with_name(block_name)
+        block.set_position(block_position)
+        self.__drawn_blocks_list.append(block)
 
     def __finished_all_init_cond(self) -> bool:
         if self.__number_init_cond >= len(self.__initial_conditions):
@@ -324,3 +328,19 @@ class Simulation:
 
     def get_positionable_nodes(self) -> Dict[str, Node]:
         return self.__graph.get_positionable_nodes()
+
+    def get_animation_frames(self) -> \
+            Tuple[List[str], List[Tuple[str]]]:
+        if not self.__use_db:
+            # TODO create exception with proper error code
+            raise Exception("There is no database controler")
+        columns: List[str] = []
+        for block in self.__drawn_blocks_list:
+            block_name = block.get_name()
+            for pin_name in block.get_all_pins().keys():
+                columns.append(block_name + "." + pin_name)
+        values = self.__dbc.select_some_from_table(
+            self.table_name,
+            columns
+        )
+        return columns, values
