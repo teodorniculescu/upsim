@@ -185,6 +185,7 @@ INSERT INIT COND
     ( clk.val=1 );
 
 RUN;
+/*
 SHOW RUN (
     nlb.val,
     clr.val,
@@ -206,6 +207,7 @@ SHOW RUN (
     output6.val,
     output7.val
 );
+*/
 
 DRAW BLOCKS
     g 1:0,
@@ -219,14 +221,14 @@ DRAW BLOCKS
     l1 0:6;
 
 DRAW EDGES
-    SNAKE g.val RIGHT, RIGHT,
-    SNAKE nlb.val RIGHT, RIGHT,
-    SNAKE clr.val RIGHT, RIGHT,
-    SNAKE clk.val RIGHT, RIGHT,
-    SNAKE input0.val RIGHT, RIGHT,
-    SNAKE input1.val RIGHT, RIGHT,
-    SNAKE input2.val RIGHT, RIGHT,
-    SNAKE input3.val RIGHT, RIGHT;
+    SNAKE g.val (RIGHT, RIGHT),
+    SNAKE nlb.val (RIGHT, RIGHT),
+    SNAKE clr.val (RIGHT, RIGHT),
+    SNAKE clk.val (RIGHT, RIGHT),
+    SNAKE input0.val (RIGHT, RIGHT),
+    SNAKE input1.val (RIGHT, RIGHT),
+    SNAKE input2.val (RIGHT, RIGHT),
+    SNAKE input3.val (RIGHT, RIGHT);
 
 DRAW BLOCKS
     output0 1:12,
@@ -235,9 +237,9 @@ DRAW BLOCKS
     output3 7:12;
 
 DRAW EDGES
-    SNAKE output0.val LEFT, LEFT,
-    SNAKE output1.val LEFT, LEFT,
-    SNAKE output2.val LEFT, LEFT,
-    SNAKE output3.val LEFT, LEFT;
+    SNAKE output0.val (LEFT, LEFT),
+    SNAKE output1.val (LEFT, LEFT),
+    SNAKE output2.val (LEFT, LEFT),
+    SNAKE output3.val (LEFT, LEFT);
 
 DISPLAY ANIMATE;
