@@ -55,6 +55,9 @@ class SimulationPanel(GridLayout):
             (self.__frame_description, self.__animation_frames) = self.__simulation.get_animation_frames()
             self.__animation_frame_num = 0
 
+    def get_frame_counter(self) -> Tuple[int, int]:
+        return self.__animation_frame_num + 1, len(self.__animation_frames)
+
     def update_cell_count(self, *args):
         (w, h) = self.size
         num_cols = floor(w / self.cell_wh)
