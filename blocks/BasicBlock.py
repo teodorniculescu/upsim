@@ -76,7 +76,10 @@ class BasicBlock:
                 (row_index + self._position[0],
                  column + self._position[1]
                  ))
-            cell_param = ParamElem({"name": pin.get_name()})
+            node_name = self.get_name() + "." + pin.get_name()
+            cell_param = ParamElem(
+                {"name": pin.get_name(),
+                 "node_name": node_name})
             grid[row_index][column] = \
                 ParamGridElem((cell_type, cell_param))
             row_index += 2

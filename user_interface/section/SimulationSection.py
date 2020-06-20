@@ -49,6 +49,20 @@ class SimulationSection(BoxLayout):
         self.__grid.add_blocks(self.__simulation.get_positionable_blocks())
         self.__grid.add_edges(self.__simulation.get_positionable_nodes())
 
+    def get_grid(self) -> Grid:
+        return self.__grid
+
+    def index_within_bounds(self, index: Tuple[int, int]) -> bool:
+        if (index[0] > self.__end_row_index() or
+                index[0] < self.__beginning_row_index() or
+                index[1] > self.__end_column_index() or
+                index[1] < self.__beginning_column_index()):
+            return False
+        return True
+
+    def get_cell_from_dict(self, index: Tuple[int, int]) -> Widget:
+        return self.__cell_dict[index]
+
     # Returns the cell widget corresponding to the given row and column index
     # If the function creates a new cell, it automatically adds it to the
     # cell dictionary

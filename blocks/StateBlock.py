@@ -25,10 +25,17 @@ class StateBlock(BasicBlock):
         else:
             column_index = 4
             column_type = CODE.WIRE_LEFT
-        result[0][column_index] = (column_type, {"name": pin.get_name()})
+
+        node_name = self.get_name() + "." + pin.get_name()
+        result[0][column_index] = (
+            column_type,
+            ParamElem({"name": pin.get_name(),
+                       "node_name": node_name})
+        )
+
         pin.set_original_position(
             original_position=
-            (0+ self._position[0],
+            (0 + self._position[0],
              column_index+ self._position[1]
          ))
         return result

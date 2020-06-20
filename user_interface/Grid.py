@@ -9,6 +9,7 @@ from values.BaseValue import RIGHT, UP, DOWN, LEFT
 from antlr.FileSyntaxErrorListener import \
     ERROR_INVALID_DIRECTION_STRING, \
     ERROR_GRID_OUT_OF_BOUNDS
+from user_interface.cell.WireCell import *
 
 from gen.FileSyntaxLexer import FileSyntaxLexer
 
@@ -23,6 +24,7 @@ class Grid:
     __matrix: List[List[str]]
     __parameter: Dict[Tuple[int, int], ParamElem]
     __ph: PanelHandler
+    __wire_widget_dict: Dict[str, List[Tuple[int, int]]]
 
     def __init__(self, size: Tuple[int, int] = (1, 1)):
         self.__size = size
@@ -30,6 +32,7 @@ class Grid:
         # creating a matrix of size[0] rows and size[1] columns
         self.__matrix = []
         self.__parameter = {}
+        self.__wire_widget_dict = {}
         for row_index in range(self.__size[0]):
             row: List[str] = []
             for col_index in range(self.__size[1]):
@@ -49,11 +52,23 @@ class Grid:
                     rmp = (position[0] + row_index, position[1] + col_index)
                     self.__matrix[rmp[0]][rmp[1]] = cell_type
                     self.__parameter[rmp] = cell_param
+                    # if the widget is a wire, add it to the list of wire widgets in order to be able
+                    # to animate it later on
+                    if cell_type[:2] == "w_":
+                        if "node_name" in cell_param:
+                            node_name = cell_param["node_name"]
+                            if node_name not in self.__wire_widget_dict:
+                                self.__wire_widget_dict[node_name] = []
+                            self.__wire_widget_dict[node_name].append(rmp)
 
     def get_cell_widget(self, index: Tuple[int, int]) -> Widget:
         str_code: str = self.__matrix[index[0]][index[1]]
         parameters: ParamElem = self.__parameter[index] if index in self.__parameter else {}
-        return self.__ph.get_cell(str_code, parameters)
+        widget = self.__ph.get_cell(str_code, parameters)
+        return widget
+
+    def get_wire_widget_dict(self) -> Dict[str, List[Tuple[int, int]]]:
+        return self.__wire_widget_dict
 
     def __move_right(self, orig_pos: Tuple[int, int]) -> Tuple[int, int]:
         return (
@@ -133,9 +148,6 @@ class Grid:
             elif direction == RIGHT:
                 value = CODE.WIRE_LEFT_RIGHT
             else:
-                print(direction)
-                print(prev_value)
-                print(node)
                 raise Exception(ERROR_INVALID_DIRECTION_STRING)
         else:
             raise Exception(ERROR_INVALID_DIRECTION_STRING)
@@ -144,6 +156,7 @@ class Grid:
     def __set_new_code(self, node: Node, pos: Tuple[int, int], direction: int) -> None:
         prev_value = self.__matrix[pos[0]][pos[1]]
         if prev_value == CODE.VOID:
+            self.__wire_widget_dict[node.__str__()].append(pos)
             if direction == UP:
                 value = CODE.WIRE_DOWN
             elif direction == DOWN:
@@ -193,7 +206,6 @@ class Grid:
             else:
                 raise Exception(ERROR_INVALID_DIRECTION_STRING)
         else:
-            print(prev_value)
             raise Exception(ERROR_INVALID_DIRECTION_STRING)
         self.__matrix[pos[0]][pos[1]] = value
 
@@ -208,7 +220,3 @@ class Grid:
                 new_position = self.__move(direction, node, new_position)
                 self.__set_prev_code(pos=prev_position, direction=direction, node=node)
                 self.__set_new_code(pos=new_position, direction=direction, node=node)
-                print(new_position)
-
-
-

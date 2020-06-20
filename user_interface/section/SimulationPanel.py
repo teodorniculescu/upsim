@@ -2,6 +2,7 @@ from user_interface.section.EdgeSection import ColumnsSection, RowsSection
 from user_interface.section.SimulationSection import SimulationSection
 from user_interface.section.NoneSection import NoneSection
 from user_interface.cell.WireCell import *
+from user_interface.Grid import Grid
 from math import floor
 from simulation.Simulation import Simulation
 from kivy.uix.gridlayout import GridLayout
@@ -20,7 +21,7 @@ class SimulationPanel(GridLayout):
     __animation_frames: List[Tuple[str]]
     __frame_description: List[str]
     __animation_frame_num: int
-    __wire_widget_dict: Dict[str, List[BaseWireCell]]
+    __grid: Grid
 
     def __init__(self,
                  simulation: Simulation,
@@ -44,6 +45,7 @@ class SimulationPanel(GridLayout):
         self.sim_section = SimulationSection(
             simulation=self.__simulation,
             sim_size=sim_size)
+        self.__grid = self.sim_section.get_grid()
         self.add_widget(self.none_section)
         self.add_widget(self.cols_section)
         self.add_widget(self.rows_section)
@@ -55,6 +57,7 @@ class SimulationPanel(GridLayout):
         if self.__animate:
             (self.__frame_description, self.__animation_frames) = self.__simulation.get_animation_frames()
             self.__animation_frame_num = 0
+            self.__animate_frame()
 
     def update_cell_count(self, *args):
         (w, h) = self.size
@@ -100,24 +103,32 @@ class SimulationPanel(GridLayout):
     def get_current_animation_frame(self) -> Tuple[str]:
         return self.__animation_frames[self.__animation_frame_num]
 
+    def __animate_frame(self) -> None:
+        wire_widget_dict: Dict[str, List[Tuple[int, int]]] = self.__grid.get_wire_widget_dict()
+        print(wire_widget_dict)
+        for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
+            for widget_index in wire_widget_dict[node_name]:
+                if not self.sim_section.index_within_bounds(widget_index):
+                    continue
+                widget = self.sim_section.get_cell_from_dict(widget_index)
+                if not isinstance(widget, BaseWireCell):
+                    raise Exception('animate_frame retrieved widget is not a basewirecell')
+                if node_value == "1":
+                    widget.set_on_color()
+                else:
+                    widget.set_off_color()
+
     def next_simulation_frame(self) -> None:
         if self.__animate:
             if self.__animation_frame_num < len(self.__animation_frames) - 1:
                 self.__animation_frame_num += 1
-                for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
-                    for widget_list in self.__wire_widget_dict[node_name].values():
-                        for widget in widget_list:
-                            if node_value == "1":
-                                pass
-                            else:
-                                pass
+                self.__animate_frame()
 
     def prev_simulation_frame(self) -> None:
         if self.__animate:
             if self.__animation_frame_num > 0:
                 self.__animation_frame_num -= 1
-                for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
-                    print(node_name, node_value)
+                self.__animate_frame()
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == '=':

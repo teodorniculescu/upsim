@@ -68,6 +68,11 @@ class BaseWireCell(BoxLayout):
                 # TODO use pos bias to move the name to a much suitable position
                 self.rows[0].columns[column_position_text].add_text_widget(parameters["name"])
 
+    def set_on_color(self) -> None:
+        print("turn me ON")
+
+    def set_off_color(self) -> None:
+        print("turn me OFF")
 
 class WireCell:
     class Up(BaseWireCell):
