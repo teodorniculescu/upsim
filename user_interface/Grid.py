@@ -96,7 +96,7 @@ class Grid:
             raise Exception(ERROR_INVALID_DIRECTION_STRING)
         return position
 
-    def __set_prev_code(self, pos: Tuple[int, int], direction: int) -> None:
+    def __set_prev_code(self, pos: Tuple[int, int], node: Node, direction: int) -> None:
         prev_value = self.__matrix[pos[0]][pos[1]]
         if prev_value == CODE.WIRE_UP:
             if direction == DOWN:
@@ -133,12 +133,15 @@ class Grid:
             elif direction == RIGHT:
                 value = CODE.WIRE_LEFT_RIGHT
             else:
+                print(direction)
+                print(prev_value)
+                print(node)
                 raise Exception(ERROR_INVALID_DIRECTION_STRING)
         else:
             raise Exception(ERROR_INVALID_DIRECTION_STRING)
         self.__matrix[pos[0]][pos[1]] = value
 
-    def __set_new_code(self, pos: Tuple[int, int], direction: int) -> None:
+    def __set_new_code(self, node: Node, pos: Tuple[int, int], direction: int) -> None:
         prev_value = self.__matrix[pos[0]][pos[1]]
         if prev_value == CODE.VOID:
             if direction == UP:
@@ -185,6 +188,8 @@ class Grid:
                 value = CODE.WIRE_LEFT_DOWN
             elif direction == RIGHT:
                 value = CODE.WIRE_LEFT_RIGHT
+            elif direction == LEFT:
+                value = CODE.WIRE_LEFT_RIGHT
             else:
                 raise Exception(ERROR_INVALID_DIRECTION_STRING)
         else:
@@ -201,8 +206,8 @@ class Grid:
                 # save the previous position
                 prev_position = new_position
                 new_position = self.__move(direction, node, new_position)
-                self.__set_prev_code(pos=prev_position, direction=direction)
-                self.__set_new_code(pos=new_position, direction=direction)
+                self.__set_prev_code(pos=prev_position, direction=direction, node=node)
+                self.__set_new_code(pos=new_position, direction=direction, node=node)
                 print(new_position)
 
 

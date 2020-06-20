@@ -208,32 +208,36 @@ SHOW RUN (
 );
 
 DRAW BLOCKS
-    input0 0:0,
-    input1 3:0,
-    input2 6:0,
-    input3 9:0,
-    input4 12:0,
-    input5 15:0,
-    input6 18:0,
-    input7 21:0;
-
-DRAW BLOCKS
+    g 1:0,
+    nlb 5:0,
+    clk 9:0,
+    clr 11:0,
+    input0 13:0,
+    input1 15:0,
+    input2 17:0,
+    input3 19:0,
     l1 0:6;
 
 DRAW EDGES
+    SNAKE g.val RIGHT, RIGHT,
+    SNAKE nlb.val RIGHT, RIGHT,
+    SNAKE clr.val RIGHT, RIGHT,
+    SNAKE clk.val RIGHT, RIGHT,
     SNAKE input0.val RIGHT, RIGHT,
-    SNAKE input1.val UP, RIGHT;
+    SNAKE input1.val RIGHT, RIGHT,
+    SNAKE input2.val RIGHT, RIGHT,
+    SNAKE input3.val RIGHT, RIGHT;
 
-/*
 DRAW BLOCKS
-    output0 0:10,
-    output1 3:10,
-    output2 6:10,
-    output3 9:10,
-    output4 12:10,
-    output5 15:10,
-    output6 18:10,
-    output7 21:10;
-*/
+    output0 1:12,
+    output1 3:12,
+    output2 5:12,
+    output3 7:12;
+
+DRAW EDGES
+    SNAKE output0.val LEFT, LEFT,
+    SNAKE output1.val LEFT, LEFT,
+    SNAKE output2.val LEFT, LEFT,
+    SNAKE output3.val LEFT, LEFT;
 
 DISPLAY;

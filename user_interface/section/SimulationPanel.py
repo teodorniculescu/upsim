@@ -39,7 +39,7 @@ class SimulationPanel(GridLayout):
         self.add_widget(self.sim_section)
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
-        self.cell_wh = 128
+        self.cell_wh = 40
         self.bind(size=self.update_cell_count)
 
     def update_cell_count(self, *args):
