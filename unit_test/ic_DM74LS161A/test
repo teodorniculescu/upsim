@@ -1,0 +1,215 @@
+DEFINE CUSTOM BLOCK DM74LS163Ajk (
+    IN 1PQ 2PQ 3PQ NPTNALC NALC DATA CLEAR CLK
+    OUT Q NQ
+) {
+    INSERT BLOCKS
+        JK_LATCH l,
+        AND and1 Q 1PQ 2PQ 3PQ NPTNALC o,
+        AND and2 NALC NJ o,
+        AND and3 DATA CLEAR NALC o,
+        AND and4 NPTNALC 1PQ 2PQ 3PQ NQ o,
+        OR or1 A1 A2 o,
+        OR or2 A3 A4 o,
+        NOT nq i o,
+        VCC vcc
+    ;
+
+    INSERT EDGES
+        BTWN vcc.val AND (l.PR, l.CLR),
+
+        BTWN and1.o AND or1.A1,
+        BTWN and2.o AND or1.A2,
+        BTWN and3.o AND or2.A3,
+        BTWN and4.o AND or2.A4,
+        BTWN or1.o AND l.K,
+        BTWN or2.o AND (l.J, nq.i),
+        BTWN nq.o AND and2.NJ,
+
+        BTWN THIS.CLK AND l.CLK,
+        BTWN THIS.DATA AND and3.DATA,
+        BTWN THIS.CLEAR AND and3.CLEAR,
+
+        BTWN l.Q AND (and1.Q, THIS.Q),
+        BTWN l.NQ AND (and4.NQ, THIS.NQ),
+
+        BTWN THIS.NALC AND (and2.NALC, and3.NALC),
+
+        BTWN THIS.NPTNALC AND (and1.NPTNALC, and4.NPTNALC),
+
+        BTWN THIS.1PQ AND (and1.1PQ, and4.1PQ),
+        BTWN THIS.2PQ AND (and1.2PQ, and4.2PQ),
+        BTWN THIS.3PQ AND (and1.3PQ, and4.3PQ)
+    ;
+
+};
+
+DEFINE CUSTOM BLOCK DM74LS163A (
+    IN CLK CLR LD ENP ENT DA DB DC DD
+    OUT QA QB QC QD RCO
+) {
+    INSERT BLOCK
+        CUSTOM DM74LS163Ajk dm1,
+        CUSTOM DM74LS163Ajk dm2,
+        CUSTOM DM74LS163Ajk dm3,
+        CUSTOM DM74LS163Ajk dm4,
+
+        NOT NENP i o,
+        NOT NENT i o,
+        NAND NALC CLR LD o,
+        NOR NPTNALC NALC NENP NENT o,
+        NOR RCO NQ1 NQ2 NQ3 NQ4 NENT o,
+
+        VCC vcc
+    ;
+    INSERT EDGES
+        BTWN vcc.val AND (dm1.1PQ, dm1.2PQ, dm1.3PQ),
+
+        BTWN dm1.Q AND dm2.1PQ,
+        BTWN vcc.val AND (dm2.2PQ, dm2.3PQ),
+
+        BTWN dm1.Q AND dm3.1PQ,
+        BTWN dm2.Q AND dm3.2PQ,
+        BTWN vcc.val AND (dm3.3PQ),
+
+        BTWN dm1.Q AND dm4.1PQ,
+        BTWN dm2.Q AND dm4.2PQ,
+        BTWN dm3.Q AND dm4.1PQ,
+
+        BTWN THIS.ENP AND NENP.i,
+        BTWN THIS.ENT AND NENT.i,
+        BTWN NENT.o AND NPTNALC.NENT,
+        BTWN NENP.o AND NPTNALC.NENP,
+
+        BTWN THIS.CLR AND NALC.CLR,
+        BTWN THIS.LD AND NALC.LD,
+        BTWN NALC.o AND NPTNALC.NALC,
+
+        BTWN THIS.DA AND dm1.DATA,
+        BTWN THIS.DB AND dm2.DATA,
+        BTWN THIS.DC AND dm3.DATA,
+        BTWN THIS.DD AND dm4.DATA,
+
+        BTWN dm1.Q AND THIS.QA,
+        BTWN dm2.Q AND THIS.QB,
+        BTWN dm3.Q AND THIS.QC,
+        BTWN dm4.Q AND THIS.QD,
+
+        BTWN dm1.NQ AND RCO.NQ1,
+        BTWN dm2.NQ AND RCO.NQ2,
+        BTWN dm3.NQ AND RCO.NQ3,
+        BTWN dm4.NQ AND RCO.NQ4,
+        BTWN NENT.o AND RCO.NENT,
+        BTWN RCO.o AND THIS.RCO,
+
+        BTWN NALC.o AND ( dm1.NALC, dm2.NALC, dm3.NALC, dm4.NALC ),
+        BTWN NPTNALC.o AND ( dm1.NPTNALC, dm2.NPTNALC, dm3.NPTNALC, dm4.NPTNALC ),
+        BTWN THIS.CLR AND ( dm1.CLEAR, dm2.CLEAR, dm3.CLEAR, dm4.CLEAR ),
+        BTWN THIS.CLK AND ( dm1.CLK, dm2.CLK, dm3.CLK, dm4.CLK )
+    ;
+};
+
+DEFINE CUSTOM BLOCK 4BITBUFFER (
+    IN IN1 IN2 IN3 IN4 EN
+    OUT OUT1 OUT2 OUT3 OUT4
+) {
+    INSERT BLOCKS
+        DTS_BUFFER BUF1,
+        DTS_BUFFER BUF2,
+        DTS_BUFFER BUF3,
+        DTS_BUFFER BUF4;
+
+    INSERT EDGES
+        BTWN BUF1.out AND THIS.OUT1,
+        BTWN BUF2.out AND THIS.OUT2,
+        BTWN BUF3.out AND THIS.OUT3,
+        BTWN BUF4.out AND THIS.OUT4,
+
+        BTWN THIS.IN1 AND BUF1.in,
+        BTWN THIS.IN2 AND BUF2.in,
+        BTWN THIS.IN3 AND BUF3.in,
+        BTWN THIS.IN4 AND BUF4.in,
+
+        BTWN THIS.EN AND ( BUF1.en, BUF2.en, BUF3.en, BUF4.en );
+};
+
+
+INSERT BLOCKS
+    STATE INOUT DATA1,
+    STATE INOUT DATA2,
+    STATE INOUT DATA3,
+    STATE INOUT DATA4,
+
+    NOT NJ i o,
+    STATE OUT J,
+    NOT NCOUT i o,
+    STATE OUT COUT,
+    STATE OUT CE,
+    STATE OUT CLK,
+    STATE OUT CLR,
+
+    CUSTOM 4BITBUFFER inbuf,
+    CUSTOM 4BITBUFFER outbuf,
+    CUSTOM DM74LS163A bc;
+
+INSERT EDGES
+    BTWN CE.val AND (bc.ENP, bc.ENT),
+    BTWN CLK.val AND bc.CLK,
+    BTWN COUT.val AND NCOUT.i,
+    BTWN NCOUT.o AND outbuf.EN,
+    BTWN J.val AND (NJ.i, bc.LD),
+    BTWN NJ.o AND inbuf.EN,
+
+
+    BTWN DATA1.val AND (inbuf.IN1, outbuf.OUT1),
+    BTWN DATA2.val AND (inbuf.IN2, outbuf.OUT2),
+    BTWN DATA3.val AND (inbuf.IN3, outbuf.OUT3),
+    BTWN DATA4.val AND (inbuf.IN4, outbuf.OUT4),
+
+    BTWN inbuf.OUT1 AND bc.DA,
+    BTWN inbuf.OUT2 AND bc.DB,
+    BTWN inbuf.OUT3 AND bc.DC,
+    BTWN inbuf.OUT4 AND bc.DD,
+
+    BTWN outbuf.IN1 AND bc.QA,
+    BTWN outbuf.IN2 AND bc.QB,
+    BTWN outbuf.IN3 AND bc.QC,
+    BTWN outbuf.IN4 AND bc.QD
+    ;
+
+INSERT INIT COND
+    (CLR.val=1, CLK.val=0, CE.val=1, J.val=1, COUT.val=1),
+
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1)
+    ;
+
+
+RUN;
+
+SHOW RUN
+(
+bc.QA,
+bc.QB,
+bc.QC,
+bc.QD,
+
+DATA1.val,
+DATA2.val,
+DATA3.val,
+DATA4.val,
+
+J.val,
+CE.val,
+COUT.val,
+CLR.val,
+
+CLK.val
+
+);
