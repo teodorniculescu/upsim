@@ -1,0 +1,104 @@
+DEFINE CUSTOM BLOCK DM74LS163Ajk (
+    IN 1PQ 2PQ 3PQ NPTNALC NALC DATA CLEAR CLK
+    OUT Q NQ
+) {
+    INSERT BLOCKS
+        JK_LATCH l,
+        AND and1 Q 1PQ 2PQ 3PQ NPTNALC o,
+        AND and2 NALC NJ o,
+        AND and3 DATA CLEAR NALC o,
+        AND and4 NPTNALC 1PQ 2PQ 3PQ NQ o,
+        OR or1 A1 A2 o,
+        OR or2 A3 A4 o,
+        NOT nq i o,
+        VCC vcc
+    ;
+
+    INSERT EDGES
+        BTWN vcc.val AND (l.PR, l.CLR),
+
+        BTWN and1.o AND or1.A1,
+        BTWN and2.o AND or1.A2,
+        BTWN and3.o AND or2.A3,
+        BTWN and4.o AND or2.A4,
+        BTWN or1.o AND l.K,
+        BTWN or2.o AND (l.J, nq.i),
+        BTWN nq.o AND and2.NJ,
+
+        BTWN THIS.CLK AND l.CLK,
+        BTWN THIS.DATA AND and3.DATA,
+        BTWN THIS.CLEAR AND and3.CLEAR,
+
+        BTWN l.Q AND (and1.Q, THIS.Q),
+        BTWN l.NQ AND (and4.NQ, THIS.NQ),
+
+        BTWN THIS.NALC AND (and2.NALC, and3.NALC),
+
+        BTWN THIS.NPTNALC AND (and1.NPTNALC, and4.NPTNALC),
+
+        BTWN THIS.1PQ AND (and1.1PQ, and4.1PQ),
+        BTWN THIS.2PQ AND (and1.2PQ, and4.2PQ),
+        BTWN THIS.3PQ AND (and1.3PQ, and4.3PQ)
+    ;
+
+};
+
+INSERT BLOCKS
+    CUSTOM DM74LS163Ajk interior,
+    VCC vcc,
+
+    NOT NENP i o,
+    NOT NENT i o,
+    NAND NALC CLR LD o,
+    NOR NPTNALC NALC NENP NENT o,
+
+    STATE OUT CLK,
+    STATE OUT ENP,
+    STATE OUT ENT,
+    STATE OUT LD,
+    STATE OUT DATA,
+    STATE OUT CLR,
+    STATE IN RESULT
+
+;
+
+INSERT EDGES
+    BTWN CLR.val AND NALC.CLR,
+    BTWN LD.val AND NALC.LD,
+    BTWN NALC.o AND NPTNALC.NALC,
+
+    BTWN ENP.val AND NENP.i,
+    BTWN ENT.val AND NENT.i,
+    BTWN NENP.o AND NPTNALC.NENP,
+    BTWN NENT.o AND NPTNALC.NENT,
+
+    BTWN NPTNALC.o AND interior.NPTNALC,
+    BTWN NALC.o AND interior.NALC,
+    BTWN vcc.val AND (interior.1PQ, interior.2PQ, interior.3PQ),
+    BTWN interior.Q AND RESULT.val,
+    BTWN CLK.val AND interior.CLK,
+    BTWN CLR.val AND interior.CLEAR,
+    BTWN DATA.val AND interior.DATA
+    ;
+
+
+INSERT INIT COND
+    (CLR.val=1, LD.val=1, DATA.val=1, CLK.val=1, ENP.val=0, ENT.val=0),
+    (CLK.val=0, CLR.val=0),
+    (CLK.val=1),
+    (CLK.val=0, CLR.val=1),
+    (CLK.val=1, LD.val=0),
+    (CLK.val=0),
+    (CLK.val=1, LD.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0)
+    ;
+    /*
+    (CLK.val=0),
+    (CLK.val=1),
+    */
+
+RUN;
+SHOW RUN
+(CLK.val, ENP.val, ENT.val, LD.val, CLR.val, DATA.val, RESULT.val);
