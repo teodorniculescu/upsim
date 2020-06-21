@@ -59,6 +59,7 @@ create_block : create_state_block
              | create_logic_gate_2_inputs
              | create_logic_gate_n_inputs
              | create_d_latch
+             | create_jk_latch
              | create_digital_tri_state_buffer
              | create_bus_transmitter_receiver
              | create_custom_block
@@ -83,6 +84,10 @@ create_digital_tri_state_buffer :
     ;
 
 create_d_latch : D_LATCH_KWD
+                 block_name
+               ;
+
+create_jk_latch : JK_LATCH_KWD
                  block_name
                ;
 
@@ -163,6 +168,7 @@ XOR_KWD : 'XOR';
 XNOR_KWD : 'XNOR';
 NOT_KWD : 'NOT';
 D_LATCH_KWD : 'D_LATCH';
+JK_LATCH_KWD : 'JK_LATCH';
 
 AND2_KWD : 'AND2';
 OR2_KWD : 'OR2';

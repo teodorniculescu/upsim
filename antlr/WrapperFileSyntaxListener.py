@@ -3,7 +3,7 @@ from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from simulation.Simulation import Simulation
 from blocks.store.LogicGates import *
-from blocks.store.Latch import D_LATCH
+from blocks.store.Latch import D_LATCH, JK_LATCH
 from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER, BUS_TRANSMITTER_RECEIVER
 from blocks.CustomBlock import CustomBlockTemplate
 from antlr4.Token import *
@@ -264,6 +264,15 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         name = ctx.block_name().text
         pos = ctx.block_position().val
         self.__sim.add_block_position(name, pos)
+
+    def exitCreate_jk_latch(self, ctx:FileSyntaxParser.Create_d_latchContext):
+        if self.error_is_set():
+            return
+        block_name = ctx.block_name().text
+        try:
+            ctx.block = JK_LATCH(block_name)
+        except Exception as e:
+            self.__set_error(ctx, e)
 
     def exitCreate_d_latch(self, ctx:FileSyntaxParser.Create_d_latchContext):
         if self.error_is_set():

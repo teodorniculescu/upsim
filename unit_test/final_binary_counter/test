@@ -1,0 +1,29 @@
+INSERT BLOCKS
+    JK_LATCH l1,
+    STATE OUT PR,
+    STATE OUT CLR,
+    STATE OUT VCC,
+    STATE OUT CLK,
+
+    STATE IN OUT0,
+    STATE IN OUT1,
+    STATE IN OUT2,
+    STATE IN OUT3
+    ;
+
+INSERT EDGES
+    BTWN l1.Q AND (OUT0.val),
+
+    BTWN PR.val AND (l1.PR),
+    BTWN CLR.val AND (l1.CLR)
+    ;
+
+INSERT INIT COND
+    (PR.val=1, CLR.val=0, CLK.val=0)
+    ;
+
+RUN;
+
+SHOW RUN (PR.val, CLR.val, CLK.val, OUT0.val, OUT1.val, OUT2.val, OUT3.val);
+
+
