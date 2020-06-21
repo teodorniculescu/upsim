@@ -1,8 +1,12 @@
 INSERT BLOCKS
+    JK_LATCH l0,
     JK_LATCH l1,
+    JK_LATCH l2,
+    JK_LATCH l3,
+
+    VCC vcc,
     STATE OUT PR,
     STATE OUT CLR,
-    VCC vcc,
     STATE OUT CLK,
 
     STATE IN OUT0,
@@ -12,15 +16,41 @@ INSERT BLOCKS
     ;
 
 INSERT EDGES
-    BTWN l1.Q AND (OUT0.val),
-    BTWN vcc.val AND (l1.J),
+    BTWN l0.Q AND ( OUT0.val ),
+    BTWN l1.Q AND ( OUT1.val ),
+    BTWN l2.Q AND ( OUT2.val ),
+    BTWN l3.Q AND ( OUT3.val ),
 
-    BTWN PR.val AND (l1.PR),
-    BTWN CLR.val AND (l1.CLR)
+    BTWN CLK.val AND ( l0.CLK ),
+    BTWN l0.Q AND ( l1.CLK ),
+    BTWN l1.Q AND ( l2.CLK ),
+    BTWN l2.Q AND ( l3.CLK ),
+
+    BTWN vcc.val AND ( l0.J, l0.K, l1.J, l1.K, l2.J, l2.K, l3.J, l3.K ),
+
+    BTWN PR.val AND ( l0.PR, l1.PR, l2.PR, l3.PR ),
+    BTWN CLR.val AND ( l0.CLR, l1.CLR, l2.CLR, l3.CLR )
     ;
 
 INSERT INIT COND
-    (PR.val=1, CLR.val=0, CLK.val=0)
+    (PR.val=1, CLR.val=0, CLK.val=0),
+    (CLR.val=1),
+
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1)
     ;
 
 RUN;

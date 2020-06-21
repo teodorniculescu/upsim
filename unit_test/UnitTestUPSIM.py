@@ -97,3 +97,6 @@ class UnitTestUPSIM(unittest.TestCase):
 
     def test_BusTranRecv(self) -> None:
         self.run_test()
+
+    def test_final_binary_counter(self) -> None:
+        self.run_test()
