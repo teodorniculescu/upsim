@@ -76,6 +76,12 @@ class BaseValue:
             return self.__pin_type
         raise Exception(ERROR_INVALID_PIN_TYPE % self.__pin_type)
 
+    def toggle(self) -> None:
+        if self.is_high():
+            self.set_low()
+        elif self.is_low():
+            self.set_high()
+
     def __set_name(self, name: str) -> None:
         if name is None:
             raise Exception('name must not be None')
