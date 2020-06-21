@@ -182,22 +182,73 @@ DEFINE CUSTOM BLOCK 4BITBUFFER (
         BTWN THIS.EN AND ( BUF1.en, BUF2.en, BUF3.en, BUF4.en );
 };
 
+/*
+    CIN - read data from IN* pins
+        0 - ON
+        1 - off
+    COUT - output data to the OUT* pins
+        0 - off
+        1 - ON
+    COUT - increment the pc
+        0 - off
+        1 - ON
+    CLR - set pins to 1111
+        0 - off
+        1 - ON
+*/
+DEFINE CUSTOM BLOCK ProgramCounter (
+    IN IN0 IN1 IN2 IN3 CE CLK CIN COUT CLR
+    OUT OUT0 OUT1 OUT2 OUT3
+) {
 
 INSERT BLOCKS
+    CUSTOM 4BITBUFFER outbuf,
+    CUSTOM DM74LS163A bc;
+
+INSERT EDGES
+    BTWN THIS.IN0 AND bc.DATAA,
+    BTWN THIS.IN1 AND bc.DATAB,
+    BTWN THIS.IN2 AND bc.DATAC,
+    BTWN THIS.IN3 AND bc.DATAD,
+
+    BTWN bc.QA AND outbuf.IN1,
+    BTWN bc.QB AND outbuf.IN2,
+    BTWN bc.QC AND outbuf.IN3,
+    BTWN bc.QD AND outbuf.IN4,
+
+    BTWN outbuf.OUT1 AND THIS.OUT0,
+    BTWN outbuf.OUT2 AND THIS.OUT1,
+    BTWN outbuf.OUT3 AND THIS.OUT2,
+    BTWN outbuf.OUT4 AND THIS.OUT3,
+
+    BTWN THIS.COUT AND outbuf.EN,
+    /* count enable */
+    BTWN THIS.CE AND bc.ENT,
+    BTWN THIS.CE AND bc.ENP,
+    /* read from bus OR jump to address */
+    BTWN THIS.CIN AND bc.LD,
+    BTWN THIS.CLK AND bc.CLK,
+    BTWN THIS.CLR AND bc.CLR
+    ;
+
+
+};
+
+INSERT BLOCKS
+    BUFFER BUSLINE0,
     BUFFER BUSLINE1,
     BUFFER BUSLINE2,
     BUFFER BUSLINE3,
-    BUFFER BUSLINE4,
 
+    STATE OUT BUSJUMP0,
     STATE OUT BUSJUMP1,
     STATE OUT BUSJUMP2,
     STATE OUT BUSJUMP3,
-    STATE OUT BUSJUMP4,
 
     STATE IN BUS1,
     STATE IN BUS2,
     STATE IN BUS3,
-    STATE IN BUS4,
+    STATE IN BUS0,
 
     STATE OUT CE,
     STATE OUT CIN,
@@ -205,45 +256,36 @@ INSERT BLOCKS
     STATE OUT CLK,
     STATE OUT CLR,
 
-    CUSTOM 4BITBUFFER outbuf,
-    CUSTOM DM74LS163A bc;
+    CUSTOM ProgramCounter PC
+    ;
 
 INSERT EDGES
+    BTWN BUSJUMP0.val AND BUSLINE0.in,
     BTWN BUSJUMP1.val AND BUSLINE1.in,
     BTWN BUSJUMP2.val AND BUSLINE2.in,
     BTWN BUSJUMP3.val AND BUSLINE3.in,
-    BTWN BUSJUMP4.val AND BUSLINE4.in,
 
+    BTWN BUSLINE0.out AND BUS0.val,
     BTWN BUSLINE1.out AND BUS1.val,
     BTWN BUSLINE2.out AND BUS2.val,
     BTWN BUSLINE3.out AND BUS3.val,
-    BTWN BUSLINE4.out AND BUS4.val,
 
-    BTWN BUSLINE1.out AND bc.DATAA,
-    BTWN BUSLINE2.out AND bc.DATAB,
-    BTWN BUSLINE3.out AND bc.DATAC,
-    BTWN BUSLINE4.out AND bc.DATAD,
+    BTWN CE.val AND PC.CE,
+    BTWN CLK.val AND PC.CLK,
+    BTWN CLR.val AND PC.CLR,
+    BTWN CIN.val AND PC.CIN,
+    BTWN COUT.val AND PC.COUT,
 
-    BTWN bc.QA AND outbuf.IN1,
-    BTWN bc.QB AND outbuf.IN2,
-    BTWN bc.QC AND outbuf.IN3,
-    BTWN bc.QD AND outbuf.IN4,
+    BTWN PC.OUT0 AND BUSLINE0.in,
+    BTWN PC.OUT1 AND BUSLINE1.in,
+    BTWN PC.OUT2 AND BUSLINE2.in,
+    BTWN PC.OUT3 AND BUSLINE3.in,
 
-    BTWN outbuf.OUT1 AND BUSLINE1.in,
-    BTWN outbuf.OUT2 AND BUSLINE2.in,
-    BTWN outbuf.OUT3 AND BUSLINE3.in,
-    BTWN outbuf.OUT4 AND BUSLINE4.in,
-    BTWN COUT.val AND outbuf.EN,
-
-    /* count enable */
-    BTWN CE.val AND bc.ENT,
-    BTWN CE.val AND bc.ENP,
-    /* read from bus OR jump to address */
-    BTWN CIN.val AND bc.LD,
-    BTWN CLK.val AND bc.CLK,
-    BTWN CLR.val AND bc.CLR
+    BTWN BUSLINE0.out AND PC.IN0,
+    BTWN BUSLINE1.out AND PC.IN1,
+    BTWN BUSLINE2.out AND PC.IN2,
+    BTWN BUSLINE3.out AND PC.IN3
     ;
-
 INSERT INIT COND
     (CE.val=0, CIN.val=1, COUT.val=0, CLK.val=0, CLR.val=1),
     (CLK.val=1),
@@ -266,7 +308,7 @@ INSERT INIT COND
     (CLK.val=0, COUT.val=0),
     (CLK.val=1),
     (CLK.val=0),
-    (CLK.val=1, CIN.val=0, BUSJUMP1.val=0, BUSJUMP2.val=1, BUSJUMP3.val=1, BUSJUMP4.val=0 ),
+    (CLK.val=1, CIN.val=0, BUSJUMP0.val=0 ,BUSJUMP1.val=0, BUSJUMP2.val=1, BUSJUMP3.val=1 ),
     (CLK.val=0),
     (CLK.val=1, CIN.val=1),
     (CLK.val=0),
@@ -286,7 +328,10 @@ RUN;
 SHOW RUN
 (
 CE.val, CIN.val, COUT.val, CLK.val,
-bc.QA, bc.QB, bc.QC, bc.QD,
-BUS1.val, BUS2.val, BUS3.val, BUS4.val
+PC.OUT0,
+PC.OUT1,
+PC.OUT2,
+PC.OUT3,
+BUS0.val, BUS1.val, BUS2.val, BUS3.val
 );
 
