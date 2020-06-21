@@ -260,12 +260,10 @@ INSERT INIT COND
 RUN;
 SHOW RUN
 (
-/*
 DATAA.val,
 DATAB.val,
 DATAC.val,
 DATAD.val,
-*/
 QA.val,
 QB.val,
 QC.val,

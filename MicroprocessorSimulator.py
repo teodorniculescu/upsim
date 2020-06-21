@@ -13,7 +13,7 @@ def main():
 
 def parse_test():
     # used for updating and checking test results
-    test = "DM74LS163A_interior"
+    test = "final_program_counter"
     FileInterpreter(
         "unit_test/%s/test" % test,
         #"unit_test/%s/answer" % test,

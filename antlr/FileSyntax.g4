@@ -61,6 +61,7 @@ create_block : create_state_block
              | create_d_latch
              | create_jk_latch
              | create_digital_tri_state_buffer
+             | create_buffer
              | create_bus_transmitter_receiver
              | create_custom_block
              | create_ground_block
@@ -73,6 +74,10 @@ create_ground_block :
 
 create_vcc_block :
     VCC_KWD block_name
+    ;
+
+create_buffer :
+    BUFFER_KWD block_name
     ;
 
 create_bus_transmitter_receiver :
@@ -201,6 +206,7 @@ DISPLAY_KWD : 'DISPLAY';
 DEFINE_KWD : 'DEFINE';
 CUSTOM_KWD : 'CUSTOM';
 DIGITAL_TRI_STATE_BUFFER_KWD : 'DTS_BUFFER';
+BUFFER_KWD : 'BUFFER';
 GROUND_KWD: 'GND';
 VCC_KWD: 'VCC';
 
