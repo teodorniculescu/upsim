@@ -1,5 +1,5 @@
 DEFINE CUSTOM BLOCK DM74LS163Ajk (
-    IN 1PQ 2PQ 3PQ NPTNALC NALC DATA CLEAR CLK
+    IN 0PQ 0NPQ 1PQ 2PQ 3PQ NPTNALC NALC DATA CLEAR CLK
     OUT Q NQ
 ) {
     INSERT BLOCKS
@@ -13,7 +13,6 @@ DEFINE CUSTOM BLOCK DM74LS163Ajk (
         NOT nq i o,
         VCC vcc
     ;
-
     INSERT EDGES
         BTWN vcc.val AND (l.PR, l.CLR),
 
@@ -29,8 +28,10 @@ DEFINE CUSTOM BLOCK DM74LS163Ajk (
         BTWN THIS.DATA AND and3.DATA,
         BTWN THIS.CLEAR AND and3.CLEAR,
 
-        BTWN l.Q AND (and1.Q, THIS.Q),
-        BTWN l.NQ AND (and4.NQ, THIS.NQ),
+        BTWN THIS.0PQ AND and1.Q,
+        BTWN THIS.0NPQ AND and4.NQ,
+        BTWN l.Q AND ( THIS.Q),
+        BTWN l.NQ AND ( THIS.NQ),
 
         BTWN THIS.NALC AND (and2.NALC, and3.NALC),
 
@@ -40,56 +41,82 @@ DEFINE CUSTOM BLOCK DM74LS163Ajk (
         BTWN THIS.2PQ AND (and1.2PQ, and4.2PQ),
         BTWN THIS.3PQ AND (and1.3PQ, and4.3PQ)
     ;
-
 };
 
+DEFINE CUSTOM BLOCK DM74LS163Awrapper (
+    IN DATA ENP ENT LD CLR CLK 1PQ 2PQ 3PQ
+    OUT RESULT
+) {
 INSERT BLOCKS
     CUSTOM DM74LS163Ajk interior,
-    VCC vcc,
-
     NOT NENP i o,
     NOT NENT i o,
     NAND NALC CLR LD o,
-    NOR NPTNALC NALC NENP NENT o,
+    NOR NPTNALC NALC NENP NENT o
+;
 
+INSERT EDGES
+    BTWN THIS.1PQ AND interior.1PQ,
+    BTWN THIS.2PQ AND interior.2PQ,
+    BTWN THIS.3PQ AND interior.3PQ,
+
+    BTWN interior.Q AND interior.0PQ,
+    BTWN interior.NQ AND interior.0NPQ,
+    BTWN NPTNALC.o AND interior.NPTNALC,
+    BTWN NALC.o AND interior.NALC,
+    BTWN interior.Q AND THIS.RESULT,
+    BTWN THIS.CLK AND interior.CLK,
+    BTWN THIS.CLR AND interior.CLEAR,
+    BTWN THIS.DATA AND interior.DATA,
+
+    BTWN THIS.CLR AND NALC.CLR,
+    BTWN THIS.LD AND NALC.LD,
+    BTWN NALC.o AND NPTNALC.NALC,
+
+    BTWN THIS.ENP AND NENP.i,
+    BTWN THIS.ENT AND NENT.i,
+    BTWN NENP.o AND NPTNALC.NENP,
+    BTWN NENT.o AND NPTNALC.NENT
+    ;
+};
+
+INSERT BLOCKS
+    STATE OUT DATA1,
+    STATE IN RESULT1,
     STATE OUT CLK,
     STATE OUT ENP,
     STATE OUT ENT,
     STATE OUT LD,
-    STATE OUT DATA,
     STATE OUT CLR,
-    STATE IN RESULT
 
-;
+    CUSTOM DM74LS163Awrapper dm1,
+    VCC vcc;
 
 INSERT EDGES
-    BTWN CLR.val AND NALC.CLR,
-    BTWN LD.val AND NALC.LD,
-    BTWN NALC.o AND NPTNALC.NALC,
+    BTWN vcc.val AND dm1.1PQ,
+    BTWN vcc.val AND dm1.2PQ,
+    BTWN vcc.val AND dm1.3PQ,
 
-    BTWN ENP.val AND NENP.i,
-    BTWN ENT.val AND NENT.i,
-    BTWN NENP.o AND NPTNALC.NENP,
-    BTWN NENT.o AND NPTNALC.NENT,
-
-    BTWN NPTNALC.o AND interior.NPTNALC,
-    BTWN NALC.o AND interior.NALC,
-    BTWN vcc.val AND (interior.1PQ, interior.2PQ, interior.3PQ),
-    BTWN interior.Q AND RESULT.val,
-    BTWN CLK.val AND interior.CLK,
-    BTWN CLR.val AND interior.CLEAR,
-    BTWN DATA.val AND interior.DATA
+    BTWN DATA1.val AND dm1.DATA,
+    BTWN dm1.RESULT AND RESULT1.val,
+    BTWN CLK.val AND dm1.CLK,
+    BTWN CLR.val AND dm1.CLR,
+    BTWN ENP.val AND dm1.ENP,
+    BTWN ENT.val AND dm1.ENT,
+    BTWN LD.val AND dm1.LD
     ;
 
 
 INSERT INIT COND
-    (CLR.val=1, LD.val=1, DATA.val=1, CLK.val=1, ENP.val=0, ENT.val=0),
+    (CLR.val=1, LD.val=1,
+    DATA1.val=0,
+    CLK.val=1, ENP.val=0, ENT.val=0),
     (CLK.val=0, CLR.val=0),
     (CLK.val=1),
     (CLK.val=0, CLR.val=1),
     (CLK.val=1, LD.val=0),
     (CLK.val=0),
-    (CLK.val=1, LD.val=1),
+    (CLK.val=1, LD.val=1, ENP.val=1, ENT.val=1),
     (CLK.val=0),
     (CLK.val=1),
     (CLK.val=0)
@@ -101,4 +128,8 @@ INSERT INIT COND
 
 RUN;
 SHOW RUN
-(CLK.val, ENP.val, ENT.val, LD.val, CLR.val, DATA.val, RESULT.val);
+(
+DATA1.val,
+RESULT1.val,
+CLK.val, ENP.val, ENT.val, LD.val, CLR.val
+);
