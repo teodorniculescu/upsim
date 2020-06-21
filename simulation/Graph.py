@@ -1,5 +1,5 @@
 from blocks.BasicBlock import BasicBlock
-from blocks.StateBlock import StateBlock, GroundBlock
+from blocks.StateBlock import StateBlock, GroundBlock, VCCBlock
 from values.BaseValue import *
 from simulation.Node import Node
 from blocks.BlockHandler import BlockHandler
@@ -157,10 +157,11 @@ class Graph:
             result += block.get_vertex_values()
         return result
 
-    def get_ground_nodes(self) -> List[Node]:
+    def get_ground_and_vcc_nodes(self) -> List[Node]:
         ground_nodes_list: List[Node] = []
         for node in self.__nodes.values():
-            if isinstance(node.get_block(), GroundBlock):
+            if isinstance(node.get_block(), GroundBlock) \
+                    or isinstance(node.get_block(), VCCBlock):
                 ground_nodes_list.append(node)
         return ground_nodes_list
 

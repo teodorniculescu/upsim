@@ -2,7 +2,7 @@ INSERT BLOCKS
     JK_LATCH l1,
     STATE OUT PR,
     STATE OUT CLR,
-    STATE OUT VCC,
+    VCC vcc,
     STATE OUT CLK,
 
     STATE IN OUT0,
@@ -13,6 +13,7 @@ INSERT BLOCKS
 
 INSERT EDGES
     BTWN l1.Q AND (OUT0.val),
+    BTWN vcc.val AND (l1.J),
 
     BTWN PR.val AND (l1.PR),
     BTWN CLR.val AND (l1.CLR)

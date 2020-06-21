@@ -64,10 +64,15 @@ create_block : create_state_block
              | create_bus_transmitter_receiver
              | create_custom_block
              | create_ground_block
+             | create_vcc_block
              ;
 
 create_ground_block :
     GROUND_KWD block_name
+    ;
+
+create_vcc_block :
+    VCC_KWD block_name
     ;
 
 create_bus_transmitter_receiver :
@@ -197,6 +202,7 @@ DEFINE_KWD : 'DEFINE';
 CUSTOM_KWD : 'CUSTOM';
 DIGITAL_TRI_STATE_BUFFER_KWD : 'DTS_BUFFER';
 GROUND_KWD: 'GND';
+VCC_KWD: 'VCC';
 
 SNAKE_KWD: 'SNAKE';
 LEFT_KWD: 'LEFT';

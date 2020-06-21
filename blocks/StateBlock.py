@@ -40,10 +40,26 @@ class StateBlock(BasicBlock):
          ))
         return result
 
+    def calculate(self) -> None:
+        pass
+
 
 class GroundBlock(StateBlock):
     def __init__(self, name: str,
                  pin_name: str = "val"):
         pin_type: int = PIN_TYPE_OUTPUT
         super().__init__(name=name, pin_type=pin_type, pin_name=pin_name)
+        self.get_pin_with_name("val").set_low()
 
+    def calculate(self) -> None:
+        self.get_pin_with_name("val").set_low()
+
+class VCCBlock(StateBlock):
+    def __init__(self, name: str,
+                 pin_name: str = "val"):
+        pin_type: int = PIN_TYPE_OUTPUT
+        super().__init__(name=name, pin_type=pin_type, pin_name=pin_name)
+        self.get_pin_with_name("val").set_high()
+
+    def calculate(self) -> None:
+        self.get_pin_with_name("val").set_high()

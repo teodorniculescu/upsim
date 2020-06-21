@@ -113,11 +113,11 @@ class Simulation:
             # setup execution stack
             self.__insert_execution(stack_value)
         # set all the ground pins to 0
-        gnd_node: Node
-        for gnd_node in self.__graph.get_ground_nodes():
-            gnd_node.get_pin().set_low()
+        node: Node
+        for node in self.__graph.get_ground_and_vcc_nodes():
+            node.get_block().calculate()
             stack_value: Tuple[str, str] = \
-                (gnd_node.__str__(),
+                (node.__str__(),
                  PROPAGATE_CMD)
             self.__insert_execution(stack_value)
 

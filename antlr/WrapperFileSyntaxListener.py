@@ -1,4 +1,4 @@
-from blocks.StateBlock import StateBlock, GroundBlock
+from blocks.StateBlock import StateBlock, GroundBlock, VCCBlock
 from gen.FileSyntaxListener import FileSyntaxListener
 from gen.FileSyntaxParser import FileSyntaxParser
 from simulation.Simulation import Simulation
@@ -417,6 +417,15 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         except Exception as e:
             self.__set_error(ctx, e)
 
+    def exitCreate_vcc_block(self, ctx:FileSyntaxParser.Create_vcc_blockContext):
+        if self.error_is_set():
+            return
+        block_name = ctx.block_name().text
+        io_name = "val"
+        try:
+            ctx.block = VCCBlock(name=block_name, pin_name=io_name)
+        except Exception as e:
+            self.__set_error(ctx, e)
 
     def exitCreate_ground_block(self, ctx:FileSyntaxParser.Create_ground_blockContext):
         if self.error_is_set():
