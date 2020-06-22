@@ -181,57 +181,6 @@ DEFINE CUSTOM BLOCK 4BITBUFFER (
 
         BTWN THIS.EN AND ( BUF1.en, BUF2.en, BUF3.en, BUF4.en );
 };
-
-/*
-    CIN - read data from IN* pins
-        0 - ON
-        1 - off
-    COUT - output data to the OUT* pins
-        0 - off
-        1 - ON
-    CE - increment the pc
-        0 - off
-        1 - ON
-    CLR - set pins to 1111
-        0 - off
-        1 - ON
-*/
-DEFINE CUSTOM BLOCK ProgramCounter (
-    IN IN0 IN1 IN2 IN3 CE CLK CIN COUT CLR
-    OUT OUT0 OUT1 OUT2 OUT3
-) {
-
-INSERT BLOCKS
-    CUSTOM 4BITBUFFER outbuf,
-    CUSTOM DM74LS163A bc;
-
-INSERT EDGES
-    BTWN THIS.IN0 AND bc.DATAA,
-    BTWN THIS.IN1 AND bc.DATAB,
-    BTWN THIS.IN2 AND bc.DATAC,
-    BTWN THIS.IN3 AND bc.DATAD,
-
-    BTWN bc.QA AND outbuf.IN1,
-    BTWN bc.QB AND outbuf.IN2,
-    BTWN bc.QC AND outbuf.IN3,
-    BTWN bc.QD AND outbuf.IN4,
-
-    BTWN outbuf.OUT1 AND THIS.OUT0,
-    BTWN outbuf.OUT2 AND THIS.OUT1,
-    BTWN outbuf.OUT3 AND THIS.OUT2,
-    BTWN outbuf.OUT4 AND THIS.OUT3,
-
-    BTWN THIS.COUT AND outbuf.EN,
-    /* count enable */
-    BTWN THIS.CE AND bc.ENT,
-    BTWN THIS.CE AND bc.ENP,
-    /* read from bus OR jump to address */
-    BTWN THIS.CIN AND bc.LD,
-    BTWN THIS.CLK AND bc.CLK,
-    BTWN THIS.CLR AND bc.CLR
-    ;
-};
-
 /*
     =========================================================
     MAIN
@@ -273,48 +222,60 @@ DRAW BLOCK
 /*
     =========================================================
     Program Counter
+    CIN - read data from IN* pins
+        0 - ON
+        1 - off
+    COUT - output data to the OUT* pins
+        0 - off
+        1 - ON
+    CE - increment the pc
+        0 - off
+        1 - ON
+    CLR - set pins to 1111
+        0 - off
+        1 - ON
 */
 INSERT BLOCKS
 
-    CUSTOM 4BITBUFFER outbuf,
-    CUSTOM DM74LS163A bc
+    CUSTOM 4BITBUFFER PC_out,
+    CUSTOM DM74LS163A PC
     ;
 
 INSERT EDGES
-    BTWN CE.val AND (bc.ENT, bc.ENP),
-    BTWN CLK.val AND bc.CLK,
-    BTWN CLR.val AND bc.CLR,
-    BTWN CIN.val AND bc.LD,
-    BTWN COUT.val AND outbuf.EN,
+    BTWN CE.val AND (PC.ENT, PC.ENP),
+    BTWN CLK.val AND PC.CLK,
+    BTWN CLR.val AND PC.CLR,
+    BTWN CIN.val AND PC.LD,
+    BTWN COUT.val AND PC_out.EN,
 
-    BTWN b0.out AND bc.DATAA,
-    BTWN b1.out AND bc.DATAB,
-    BTWN b2.out AND bc.DATAC,
-    BTWN b3.out AND bc.DATAD,
+    BTWN b0.out AND PC.DATAA,
+    BTWN b1.out AND PC.DATAB,
+    BTWN b2.out AND PC.DATAC,
+    BTWN b3.out AND PC.DATAD,
 
-    BTWN bc.QA AND outbuf.IN1,
-    BTWN bc.QB AND outbuf.IN2,
-    BTWN bc.QC AND outbuf.IN3,
-    BTWN bc.QD AND outbuf.IN4,
+    BTWN PC.QA AND PC_out.IN1,
+    BTWN PC.QB AND PC_out.IN2,
+    BTWN PC.QC AND PC_out.IN3,
+    BTWN PC.QD AND PC_out.IN4,
 
-    BTWN outbuf.OUT1 AND b0.in,
-    BTWN outbuf.OUT2 AND b1.in,
-    BTWN outbuf.OUT3 AND b2.in,
-    BTWN outbuf.OUT4 AND b3.in
+    BTWN PC_out.OUT1 AND b0.in,
+    BTWN PC_out.OUT2 AND b1.in,
+    BTWN PC_out.OUT3 AND b2.in,
+    BTWN PC_out.OUT4 AND b3.in
     ;
 
 DRAW BLOCKS
-    outbuf 5:26,
-    bc 5:21;
+    PC_out 5:26,
+    PC 5:21;
 DRAW EDGES
-    SNAKE bc.DATAA (LEFT 0, UP 2, RIGHT 4, RIGHT 5),
-    SNAKE bc.DATAB (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
-    SNAKE bc.DATAC (LEFT 2, UP 8, RIGHT 6, RIGHT 5),
-    SNAKE bc.DATAD (LEFT 3, UP 11, RIGHT 7, RIGHT 5),
-    SNAKE bc.QA (RIGHT),
-    SNAKE bc.QB (RIGHT),
-    SNAKE bc.QC (RIGHT),
-    SNAKE bc.QD (RIGHT);
+    SNAKE PC.DATAA (LEFT 0, UP 2, RIGHT 4, RIGHT 5),
+    SNAKE PC.DATAB (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
+    SNAKE PC.DATAC (LEFT 2, UP 8, RIGHT 6, RIGHT 5),
+    SNAKE PC.DATAD (LEFT 3, UP 11, RIGHT 7, RIGHT 5),
+    SNAKE PC.QA (RIGHT),
+    SNAKE PC.QB (RIGHT),
+    SNAKE PC.QC (RIGHT),
+    SNAKE PC.QD (RIGHT);
 
 /*
     =================================================
