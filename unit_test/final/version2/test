@@ -1,0 +1,375 @@
+DEFINE CUSTOM BLOCK DM74LS163Ajk (
+    IN 0PQ 0NPQ 1PQ 2PQ 3PQ NPTNALC NALC DATA CLEAR CLK
+    OUT Q NQ
+) {
+    INSERT BLOCKS
+        JK_LATCH l,
+        AND and1 Q 1PQ 2PQ 3PQ NPTNALC o,
+        AND and2 NALC NJ o,
+        AND and3 DATA CLEAR NALC o,
+        AND and4 NPTNALC 1PQ 2PQ 3PQ NQ o,
+        OR or1 A1 A2 o,
+        OR or2 A3 A4 o,
+        NOT nq i o,
+        VCC vcc
+    ;
+    INSERT EDGES
+        BTWN vcc.val AND (l.PR, l.CLR),
+
+        BTWN and1.o AND or1.A1,
+        BTWN and2.o AND or1.A2,
+        BTWN and3.o AND or2.A3,
+        BTWN and4.o AND or2.A4,
+        BTWN or1.o AND l.K,
+        BTWN or2.o AND (l.J, nq.i),
+        BTWN nq.o AND and2.NJ,
+
+        BTWN THIS.CLK AND l.CLK,
+        BTWN THIS.DATA AND and3.DATA,
+        BTWN THIS.CLEAR AND and3.CLEAR,
+
+        BTWN THIS.0PQ AND and1.Q,
+        BTWN THIS.0NPQ AND and4.NQ,
+        BTWN l.Q AND ( THIS.Q),
+        BTWN l.NQ AND ( THIS.NQ),
+
+        BTWN THIS.NALC AND (and2.NALC, and3.NALC),
+
+        BTWN THIS.NPTNALC AND (and1.NPTNALC, and4.NPTNALC),
+
+        BTWN THIS.1PQ AND (and1.1PQ, and4.1PQ),
+        BTWN THIS.2PQ AND (and1.2PQ, and4.2PQ),
+        BTWN THIS.3PQ AND (and1.3PQ, and4.3PQ)
+    ;
+};
+
+DEFINE CUSTOM BLOCK DM74LS163Awrapper (
+    IN DATA ENP ENT LD CLR CLK 1PQ 2PQ 3PQ
+    OUT RESULT
+) {
+INSERT BLOCKS
+    CUSTOM DM74LS163Ajk interior,
+    NOT NENP i o,
+    NOT NENT i o,
+    NAND NALC CLR LD o,
+    NOR NPTNALC NALC NENP NENT o
+;
+
+INSERT EDGES
+    BTWN THIS.1PQ AND interior.1PQ,
+    BTWN THIS.2PQ AND interior.2PQ,
+    BTWN THIS.3PQ AND interior.3PQ,
+
+    BTWN interior.Q AND interior.0PQ,
+    BTWN interior.NQ AND interior.0NPQ,
+    BTWN NPTNALC.o AND interior.NPTNALC,
+    BTWN NALC.o AND interior.NALC,
+    BTWN interior.Q AND THIS.RESULT,
+    BTWN THIS.CLK AND interior.CLK,
+    BTWN THIS.CLR AND interior.CLEAR,
+    BTWN THIS.DATA AND interior.DATA,
+
+    BTWN THIS.CLR AND NALC.CLR,
+    BTWN THIS.LD AND NALC.LD,
+    BTWN NALC.o AND NPTNALC.NALC,
+
+    BTWN THIS.ENP AND NENP.i,
+    BTWN THIS.ENT AND NENT.i,
+    BTWN NENP.o AND NPTNALC.NENP,
+    BTWN NENT.o AND NPTNALC.NENT
+    ;
+};
+
+DEFINE CUSTOM BLOCK DM74LS163A (
+    IN
+        DATAA DATAB DATAC DATAD
+        CLK CLR LD ENP ENT
+    OUT
+        QA QB QC QD
+) {
+    INSERT BLOCKS
+        CUSTOM DM74LS163Awrapper dm1,
+        CUSTOM DM74LS163Awrapper dm2,
+        CUSTOM DM74LS163Awrapper dm3,
+        CUSTOM DM74LS163Awrapper dm4,
+        NOT ndmi1 i o,
+        NOT ndmi2 i o,
+        NOT ndmi3 i o,
+        NOT ndmi4 i o,
+        NOT ndmo1 i o,
+        NOT ndmo2 i o,
+        NOT ndmo3 i o,
+        NOT ndmo4 i o,
+        VCC vcc;
+    INSERT EDGES
+        BTWN THIS.DATAA AND ndmi1.i,
+        BTWN THIS.DATAB AND ndmi2.i,
+        BTWN THIS.DATAC AND ndmi3.i,
+        BTWN THIS.DATAD AND ndmi4.i,
+        BTWN ndmi1.o AND dm1.DATA,
+        BTWN ndmi2.o AND dm2.DATA,
+        BTWN ndmi3.o AND dm3.DATA,
+        BTWN ndmi4.o AND dm4.DATA,
+
+        BTWN dm1.RESULT AND dm4.1PQ,
+        BTWN dm2.RESULT AND dm4.2PQ,
+        BTWN dm3.RESULT AND dm4.3PQ,
+        BTWN THIS.CLK AND dm4.CLK,
+        BTWN THIS.CLR AND dm4.CLR,
+        BTWN THIS.ENP AND dm4.ENP,
+        BTWN THIS.ENT AND dm4.ENT,
+        BTWN THIS.LD AND dm4.LD,
+
+        BTWN dm1.RESULT AND dm3.1PQ,
+        BTWN dm2.RESULT AND dm3.2PQ,
+        BTWN vcc.val AND dm3.3PQ,
+        BTWN THIS.CLK AND dm3.CLK,
+        BTWN THIS.CLR AND dm3.CLR,
+        BTWN THIS.ENP AND dm3.ENP,
+        BTWN THIS.ENT AND dm3.ENT,
+        BTWN THIS.LD AND dm3.LD,
+
+        BTWN dm1.RESULT AND dm2.1PQ,
+        BTWN vcc.val AND dm2.2PQ,
+        BTWN vcc.val AND dm2.3PQ,
+        BTWN THIS.CLK AND dm2.CLK,
+        BTWN THIS.CLR AND dm2.CLR,
+        BTWN THIS.ENP AND dm2.ENP,
+        BTWN THIS.ENT AND dm2.ENT,
+        BTWN THIS.LD AND dm2.LD,
+
+        BTWN vcc.val AND dm1.1PQ,
+        BTWN vcc.val AND dm1.2PQ,
+        BTWN vcc.val AND dm1.3PQ,
+        BTWN THIS.CLK AND dm1.CLK,
+        BTWN THIS.CLR AND dm1.CLR,
+        BTWN THIS.ENP AND dm1.ENP,
+        BTWN THIS.ENT AND dm1.ENT,
+        BTWN THIS.LD AND dm1.LD,
+
+        BTWN dm1.RESULT AND ndmo1.i,
+        BTWN dm2.RESULT AND ndmo2.i,
+        BTWN dm3.RESULT AND ndmo3.i,
+        BTWN dm4.RESULT AND ndmo4.i,
+        BTWN ndmo1.o AND THIS.QA,
+        BTWN ndmo2.o AND THIS.QB,
+        BTWN ndmo3.o AND THIS.QC,
+        BTWN ndmo4.o AND THIS.QD
+        ;
+};
+
+DEFINE CUSTOM BLOCK 4BITBUFFER (
+    IN IN1 IN2 IN3 IN4 EN
+    OUT OUT1 OUT2 OUT3 OUT4
+) {
+    INSERT BLOCKS
+        DTS_BUFFER BUF1,
+        DTS_BUFFER BUF2,
+        DTS_BUFFER BUF3,
+        DTS_BUFFER BUF4;
+
+    INSERT EDGES
+        BTWN BUF1.out AND THIS.OUT1,
+        BTWN BUF2.out AND THIS.OUT2,
+        BTWN BUF3.out AND THIS.OUT3,
+        BTWN BUF4.out AND THIS.OUT4,
+
+        BTWN THIS.IN1 AND BUF1.in,
+        BTWN THIS.IN2 AND BUF2.in,
+        BTWN THIS.IN3 AND BUF3.in,
+        BTWN THIS.IN4 AND BUF4.in,
+
+        BTWN THIS.EN AND ( BUF1.en, BUF2.en, BUF3.en, BUF4.en );
+};
+
+/*
+    CIN - read data from IN* pins
+        0 - ON
+        1 - off
+    COUT - output data to the OUT* pins
+        0 - off
+        1 - ON
+    CE - increment the pc
+        0 - off
+        1 - ON
+    CLR - set pins to 1111
+        0 - off
+        1 - ON
+*/
+DEFINE CUSTOM BLOCK ProgramCounter (
+    IN IN0 IN1 IN2 IN3 CE CLK CIN COUT CLR
+    OUT OUT0 OUT1 OUT2 OUT3
+) {
+
+INSERT BLOCKS
+    CUSTOM 4BITBUFFER outbuf,
+    CUSTOM DM74LS163A bc;
+
+INSERT EDGES
+    BTWN THIS.IN0 AND bc.DATAA,
+    BTWN THIS.IN1 AND bc.DATAB,
+    BTWN THIS.IN2 AND bc.DATAC,
+    BTWN THIS.IN3 AND bc.DATAD,
+
+    BTWN bc.QA AND outbuf.IN1,
+    BTWN bc.QB AND outbuf.IN2,
+    BTWN bc.QC AND outbuf.IN3,
+    BTWN bc.QD AND outbuf.IN4,
+
+    BTWN outbuf.OUT1 AND THIS.OUT0,
+    BTWN outbuf.OUT2 AND THIS.OUT1,
+    BTWN outbuf.OUT3 AND THIS.OUT2,
+    BTWN outbuf.OUT4 AND THIS.OUT3,
+
+    BTWN THIS.COUT AND outbuf.EN,
+    /* count enable */
+    BTWN THIS.CE AND bc.ENT,
+    BTWN THIS.CE AND bc.ENP,
+    /* read from bus OR jump to address */
+    BTWN THIS.CIN AND bc.LD,
+    BTWN THIS.CLK AND bc.CLK,
+    BTWN THIS.CLR AND bc.CLR
+    ;
+};
+
+/*
+    =========================================================
+    MAIN
+*/
+
+INSERT BLOCKS
+    STATE OUT CE,
+    STATE OUT CIN,
+    STATE OUT COUT,
+    STATE OUT CLK,
+    STATE OUT CLR
+    ;
+/*
+    =========================================================
+    Create the bus blocks
+*/
+INSERT BLOCKS
+    BUS b0 30,
+    BUS b1 30,
+    BUS b2 30,
+    BUS b3 30,
+    BUS b4 30,
+    BUS b5 30,
+    BUS b6 30,
+    BUS b7 30
+    ;
+
+/* DRAW DISPLAY ANIMATE */
+DRAW BLOCK
+    b0 1:31,
+    b1 1:32,
+    b2 1:33,
+    b3 1:34,
+    b4 1:35,
+    b5 1:36,
+    b6 1:37,
+    b7 1:38;
+
+/*
+    =========================================================
+    Program Counter
+*/
+INSERT BLOCKS
+
+    CUSTOM 4BITBUFFER outbuf,
+    CUSTOM DM74LS163A bc
+    ;
+
+INSERT EDGES
+    BTWN CE.val AND (bc.ENT, bc.ENP),
+    BTWN CLK.val AND bc.CLK,
+    BTWN CLR.val AND bc.CLR,
+    BTWN CIN.val AND bc.LD,
+    BTWN COUT.val AND outbuf.EN,
+
+    BTWN b0.out AND bc.DATAA,
+    BTWN b1.out AND bc.DATAB,
+    BTWN b2.out AND bc.DATAC,
+    BTWN b3.out AND bc.DATAD,
+
+    BTWN bc.QA AND outbuf.IN1,
+    BTWN bc.QB AND outbuf.IN2,
+    BTWN bc.QC AND outbuf.IN3,
+    BTWN bc.QD AND outbuf.IN4,
+
+    BTWN outbuf.OUT1 AND b0.in,
+    BTWN outbuf.OUT2 AND b1.in,
+    BTWN outbuf.OUT3 AND b2.in,
+    BTWN outbuf.OUT4 AND b3.in
+    ;
+
+DRAW BLOCKS
+    outbuf 5:26,
+    bc 5:21;
+DRAW EDGES
+    SNAKE bc.DATAA (LEFT 0, UP 2, RIGHT 4, RIGHT 5),
+    SNAKE bc.DATAB (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
+    SNAKE bc.DATAC (LEFT 2, UP 8, RIGHT 6, RIGHT 5),
+    SNAKE bc.DATAD (LEFT 3, UP 11, RIGHT 7, RIGHT 5),
+    SNAKE bc.QA (RIGHT),
+    SNAKE bc.QB (RIGHT),
+    SNAKE bc.QC (RIGHT),
+    SNAKE bc.QD (RIGHT);
+
+/*
+    =================================================
+    INITIAL CONDITIONS AND RUN
+*/
+
+INSERT INIT COND
+    (CE.val=0, CIN.val=1, COUT.val=0, CLK.val=0, CLR.val=1),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1, CLR.val=0, CE.val=1),
+    (CLK.val=0),
+    (CLK.val=1, COUT.val=1, CLR.val=1),
+    (CLK.val=0, COUT.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1, COUT.val=1),
+    (CLK.val=0, COUT.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1, COUT.val=1),
+    (CLK.val=0, COUT.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1, CIN.val=0),
+    (CLK.val=0),
+    (CLK.val=1, CIN.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1, COUT.val=1),
+    (CLK.val=0, COUT.val=0),
+    (CLK.val=1)
+    ;
+
+RUN;
+/*
+SHOW RUN
+(
+CE.val, CIN.val, COUT.val, CLK.val,
+PC.OUT0,
+PC.OUT1,
+PC.OUT2,
+PC.OUT3,
+BUS0.val, BUS1.val, BUS2.val, BUS3.val
+);
+
+*/
+
+DISPLAY ANIMATE;
