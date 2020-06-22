@@ -269,7 +269,11 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     def exitDraw_one_block(self, ctx:FileSyntaxParser.Draw_one_blockContext):
         name = ctx.block_name().text
         pos = ctx.block_position().val
-        self.__sim.add_block_position(name, pos)
+        if ctx.MIRROR_KWD() is not None:
+            mirror = True
+        else:
+            mirror = False
+        self.__sim.add_block_position(name, pos, mirror)
 
     def exitCreate_jk_latch(self, ctx:FileSyntaxParser.Create_d_latchContext):
         if self.error_is_set():

@@ -18,7 +18,7 @@ direction_snake : LEFT_KWD | RIGHT_KWD | UP_KWD | DOWN_KWD ;
 
 draw_blocks : BLOCK_KWD draw_one_block (',' draw_one_block)*;
 
-draw_one_block : block_name block_position;
+draw_one_block : block_name block_position (MIRROR_KWD)?;
 
 block_position : UINT ':' UINT;
 
@@ -216,6 +216,7 @@ BUFFER_KWD : 'BUFFER';
 BUS_KWD : 'BUS';
 GROUND_KWD: 'GND';
 VCC_KWD: 'VCC';
+MIRROR_KWD: 'MIRROR';
 
 SNAKE_KWD: 'SNAKE';
 LEFT_KWD: 'LEFT';

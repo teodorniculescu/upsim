@@ -55,9 +55,14 @@ class Simulation:
     def get_positionable_blocks(self):
         return self.__bh.get_positionable_blocks()
 
-    def add_block_position(self, block_name: str, block_position: Tuple[int, int]) -> None:
+    def add_block_position(self,
+                           block_name: str,
+                           block_position: Tuple[int, int],
+                           mirror: bool
+                           ) -> None:
         block: BasicBlock = self.__bh.get_block_with_name(block_name)
         block.set_position(block_position)
+        block.set_mirror(mirror)
         self.__drawn_blocks_list.append(block)
 
     def __finished_all_init_cond(self) -> bool:

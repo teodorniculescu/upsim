@@ -20,6 +20,7 @@ class BasicBlock:
     _name: str
     _position: Tuple[int, int]
     _position_is_set: bool
+    _mirror: bool
 
     def __init__(self, name: str):
         if not isinstance(name, str):
@@ -30,8 +31,12 @@ class BasicBlock:
         self._io_pins = {}
         self._name = name
         self._position_is_set = False
+        self._mirror = False
 
-    def get_gui_grid(self) -> ParamGrid:
+    def set_mirror(self, mirror: bool) -> None:
+        self._mirror = mirror
+
+    def _generate_gui_grid(self) -> ParamGrid:
         result: ParamGrid = ParamGrid([])
         height_pins = max(len(self._input_pins), len(self._output_pins))
         num_rows = height_pins * 2 + 1
@@ -60,6 +65,23 @@ class BasicBlock:
         # add widget text
         result[1][2] = (CODE.TEXT, {"name": self.get_name()})
         return result
+
+    def get_gui_grid(self) -> ParamGrid:
+        result = self._generate_gui_grid()
+        if self._mirror:
+            length = len(result)
+            for row_index in range(length):
+                if row_index > length / 2:
+                    break
+                other_row_index = length - 1 - row_index
+                result[row_index], result[other_row_index] = \
+                    result[other_row_index], result[row_index]
+            row_index = 0
+            other_row_index = length - 1
+            result[row_index], result[other_row_index] = \
+                result[other_row_index], result[row_index]
+        return result
+
 
     # used by get_gui_grid to add input pins and output pins
     def _add_gui_pins_grid(
