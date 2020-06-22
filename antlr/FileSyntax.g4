@@ -66,6 +66,7 @@ create_block : create_state_block
              | create_custom_block
              | create_ground_block
              | create_vcc_block
+             | create_bus_line
              ;
 
 create_ground_block :
@@ -74,6 +75,10 @@ create_ground_block :
 
 create_vcc_block :
     VCC_KWD block_name
+    ;
+
+create_bus_line:
+    BUS_KWD block_name UINT
     ;
 
 create_buffer :
@@ -207,6 +212,7 @@ DEFINE_KWD : 'DEFINE';
 CUSTOM_KWD : 'CUSTOM';
 DIGITAL_TRI_STATE_BUFFER_KWD : 'DTS_BUFFER';
 BUFFER_KWD : 'BUFFER';
+BUS_KWD : 'BUS';
 GROUND_KWD: 'GND';
 VCC_KWD: 'VCC';
 

@@ -4,7 +4,7 @@ from gen.FileSyntaxParser import FileSyntaxParser
 from simulation.Simulation import Simulation
 from blocks.store.LogicGates import *
 from blocks.store.Latch import D_LATCH, JK_LATCH
-from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER, BUS_TRANSMITTER_RECEIVER, BUFFER
+from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER, BUS_TRANSMITTER_RECEIVER, BUFFER, BUS
 from blocks.CustomBlock import CustomBlockTemplate
 from antlr4.Token import *
 
@@ -400,6 +400,16 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
         except Exception as e:
             self.__set_error(ctx, e)
 
+    def exitCreate_bus_line(self, ctx:FileSyntaxParser.Create_bus_lineContext):
+        if self.error_is_set():
+            return
+        block_name = ctx.block_name().text
+        value = int(str(ctx.UINT()))
+        try:
+            ctx.block = BUS(block_name)
+            ctx.block.set_bus_height(value)
+        except Exception as e:
+            self.__set_error(ctx, e)
 
     def exitCreate_digital_tri_state_buffer(self, ctx:FileSyntaxParser.Create_digital_tri_state_bufferContext):
         if self.error_is_set():

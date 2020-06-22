@@ -210,3 +210,36 @@ class UpDownRightBorder(BaseBorderRows):
                 [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR]
             ]
         super(UpDownRightBorder, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+
+class LeftRightBorder(BaseBorderRows):
+    def __init__(self, **kwargs):
+        matrix_colors: List[List[ColorType]] = \
+            [
+                [BORDER_COLOR, TRANSPARENT, BORDER_COLOR],
+                [BORDER_COLOR, TRANSPARENT, BORDER_COLOR],
+                [BORDER_COLOR, TRANSPARENT, BORDER_COLOR]
+            ]
+        super(LeftRightBorder, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+
+class LeftRightDownBorder(BaseBorderRows):
+    def __init__(self, **kwargs):
+        matrix_colors: List[List[ColorType]] = \
+            [
+                [BORDER_COLOR, TRANSPARENT, BORDER_COLOR],
+                [BORDER_COLOR, TRANSPARENT, BORDER_COLOR],
+                [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR]
+            ]
+        super(LeftRightDownBorder, self).__init__(matrix_colors=matrix_colors, **kwargs)
+
+
+class LeftRightUpBorder(BaseBorderRows):
+    def __init__(self, **kwargs):
+        matrix_colors: List[List[ColorType]] = \
+            [
+                [BORDER_COLOR, BORDER_COLOR, BORDER_COLOR],
+                [BORDER_COLOR, TRANSPARENT, BORDER_COLOR],
+                [BORDER_COLOR, TRANSPARENT, BORDER_COLOR]
+            ]
+        super(LeftRightUpBorder, self).__init__(matrix_colors=matrix_colors, **kwargs)

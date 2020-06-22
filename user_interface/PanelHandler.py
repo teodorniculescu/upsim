@@ -25,6 +25,9 @@ class CODE:
     BORDER_UP_DOWN_RIGHT: str = "b_udr"
     BORDER_UP_DOWN_LEFT: str = "b_udl"
     BORDER_UP_DOWN: str = "b_ud"
+    BORDER_LEFT_RIGHT: str = "b_lr"
+    BORDER_LEFT_RIGHT_UP: str = 'b_lru'
+    BORDER_LEFT_RIGHT_DOWN: str = 'b_lrd'
 
     WIRE_LEFT_RIGHT: str = "w_lr"
     WIRE_UP_DOWN: str = "w_ud"
@@ -52,6 +55,9 @@ class PanelHandler:
         CODE.BORDER_UP_DOWN_RIGHT: UpDownRightBorder,
         CODE.BORDER_UP_DOWN_LEFT: UpDownLeftBorder,
         CODE.BORDER_UP_DOWN: UpDownBorder,
+        CODE.BORDER_LEFT_RIGHT: LeftRightBorder,
+        CODE.BORDER_LEFT_RIGHT_UP: LeftRightUpBorder,
+        CODE.BORDER_LEFT_RIGHT_DOWN: LeftRightDownBorder,
 
         CODE.WIRE_RIGHT: WireCell.Right,
         CODE.WIRE_RIGHT_DOWN: WireCell.RightDown,

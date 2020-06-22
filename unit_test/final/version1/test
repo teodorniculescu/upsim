@@ -289,6 +289,58 @@ INSERT EDGES
     BTWN BUSLINE3.out AND PC.IN3
     ;
 
+/* Create the bus blocks */
+INSERT BLOCKS
+    STATE IN bval0,
+    STATE IN bval1,
+    STATE IN bval2,
+    STATE IN bval3,
+    STATE IN bval4,
+    STATE IN bval5,
+    STATE IN bval6,
+    STATE IN bval7,
+
+    BUS b0 3,
+    BUS b1 3,
+    BUS b2 3,
+    BUS b3 3,
+    BUS b4 3,
+    BUS b5 3,
+    BUS b6 3,
+    BUS b7 3;
+INSERT EDGES
+    BTWN b0.out AND bval0.val,
+    BTWN b1.out AND bval1.val,
+    BTWN b2.out AND bval2.val,
+    BTWN b3.out AND bval3.val,
+    BTWN b4.out AND bval4.val,
+    BTWN b5.out AND bval5.val,
+    BTWN b6.out AND bval6.val,
+    BTWN b7.out AND bval7.val
+    ;
+
+/* DRAW DISPLAY ANIMATE */
+DRAW BLOCK
+    bval0 1:9,
+    bval1 2:9,
+    bval2 3:9,
+    bval3 4:9,
+    bval4 5:9,
+    bval5 6:9,
+    bval6 7:9,
+    bval7 8:9,
+
+    b0 1:1,
+    b1 1:2,
+    b2 1:3,
+    b3 1:4,
+    b4 1:5,
+    b5 1:6,
+    b6 1:7,
+    b7 1:8;
+
+/* INITIAL CONDITIONS AND RUN
+
 INSERT INIT COND
     (CE.val=0, CIN.val=1, COUT.val=0, CLK.val=0, CLR.val=1),
     (CLK.val=1),
@@ -326,7 +378,6 @@ INSERT INIT COND
     (CLK.val=1)
     ;
 
-
 RUN;
 SHOW RUN
 (
@@ -338,3 +389,6 @@ PC.OUT3,
 BUS0.val, BUS1.val, BUS2.val, BUS3.val
 );
 
+*/
+
+DISPLAY;
