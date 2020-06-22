@@ -517,8 +517,8 @@ INSERT EDGES
     ;
 
 DRAW BLOCKS
-    PC_out 5:26,
-    PC 5:21;
+    PC_out 25:26,
+    PC 25:21;
 DRAW EDGES
     SNAKE PC.DATAA (LEFT 0, UP 2, RIGHT 4, RIGHT 5),
     SNAKE PC.DATAB (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
@@ -536,14 +536,22 @@ DRAW EDGES
 
 */
 INSERT INIT COND
-    (CLK.val=0, CE.val=0, CIN.val=1, COUT.val=0, CLR.val=0, AIN.val=1, AOUT.val=0),
+    (CLK.val=0, CE.val=0, CIN.val=1, COUT.val=0, CLR.val=0, BIN.val=1, BOUT.val=0, AIN.val=1, AOUT.val=0),
     (CLK.val=1),
     (CLK.val=0),
     (CLK.val=1, CLR.val=1, CE.val=1),
     (CLK.val=0),
     (CLK.val=1),
     (CLK.val=0),
-    (CLK.val=1, CE.val=0, COUT.val=1, AIN.val=0),
+    (CLK.val=1, COUT.val=1, AIN.val=0),
+    (CLK.val=0),
+    (CLK.val=1, COUT.val=0, AIN.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1, COUT.val=1, BIN.val=0),
+    (CLK.val=0),
+    (CLK.val=1, CE.val=0, COUT.val=0, BIN.val=0),
     (CLK.val=0),
     (CLK.val=1),
     (CLK.val=0)
@@ -552,4 +560,4 @@ INSERT INIT COND
 RUN;
 
 /* DRAW DISPLAY ANIMATE */
-DISPLAY 0:18 ANIMATE;
+DISPLAY 25:18 ANIMATE;
