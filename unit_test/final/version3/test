@@ -40,14 +40,14 @@ INSERT BLOCKS
     Create the bus blocks
 */
 INSERT BLOCKS
-    BUS b0 30,
-    BUS b1 30,
-    BUS b2 30,
-    BUS b3 30,
-    BUS b4 30,
-    BUS b5 30,
-    BUS b6 30,
-    BUS b7 30
+    BUS b0 90,
+    BUS b1 90,
+    BUS b2 90,
+    BUS b3 90,
+    BUS b4 90,
+    BUS b5 90,
+    BUS b6 90,
+    BUS b7 90
     ;
 
 DRAW BLOCK
@@ -228,13 +228,12 @@ DEFINE CUSTOM BLOCK REGISTER (
         BTWN THIS.7D AND l2.4d;
 };
 
+/* Generate A REGISTER */
 INSERT BLOCKS
     STATE OUT AIN,
     STATE OUT AOUT;
 INSERT BLOCKS
-    CUSTOM REGISTER regA,
-    CUSTOM REGISTER regB;
-
+    CUSTOM REGISTER regA;
 INSERT EDGES
     BTWN AIN.val AND regA.LOAD,
     BTWN AOUT.val AND regA.ENABLE,
@@ -256,10 +255,8 @@ INSERT EDGES
     BTWN b5.out AND regA.5D,
     BTWN b6.out AND regA.6D,
     BTWN b7.out AND regA.7D;
-
 DRAW BLOCK
-    regA 9:39,
-    regB 0:0 MIRROR;
+    regA 9:39;
 DRAW EDGES
     SNAKE regA.0Q (UP 2, LEFT 4),
     SNAKE regA.1Q (RIGHT 1, UP 5, LEFT 5),
@@ -269,6 +266,48 @@ DRAW EDGES
     SNAKE regA.5Q (RIGHT 5, UP 17, LEFT 9),
     SNAKE regA.6Q (RIGHT 6, UP 20, LEFT 10),
     SNAKE regA.7Q (RIGHT 7, UP 23, LEFT 11);
+/* END Generate A REGISTER */
+
+/* Generate B REGISTER */
+INSERT BLOCKS
+    STATE OUT BIN,
+    STATE OUT BOUT;
+INSERT BLOCKS
+    CUSTOM REGISTER regB;
+INSERT EDGES
+    BTWN BIN.val AND regB.LOAD,
+    BTWN BOUT.val AND regB.ENABLE,
+    BTWN CLR.val AND regB.CLR,
+    BTWN CLK.val AND regB.CLK,
+    BTWN regB.0Q AND b0.in,
+    BTWN regB.1Q AND b1.in,
+    BTWN regB.2Q AND b2.in,
+    BTWN regB.3Q AND b3.in,
+    BTWN regB.4Q AND b4.in,
+    BTWN regB.5Q AND b5.in,
+    BTWN regB.6Q AND b6.in,
+    BTWN regB.7Q AND b7.in,
+    BTWN b0.out AND regB.0D,
+    BTWN b1.out AND regB.1D,
+    BTWN b2.out AND regB.2D,
+    BTWN b3.out AND regB.3D,
+    BTWN b4.out AND regB.4D,
+    BTWN b5.out AND regB.5D,
+    BTWN b6.out AND regB.6D,
+    BTWN b7.out AND regB.7D;
+DRAW BLOCK
+    regB 44:39 MIRROR;
+DRAW EDGES
+    SNAKE regB.0Q (DOWN 2, LEFT 4),
+    SNAKE regB.1Q (RIGHT 1, DOWN 5, LEFT 5),
+    SNAKE regB.2Q (RIGHT 2, DOWN 8, LEFT 6),
+    SNAKE regB.3Q (RIGHT 3, DOWN 11, LEFT 7),
+    SNAKE regB.4Q (RIGHT 4, DOWN 14, LEFT 8),
+    SNAKE regB.5Q (RIGHT 5, DOWN 17, LEFT 9),
+    SNAKE regB.6Q (RIGHT 6, DOWN 20, LEFT 10),
+    SNAKE regB.7Q (RIGHT 7, DOWN 23, LEFT 11);
+/* END Generate B REGISTER */
+
 
 /*
     END Register

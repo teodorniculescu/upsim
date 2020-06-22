@@ -68,18 +68,6 @@ class BasicBlock:
 
     def get_gui_grid(self) -> ParamGrid:
         result = self._generate_gui_grid()
-        if self._mirror:
-            length = len(result)
-            for row_index in range(length):
-                if row_index > length / 2:
-                    break
-                other_row_index = length - 1 - row_index
-                result[row_index], result[other_row_index] = \
-                    result[other_row_index], result[row_index]
-            row_index = 0
-            other_row_index = length - 1
-            result[row_index], result[other_row_index] = \
-                result[other_row_index], result[row_index]
         return result
 
 
@@ -92,7 +80,13 @@ class BasicBlock:
             cell_type: str
     ):
         row_index: int = 1
-        for pin in pins_dict.values():
+        if self._mirror:
+            pins_list = []
+            for pin in pins_dict.values():
+                pins_list.insert(0, pin)
+        else:
+            pins_list = pins_dict.values()
+        for pin in pins_list:
             pin.set_original_position(
                 original_position=
                 (row_index + self._position[0],
