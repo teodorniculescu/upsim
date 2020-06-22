@@ -109,6 +109,8 @@ class SimulationPanel(GridLayout):
             return
         wire_widget_dict: Dict[str, List[Tuple[int, int]]] = self.__grid.get_wire_widget_dict()
         bus_widget_dict: Dict[str, List[Tuple[int, int]]] = self.__grid.get_bus_widget_dict()
+        if self.__animation_frames == []:
+            return
         for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
             [block_name, pin_name] = node_name.split('.')
             if block_name in bus_widget_dict:

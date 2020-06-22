@@ -282,55 +282,6 @@ DRAW EDGES
     INITIAL CONDITIONS AND RUN
 */
 
-INSERT INIT COND
-    (CE.val=0, CIN.val=1, COUT.val=0, CLK.val=0, CLR.val=1),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1, CLR.val=0, CE.val=1),
-    (CLK.val=0),
-    (CLK.val=1, COUT.val=1, CLR.val=1),
-    (CLK.val=0, COUT.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1, COUT.val=1),
-    (CLK.val=0, COUT.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1, COUT.val=1),
-    (CLK.val=0, COUT.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1, CIN.val=0),
-    (CLK.val=0),
-    (CLK.val=1, CIN.val=1),
-    (CLK.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1, COUT.val=1),
-    (CLK.val=0, COUT.val=0),
-    (CLK.val=1)
-    ;
-
 RUN;
-/*
-SHOW RUN
-(
-CE.val, CIN.val, COUT.val, CLK.val,
-PC.OUT0,
-PC.OUT1,
-PC.OUT2,
-PC.OUT3,
-BUS0.val, BUS1.val, BUS2.val, BUS3.val
-);
-
-*/
 
 DISPLAY ANIMATE;
