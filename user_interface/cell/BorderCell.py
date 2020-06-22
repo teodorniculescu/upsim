@@ -125,6 +125,7 @@ class RightDownBorderCell(RightBorderCell):
             ud_size_hint=(1, BORDER_THICKNESS),
             **kwargs)
 
+
 class BaseBorderRows(BoxLayout):
     class Row(BoxLayout):
         columns: List[ColoredWidget]
@@ -140,17 +141,27 @@ class BaseBorderRows(BoxLayout):
                 size_hint = (column_width_hint[column_index], 1)
                 bg_col = column_colors[column_index]
                 # if the background is transparent
-                if bg_col[3] == 0:
-                    widget = TextWidget(
-                        size_hint=size_hint
-                    )
-                else:
-                    widget = ColoredWidget(
-                        bg_col=bg_col,
-                        size_hint=size_hint
-                    )
+                widget = ColoredWidget(
+                    bg_col=bg_col,
+                    size_hint=size_hint
+                )
                 self.add_widget(widget)
                 self.columns.append(widget)
+
+        def set_background_color_on(self):
+            for cell in self.columns:
+                if cell.default_col[3] == 0:
+                    cell.set_on_color()
+
+        def set_background_color_off(self):
+            for cell in self.columns:
+                if cell.default_col[3] == 0:
+                    cell.set_off_color()
+
+        def set_background_color_high_impendace(self):
+            for cell in self.columns:
+                if cell.default_col[3] == 0:
+                    cell.set_high_impedance_color()
 
     rows: List[Row]
 
@@ -177,6 +188,18 @@ class BaseBorderRows(BoxLayout):
                 pos_bias = parameters["name_pos_bias"] if "name_pos_bias" in parameters else (0, 0)
                 # TODO use pos bias to move the name to a much suitable position
                 self.rows[1].columns[1].add_text_widget(parameters["name"])
+
+    def set_on_color(self):
+        for row in self.rows:
+            row.set_background_color_on()
+
+    def set_off_color(self):
+        for row in self.rows:
+            row.set_background_color_off()
+
+    def set_high_impedance_color(self):
+        for row in self.rows:
+            row.set_background_color_high_impendace()
 
 
 class UpDownBorder(BaseBorderRows):

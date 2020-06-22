@@ -10,6 +10,7 @@ from antlr.FileSyntaxErrorListener import \
     ERROR_INVALID_DIRECTION_STRING, \
     ERROR_GRID_OUT_OF_BOUNDS
 from user_interface.cell.WireCell import *
+from blocks.store.Buffer import BUS
 
 from gen.FileSyntaxLexer import FileSyntaxLexer
 
@@ -33,6 +34,7 @@ class Grid:
         self.__matrix = []
         self.__parameter = {}
         self.__wire_widget_dict = {}
+        self.__bus_widget_dict = {}
         for row_index in range(self.__size[0]):
             row: List[str] = []
             for col_index in range(self.__size[1]):
@@ -54,6 +56,11 @@ class Grid:
                     self.__parameter[rmp] = cell_param
                     # if the widget is a wire, add it to the list of wire widgets in order to be able
                     # to animate it later on
+                    if isinstance(block, BUS):
+                        bus_name = block.get_name()
+                        if bus_name not in self.__bus_widget_dict:
+                            self.__bus_widget_dict[bus_name] = []
+                        self.__bus_widget_dict[bus_name].append(rmp)
                     if cell_type[:2] == "w_":
                         if "node_name" in cell_param:
                             node_name = cell_param["node_name"]
@@ -69,6 +76,9 @@ class Grid:
 
     def get_wire_widget_dict(self) -> Dict[str, List[Tuple[int, int]]]:
         return self.__wire_widget_dict
+
+    def get_bus_widget_dict(self) -> Dict[str, List[Tuple[int, int]]]:
+        return self.__bus_widget_dict
 
     def __move_right(self, orig_pos: Tuple[int, int]) -> Tuple[int, int]:
         return (

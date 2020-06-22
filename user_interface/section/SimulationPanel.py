@@ -1,6 +1,7 @@
 from user_interface.section.EdgeSection import ColumnsSection, RowsSection
 from user_interface.section.SimulationSection import SimulationSection
 from user_interface.section.NoneSection import NoneSection
+from user_interface.cell.BorderCell import BaseBorderRows
 from user_interface.cell.WireCell import *
 from user_interface.Grid import Grid
 from math import floor
@@ -107,23 +108,38 @@ class SimulationPanel(GridLayout):
         if not self.__animate:
             return
         wire_widget_dict: Dict[str, List[Tuple[int, int]]] = self.__grid.get_wire_widget_dict()
+        bus_widget_dict: Dict[str, List[Tuple[int, int]]] = self.__grid.get_bus_widget_dict()
         for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
-            if node_name not in wire_widget_dict:
-                continue
-            for widget_index in wire_widget_dict[node_name]:
-                if not self.sim_section.index_within_bounds(widget_index):
-                    continue
-                widget = self.sim_section.get_cell_from_dict(widget_index)
-                if not isinstance(widget, BaseWireCell):
-                    raise Exception('animate_frame retrieved widget is not a basewirecell')
-                if node_value == "1":
-                    widget.set_on_color()
-                elif node_value == "0":
-                    widget.set_off_color()
-                elif node_value == "N":
-                    widget.set_high_impedance_color()
-                else:
-                    raise Exception("invalid node value")
+            [block_name, pin_name] = node_name.split('.')
+            if block_name in bus_widget_dict:
+                for widget_index in bus_widget_dict[block_name]:
+                    if not self.sim_section.index_within_bounds(widget_index):
+                        continue
+                    widget:BaseBorderRows = self.sim_section.get_cell_from_dict(widget_index)
+                    if node_value == "1":
+                        widget.set_on_color()
+                    elif node_value == "0":
+                        widget.set_off_color()
+                    elif node_value == "N":
+                        widget.set_high_impedance_color()
+                    else:
+                        raise Exception("invalid node value")
+
+            if node_name in wire_widget_dict:
+                for widget_index in wire_widget_dict[node_name]:
+                    if not self.sim_section.index_within_bounds(widget_index):
+                        continue
+                    widget = self.sim_section.get_cell_from_dict(widget_index)
+                    if not isinstance(widget, BaseWireCell):
+                        raise Exception('animate_frame retrieved widget is not a basewirecell')
+                    if node_value == "1":
+                        widget.set_on_color()
+                    elif node_value == "0":
+                        widget.set_off_color()
+                    elif node_value == "N":
+                        widget.set_high_impedance_color()
+                    else:
+                        raise Exception("invalid node value")
 
     def next_simulation_frame(self) -> None:
         if self.__animate:

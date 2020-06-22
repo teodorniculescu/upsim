@@ -60,6 +60,9 @@ class ColoredWidget(TextWidget):
         self.bind(pos=self.update_background_rectangle,
                   size=self.update_background_rectangle)
 
+    def get_default_color(self):
+        return self.default_col
+
     def update_background_rectangle(self, *args):
         self.background_rectangle.pos = self.pos
         self.background_rectangle.size = self.size
