@@ -7,7 +7,7 @@ grammar FileSyntax;
 filesyntax : ((screen | command | investigate) ';')* EOF;
 
 screen : draw | display;
-display : DISPLAY_KWD ANIMATE_KWD?;
+display : DISPLAY_KWD block_position? ANIMATE_KWD?;
 draw : DRAW_KWD (draw_blocks | draw_edges);
 
 draw_edges : EDGE_KWD draw_one_edge (',' draw_one_edge)*;

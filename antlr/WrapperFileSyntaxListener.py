@@ -252,8 +252,14 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
 
     def exitDisplay(self, ctx: FileSyntaxParser.DisplayContext):
         animate = False if (ctx.ANIMATE_KWD() is None) else True
+        if ctx.block_position() is None:
+            ul_corner = (0, 0)
+        else:
+            ul_corner = ctx.block_position().val
         import user_interface.UI
-        user_interface.UI.UI(simulation=self.__sim, animate=animate).run()
+        user_interface.UI.UI(simulation=self.__sim,
+                             animate=animate,
+                             ul_corner=ul_corner).run()
 
     def exitBlock_position(self, ctx:FileSyntaxParser.Block_positionContext):
         index_line = int(str(ctx.UINT(0)))

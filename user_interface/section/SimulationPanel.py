@@ -26,6 +26,7 @@ class SimulationPanel(GridLayout):
     def __init__(self,
                  simulation: Simulation,
                  animate: bool,
+                 ul_corner,
                  **kwargs):
         super(SimulationPanel, self).__init__(**kwargs)
         self.__simulation = simulation
@@ -38,11 +39,14 @@ class SimulationPanel(GridLayout):
             size=self.margin_size)
         self.rows_section = RowsSection(
             size=self.margin_size,
+            first_elem_index=ul_corner[0],
             num_elements=sim_size[0])
         self.cols_section = ColumnsSection(
             size=self.margin_size,
+            first_elem_index=ul_corner[1],
             num_elements=sim_size[1])
         self.sim_section = SimulationSection(
+            ul_corner=ul_corner,
             simulation=self.__simulation,
             sim_size=sim_size)
         self.__grid = self.sim_section.get_grid()

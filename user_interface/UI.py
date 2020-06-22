@@ -63,10 +63,15 @@ class SimulationUI(BoxLayout):
     def __init__(self,
                  simulation: Simulation,
                  animate: bool,
+                 ul_corner,
                  **kwargs):
         super(SimulationUI, self).__init__(**kwargs)
         self.orientation = "vertical"
-        self.simulation_panel = SimulationPanel(simulation=simulation, animate=animate)
+        self.simulation_panel = SimulationPanel(
+            simulation=simulation,
+            animate=animate,
+            ul_corner=ul_corner
+        )
         self.button_bar = ButtonBar(animate=animate, simulation_panel=self.simulation_panel)
         self.add_widget(self.button_bar)
         self.add_widget(self.simulation_panel)
@@ -112,14 +117,17 @@ class UI(App):
     def __init__(self,
                  simulation: Simulation,
                  animate: bool,
+                 ul_corner,
                  **kwargs):
         super(UI, self).__init__(**kwargs)
         self.__simulation = simulation
         self.__animate = animate
+        self.__ul_corner = ul_corner
 
     def build(self):
         sim_ui = SimulationUI(
             simulation=self.__simulation,
-            animate=self.__animate
+            animate=self.__animate,
+            ul_corner=self.__ul_corner
         )
         return sim_ui

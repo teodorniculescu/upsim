@@ -1,6 +1,6 @@
 /*
     =========================================================
-    MAIN
+    MAINN
 */
 
 DEFINE CUSTOM BLOCK 4BITBUFFER (
@@ -157,22 +157,37 @@ DEFINE CUSTOM BLOCK 74LS173 (IN m n ng1 ng2 clk clr 1d 2d 3d 4d OUT 1q 2q 3q 4q)
         BTWN h4.q AND THIS.4q;
 };
 
+/*
+    LOAD - load data in the IN* pins
+        0 - off
+        1 - ON
+    ENABLE - output data to the OUT* pins
+        0 - off
+        1 - ON
+    CLR -
+        0 - off
+        1 - ON
+*/
 DEFINE CUSTOM BLOCK REGISTER (
     IN
     0D 1D 2D 3D 4D 5D 6D 7D
     CLK CLR LOAD ENABLE
-    OUT 0Q 1Q 2Q 3Q 4Q 5Q 6Q 7Q
+    OUT
+    0Q 1Q 2Q 3Q 4Q 5Q 6Q 7Q
+    0AQ 1AQ 2AQ 3AQ 4AQ 5AQ 6AQ 7AQ
 ) {
     INSERT BLOCKS
         CUSTOM 4BITBUFFER buf1,
         CUSTOM 4BITBUFFER buf2,
         CUSTOM 74LS173 l1,
         CUSTOM 74LS173 l2,
+        NOT NOTCLR i o,
         GND gnd;
     INSERT EDGES
         BTWN gnd.val AND (l1.m, l1.n, l2.m, l2.n),
         BTWN THIS.LOAD AND (l1.ng1, l1.ng2, l2.ng1, l2.ng2),
-        BTWN THIS.CLR AND (l1.clr, l2.clr),
+        BTWN THIS.CLR AND NOTCLR.i,
+        BTWN NOTCLR.o AND (l1.clr, l2.clr),
         BTWN THIS.CLK AND (l1.clk, l2.clk),
         BTWN THIS.ENABLE AND (buf1.EN, buf2.EN),
         BTWN l1.1q AND buf1.IN1,
@@ -192,6 +207,15 @@ DEFINE CUSTOM BLOCK REGISTER (
         BTWN buf2.OUT3 AND THIS.6Q,
         BTWN buf2.OUT4 AND THIS.7Q,
 
+        BTWN l1.1q AND THIS.0AQ,
+        BTWN l1.2q AND THIS.1AQ,
+        BTWN l1.3q AND THIS.2AQ,
+        BTWN l1.4q AND THIS.3AQ,
+        BTWN l2.1q AND THIS.4AQ,
+        BTWN l2.2q AND THIS.5AQ,
+        BTWN l2.3q AND THIS.6AQ,
+        BTWN l2.4q AND THIS.7AQ,
+
         BTWN THIS.0D AND l1.1d,
         BTWN THIS.1D AND l1.2d,
         BTWN THIS.2D AND l1.3d,
@@ -203,7 +227,44 @@ DEFINE CUSTOM BLOCK REGISTER (
 };
 
 INSERT BLOCKS
+    STATE OUT AIN,
+    STATE OUT AOUT;
+INSERT BLOCKS
     CUSTOM REGISTER regA;
+
+INSERT EDGES
+    BTWN AIN.val AND regA.LOAD,
+    BTWN AOUT.val AND regA.ENABLE,
+    BTWN CLR.val AND regA.CLR,
+    BTWN CLK.val AND regA.CLK,
+    BTWN regA.0Q AND b0.in,
+    BTWN regA.1Q AND b1.in,
+    BTWN regA.2Q AND b2.in,
+    BTWN regA.3Q AND b3.in,
+    BTWN regA.4Q AND b4.in,
+    BTWN regA.5Q AND b5.in,
+    BTWN regA.6Q AND b6.in,
+    BTWN regA.7Q AND b7.in,
+    BTWN b0.out AND regA.0D,
+    BTWN b1.out AND regA.1D,
+    BTWN b2.out AND regA.2D,
+    BTWN b3.out AND regA.3D,
+    BTWN b4.out AND regA.4D,
+    BTWN b5.out AND regA.5D,
+    BTWN b6.out AND regA.6D,
+    BTWN b7.out AND regA.7D;
+
+DRAW BLOCK
+    regA 9:39;
+DRAW EDGES
+    SNAKE regA.0Q (UP 2, LEFT 4),
+    SNAKE regA.1Q (RIGHT 1, UP 5, LEFT 5),
+    SNAKE regA.2Q (RIGHT 2, UP 8, LEFT 6),
+    SNAKE regA.3Q (RIGHT 3, UP 11, LEFT 7),
+    SNAKE regA.4Q (RIGHT 4, UP 14, LEFT 8),
+    SNAKE regA.5Q (RIGHT 5, UP 17, LEFT 9),
+    SNAKE regA.6Q (RIGHT 6, UP 20, LEFT 10),
+    SNAKE regA.7Q (RIGHT 7, UP 23, LEFT 11);
 
 /*
     END Register
@@ -429,9 +490,23 @@ DRAW EDGES
     END Program Counter
     =================================================
     INITIAL CONDITIONS AND RUN
+
 */
+INSERT INIT COND
+    (CLK.val=0, CE.val=0, CIN.val=1, COUT.val=0, CLR.val=0, AIN.val=1, AOUT.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1, CLR.val=1, CE.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1, CE.val=0, COUT.val=1, AIN.val=0),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0)
+    ;
 
 RUN;
 
 /* DRAW DISPLAY ANIMATE */
-DISPLAY ANIMATE;
+DISPLAY 0:18 ANIMATE;
