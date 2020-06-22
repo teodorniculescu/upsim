@@ -77,6 +77,14 @@ class SimulationUI(BoxLayout):
         self._keyboard.unbind(on_key_down=self.on_keyboard_down)
         self._keyboard = None
 
+    def on_touch_down(self, touch):
+        if touch.is_mouse_scrolling:
+            if touch.button == 'scrolldown':
+                self.simulation_panel.zoom_in()
+            elif touch.button == 'scrollup':
+                self.simulation_panel.zoom_out()
+        BoxLayout.on_touch_down(self, touch)
+
     def on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == '=':
             self.simulation_panel.zoom_out()

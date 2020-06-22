@@ -13,7 +13,8 @@ draw : DRAW_KWD (draw_blocks | draw_edges);
 draw_edges : EDGE_KWD draw_one_edge (',' draw_one_edge)*;
 draw_one_edge : SNAKE_KWD node draw_direction_snake_edge;
 draw_direction_snake_edge : '(' draw_direction_snake (',' draw_direction_snake)* ')';
-draw_direction_snake : LEFT_KWD | RIGHT_KWD | UP_KWD | DOWN_KWD ;
+draw_direction_snake : direction_snake UINT?;
+direction_snake : LEFT_KWD | RIGHT_KWD | UP_KWD | DOWN_KWD ;
 
 draw_blocks : BLOCK_KWD draw_one_block (',' draw_one_block)*;
 

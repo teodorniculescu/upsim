@@ -466,9 +466,21 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     def exitDraw_direction_snake_edge(self, ctx:FileSyntaxParser.Draw_direction_snake_edgeContext):
         ctx.direction_list = []
         for context in ctx.draw_direction_snake():
-            ctx.direction_list.append(context.text)
+            ctx.direction_list += context.direction_list
+
 
     def exitDraw_direction_snake(self, ctx:FileSyntaxParser.Draw_direction_snakeContext):
+        ctx.direction_list = []
+        if ctx.UINT() is None:
+            counter = 1
+        else:
+            counter = int(str(ctx.UINT()))
+        for x in range(counter):
+            ctx.direction_list.append(ctx.direction_snake().text)
+
+    def exitDirection_snake(self, ctx:FileSyntaxParser.Direction_snakeContext):
         ctx.text = str(ctx.getText())
+
+
 
 

@@ -108,6 +108,8 @@ class SimulationPanel(GridLayout):
             return
         wire_widget_dict: Dict[str, List[Tuple[int, int]]] = self.__grid.get_wire_widget_dict()
         for node_name, node_value in zip(self.__frame_description, self.get_current_animation_frame()):
+            if node_name not in wire_widget_dict:
+                continue
             for widget_index in wire_widget_dict[node_name]:
                 if not self.sim_section.index_within_bounds(widget_index):
                     continue

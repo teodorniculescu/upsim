@@ -230,66 +230,24 @@ INSERT EDGES
     BTWN THIS.CLK AND bc.CLK,
     BTWN THIS.CLR AND bc.CLR
     ;
-
-
 };
 
-/* MAIN */
-
-INSERT BLOCKS
-    BUFFER BUSLINE0,
-    BUFFER BUSLINE1,
-    BUFFER BUSLINE2,
-    BUFFER BUSLINE3,
-    STATE OUT BUSJUMP0,
-    STATE OUT BUSJUMP1,
-    STATE OUT BUSJUMP2,
-    STATE OUT BUSJUMP3,
-    STATE IN BUS1,
-    STATE IN BUS2,
-    STATE IN BUS3,
-    STATE IN BUS0
-    ;
-
-INSERT EDGES
-    BTWN BUSJUMP0.val AND BUSLINE0.in,
-    BTWN BUSJUMP1.val AND BUSLINE1.in,
-    BTWN BUSJUMP2.val AND BUSLINE2.in,
-    BTWN BUSJUMP3.val AND BUSLINE3.in,
-    BTWN BUSLINE0.out AND BUS0.val,
-    BTWN BUSLINE1.out AND BUS1.val,
-    BTWN BUSLINE2.out AND BUS2.val,
-    BTWN BUSLINE3.out AND BUS3.val
-    ;
+/*
+    =========================================================
+    MAIN
+*/
 
 INSERT BLOCKS
     STATE OUT CE,
     STATE OUT CIN,
     STATE OUT COUT,
     STATE OUT CLK,
-    STATE OUT CLR,
-    CUSTOM ProgramCounter PC
+    STATE OUT CLR
     ;
-
-INSERT EDGES
-    BTWN CE.val AND PC.CE,
-    BTWN CLK.val AND PC.CLK,
-    BTWN CLR.val AND PC.CLR,
-    BTWN CIN.val AND PC.CIN,
-    BTWN COUT.val AND PC.COUT,
-
-    BTWN PC.OUT0 AND BUSLINE0.in,
-    BTWN PC.OUT1 AND BUSLINE1.in,
-    BTWN PC.OUT2 AND BUSLINE2.in,
-    BTWN PC.OUT3 AND BUSLINE3.in,
-
-    BTWN BUSLINE0.out AND PC.IN0,
-    BTWN BUSLINE1.out AND PC.IN1,
-    BTWN BUSLINE2.out AND PC.IN2,
-    BTWN BUSLINE3.out AND PC.IN3
-    ;
-
-/* Create the bus blocks */
+/*
+    =========================================================
+    Create the bus blocks
+*/
 INSERT BLOCKS
     STATE IN bval0,
     STATE IN bval1,
@@ -299,15 +257,15 @@ INSERT BLOCKS
     STATE IN bval5,
     STATE IN bval6,
     STATE IN bval7,
-
-    BUS b0 3,
-    BUS b1 3,
-    BUS b2 3,
-    BUS b3 3,
-    BUS b4 3,
-    BUS b5 3,
-    BUS b6 3,
-    BUS b7 3;
+    BUS b0 30,
+    BUS b1 30,
+    BUS b2 30,
+    BUS b3 30,
+    BUS b4 30,
+    BUS b5 30,
+    BUS b6 30,
+    BUS b7 30
+    ;
 INSERT EDGES
     BTWN b0.out AND bval0.val,
     BTWN b1.out AND bval1.val,
@@ -321,25 +279,74 @@ INSERT EDGES
 
 /* DRAW DISPLAY ANIMATE */
 DRAW BLOCK
-    bval0 1:9,
-    bval1 2:9,
-    bval2 3:9,
-    bval3 4:9,
-    bval4 5:9,
-    bval5 6:9,
-    bval6 7:9,
-    bval7 8:9,
+    bval0 1:39,
+    bval1 2:39,
+    bval2 3:39,
+    bval3 4:39,
+    bval4 5:39,
+    bval5 6:39,
+    bval6 7:39,
+    bval7 8:39,
 
-    b0 1:1,
-    b1 1:2,
-    b2 1:3,
-    b3 1:4,
-    b4 1:5,
-    b5 1:6,
-    b6 1:7,
-    b7 1:8;
+    b0 1:31,
+    b1 1:32,
+    b2 1:33,
+    b3 1:34,
+    b4 1:35,
+    b5 1:36,
+    b6 1:37,
+    b7 1:38;
 
-/* INITIAL CONDITIONS AND RUN
+/*
+    =========================================================
+    Program Counter
+*/
+INSERT BLOCKS
+
+    CUSTOM 4BITBUFFER outbuf,
+    CUSTOM DM74LS163A bc
+    ;
+
+INSERT EDGES
+    BTWN CE.val AND (bc.ENT, bc.ENP),
+    BTWN CLK.val AND bc.CLK,
+    BTWN CLR.val AND bc.CLR,
+    BTWN CIN.val AND bc.LD,
+    BTWN COUT.val AND outbuf.EN,
+
+    BTWN b0.out AND bc.DATAA,
+    BTWN b1.out AND bc.DATAB,
+    BTWN b2.out AND bc.DATAC,
+    BTWN b3.out AND bc.DATAD,
+
+    BTWN bc.QA AND outbuf.IN1,
+    BTWN bc.QB AND outbuf.IN2,
+    BTWN bc.QC AND outbuf.IN3,
+    BTWN bc.QD AND outbuf.IN4,
+
+    BTWN outbuf.OUT1 AND b0.in,
+    BTWN outbuf.OUT2 AND b1.in,
+    BTWN outbuf.OUT3 AND b2.in,
+    BTWN outbuf.OUT4 AND b3.in
+    ;
+
+DRAW BLOCKS
+    outbuf 5:26,
+    bc 5:21;
+DRAW EDGES
+    SNAKE bc.DATAA (LEFT 0, UP 2, RIGHT 4, RIGHT 5),
+    SNAKE bc.DATAB (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
+    SNAKE bc.DATAC (LEFT 2, UP 8, RIGHT 6, RIGHT 5),
+    SNAKE bc.DATAD (LEFT 3, UP 11, RIGHT 7, RIGHT 5),
+    SNAKE bc.QA (RIGHT),
+    SNAKE bc.QB (RIGHT),
+    SNAKE bc.QC (RIGHT),
+    SNAKE bc.QD (RIGHT);
+
+/*
+    =================================================
+    INITIAL CONDITIONS AND RUN
+*/
 
 INSERT INIT COND
     (CE.val=0, CIN.val=1, COUT.val=0, CLK.val=0, CLR.val=1),
@@ -363,7 +370,7 @@ INSERT INIT COND
     (CLK.val=0, COUT.val=0),
     (CLK.val=1),
     (CLK.val=0),
-    (CLK.val=1, CIN.val=0, BUSJUMP0.val=0 ,BUSJUMP1.val=0, BUSJUMP2.val=1, BUSJUMP3.val=1 ),
+    (CLK.val=1, CIN.val=0),
     (CLK.val=0),
     (CLK.val=1, CIN.val=1),
     (CLK.val=0),
@@ -379,6 +386,7 @@ INSERT INIT COND
     ;
 
 RUN;
+/*
 SHOW RUN
 (
 CE.val, CIN.val, COUT.val, CLK.val,
@@ -391,4 +399,4 @@ BUS0.val, BUS1.val, BUS2.val, BUS3.val
 
 */
 
-DISPLAY;
+DISPLAY ANIMATE;
