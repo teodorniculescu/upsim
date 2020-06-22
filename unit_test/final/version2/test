@@ -182,13 +182,15 @@ DEFINE CUSTOM BLOCK REGISTER (
         CUSTOM 74LS173 l1,
         CUSTOM 74LS173 l2,
         NOT NOTCLR i o,
+        NOT NOTCLK i o,
         GND gnd;
     INSERT EDGES
         BTWN gnd.val AND (l1.m, l1.n, l2.m, l2.n),
         BTWN THIS.LOAD AND (l1.ng1, l1.ng2, l2.ng1, l2.ng2),
         BTWN THIS.CLR AND NOTCLR.i,
         BTWN NOTCLR.o AND (l1.clr, l2.clr),
-        BTWN THIS.CLK AND (l1.clk, l2.clk),
+        BTWN THIS.CLK AND NOTCLK.i,
+        BTWN NOTCLK.o AND (l1.clk, l2.clk),
         BTWN THIS.ENABLE AND (buf1.EN, buf2.EN),
         BTWN l1.1q AND buf1.IN1,
         BTWN l1.2q AND buf1.IN2,
