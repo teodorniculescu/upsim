@@ -228,7 +228,7 @@ VERBOSE_PRM : '-' ('VERBOSE' | 'V');
 
 
 UINT: NUMBER+;
-NAME : (LETTER | NUMBER)+;
+NAME : (LETTER | NUMBER | '_' )+;
 
 COMMENT : '/*' .*? '*/' -> skip ; // .*? matches anything until the first */
 WHITESPACE : (SPACE | TAB) -> skip;
