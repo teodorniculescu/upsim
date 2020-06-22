@@ -249,14 +249,6 @@ INSERT BLOCKS
     Create the bus blocks
 */
 INSERT BLOCKS
-    STATE IN bval0,
-    STATE IN bval1,
-    STATE IN bval2,
-    STATE IN bval3,
-    STATE IN bval4,
-    STATE IN bval5,
-    STATE IN bval6,
-    STATE IN bval7,
     BUS b0 30,
     BUS b1 30,
     BUS b2 30,
@@ -266,28 +258,9 @@ INSERT BLOCKS
     BUS b6 30,
     BUS b7 30
     ;
-INSERT EDGES
-    BTWN b0.out AND bval0.val,
-    BTWN b1.out AND bval1.val,
-    BTWN b2.out AND bval2.val,
-    BTWN b3.out AND bval3.val,
-    BTWN b4.out AND bval4.val,
-    BTWN b5.out AND bval5.val,
-    BTWN b6.out AND bval6.val,
-    BTWN b7.out AND bval7.val
-    ;
 
 /* DRAW DISPLAY ANIMATE */
 DRAW BLOCK
-    bval0 1:39,
-    bval1 2:39,
-    bval2 3:39,
-    bval3 4:39,
-    bval4 5:39,
-    bval5 6:39,
-    bval6 7:39,
-    bval7 8:39,
-
     b0 1:31,
     b1 1:32,
     b2 1:33,
