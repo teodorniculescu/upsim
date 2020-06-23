@@ -1306,6 +1306,8 @@ DEFINE CUSTOM BLOCK CONTROL_LOGIC (
 
 /* any block that is H means that it is on */
 INSERT BLOCK
+    STATE OUT CL_CLK_EN,
+    AND AND_CL_CLK CLK EN O,
     BUS _HLT_ 2,
     BUS _MI_ 2,
     BUS _RI_ 2,
@@ -1385,7 +1387,9 @@ INSERT EDGE
     BTWN _SO_.out AND ALU.SO,
     BTWN _EO_.out AND ALU.EO,
 
-    BTWN CLK.val AND CL.CLK,
+    BTWN AND_CL_CLK.O AND CL.CLK,
+    BTWN AND_CL_CLK.CLK AND CLK.val,
+    BTWN AND_CL_CLK.EN AND CL_CLK_EN.val,
     BTWN CLR.val AND CL.CLR,
 
     BTWN regI.4AQ AND CL.B0,
@@ -1411,6 +1415,14 @@ DRAW BLOCK
     _J_ 70:19,
     CL 70:0;
 
+INSERT BLOCK
+    STATE OUT M_MI,
+    STATE OUT M_RI,
+    STATE OUT M_RO;
+INSERT EDGE
+    BTWN M_MI.val AND MAR.LOAD,
+    BTWN M_RI.val AND RAM.LOAD,
+    BTWN M_RO.val AND RAM.ENABLE;
 
 /*
     END CONTROL LOGIC
@@ -1420,11 +1432,67 @@ DRAW BLOCK
 /*
 */
 INSERT INIT COND
-    ( CLK.val=0, CLR.val=0 ),
+    // INSERT DATA IN RAM
+    (CLK.val=1, CLR.val=1, CL_CLK_EN.val=1),
+    (CLK.val=0),
+    (CLK.val=1, CLR.val=0),
+    (CL_CLK_EN.val=0),
+    (CLR.val=1),
 
-    (CLK.val=1, CLR.val=1),
+    (CLK.val=1, M_MI.val=0), (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
+    (BL0.val=0, BL1.val=1, BL2.val=1, BL3.val=1, BL4.val=1, BL5.val=0, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
+
+    (CLK.val=1, M_MI.val=0), (BL0.val=1, BL1.val=0, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
+    (BL0.val=1, BL1.val=1, BL2.val=1, BL3.val=1, BL4.val=0, BL5.val=1, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
+
+    (CLK.val=1, M_MI.val=0), (BL0.val=0, BL1.val=1, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
+    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=1, BL6.val=1, BL7.val=1), (CLK.val=0), (M_RI.val=1),
+
+    (CLK.val=1, M_MI.val=0), (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
+    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=1, BL5.val=1, BL6.val=1, BL7.val=1), (CLK.val=0), (M_RI.val=1),
+
+    // start execution by setting the CL_CLK_EN pin to 1
+    // the microinstruction counter is automatically set to 0
+    (CLK.val=1, CL_CLK_EN.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
     (CLK.val=0),
 
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
     (CLK.val=1),
     (CLK.val=0),
     (CLK.val=1),

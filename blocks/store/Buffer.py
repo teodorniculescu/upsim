@@ -113,7 +113,6 @@ class ROM(LogicalBlock):
             super().add_pin(BaseValue("A" + str(addr), PIN_TYPE_INPUT))
         for data in range(num_data):
             super().add_pin(BaseValue("D" + str(data), PIN_TYPE_OUTPUT))
-        print(self._content)
 
     def calculate(self) -> None:
         binary_string: str = ''
