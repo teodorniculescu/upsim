@@ -80,14 +80,14 @@ INSERT BLOCKS
     STATE OUT BL6,
     STATE OUT BL7,
 
-    BUS b0 110,
-    BUS b1 110,
-    BUS b2 110,
-    BUS b3 110,
-    BUS b4 110,
-    BUS b5 110,
-    BUS b6 110,
-    BUS b7 110
+    BUS b0 130,
+    BUS b1 130,
+    BUS b2 130,
+    BUS b3 130,
+    BUS b4 130,
+    BUS b5 130,
+    BUS b6 130,
+    BUS b7 130
     ;
 
 INSERT EDGES
@@ -1152,6 +1152,72 @@ DRAW EDGES
 /*
     END RAM
     =================================================
+    START INSTRUCTION REGISTER
+*/
+
+INSERT BLOCK
+    STATE OUT IIN,
+    STATE OUT IOUT,
+    CUSTOM REGISTER regI;
+INSERT EDGES
+    BTWN IIN.val AND regI.LOAD,
+    BTWN IOUT.val AND regI.ENABLE,
+    BTWN CLR.val AND regI.CLR,
+    BTWN CLK.val AND regI.CLK,
+
+    BTWN regI.0Q AND b0.in,
+    BTWN regI.1Q AND b1.in,
+    BTWN regI.2Q AND b2.in,
+    BTWN regI.3Q AND b3.in,
+
+    BTWN b0.out AND regI.0D,
+    BTWN b1.out AND regI.1D,
+    BTWN b2.out AND regI.2D,
+    BTWN b3.out AND regI.3D,
+    BTWN b4.out AND regI.4D,
+    BTWN b5.out AND regI.5D,
+    BTWN b6.out AND regI.6D,
+    BTWN b7.out AND regI.7D;
+DRAW BLOCK
+    regI 117:26;
+DRAW EDGES
+    SNAKE regI.0D (LEFT 0, UP 2, RIGHT 4),
+    SNAKE regI.1D (LEFT 1, UP 5, RIGHT 5),
+    SNAKE regI.2D (LEFT 2, UP 8, RIGHT 6),
+    SNAKE regI.3D (LEFT 3, UP 11, RIGHT 7),
+    SNAKE regI.4D (LEFT 4, UP 14, RIGHT 8),
+    SNAKE regI.5D (LEFT 5, UP 17, RIGHT 9),
+    SNAKE regI.6D (LEFT 6, UP 20, RIGHT 10),
+    SNAKE regI.7D (LEFT 7, UP 23, RIGHT 11);
+/*
+    END INSTRUCTION REGISTER
+    =================================================
+    START OUTPUT REGISTER
+*/
+
+INSERT BLOCK
+    STATE OUT OIN,
+    CUSTOM REGISTER regO;
+INSERT EDGES
+    BTWN OIN.val AND regO.LOAD,
+    BTWN gnd.val AND regO.ENABLE,
+    BTWN CLR.val AND regO.CLR,
+    BTWN CLK.val AND regO.CLK,
+
+    BTWN b0.out AND regO.0D,
+    BTWN b1.out AND regO.1D,
+    BTWN b2.out AND regO.2D,
+    BTWN b3.out AND regO.3D,
+    BTWN b4.out AND regO.4D,
+    BTWN b5.out AND regO.5D,
+    BTWN b6.out AND regO.6D,
+    BTWN b7.out AND regO.7D;
+DRAW BLOCK
+    regO 87:39;
+
+/*
+    END OUTPUT REGISTER
+    =================================================
     INITIAL CONDITIONS AND RUN
 */
 
@@ -1159,6 +1225,8 @@ INSERT INIT COND
     (
     BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=0,
     CE.val=0, CIN.val=1, COUT.val=0,
+    IIN.val=1, IOUT.val=0,
+    OIN.val=1,
     BIN.val=1, BOUT.val=0,
     AIN.val=1, AOUT.val=0,
     MIN.val=1,
@@ -1166,61 +1234,6 @@ INSERT INIT COND
     EO.val=0, SO.val=0,
     CLK.val=0, CLR.val=0
     ),
-
-    (CLK.val=1, CLR.val=1),
-    (CLK.val=0),
-
-    (CLK.val=1, MIN.val=0),
-    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0),
-    (CLK.val=0), (MIN.val=1),
-    (CLK.val=1, RIN.val=0, ROUT.val=0),
-    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=1),
-    (CLK.val=0), (RIN.val=1),
-
-    (CLK.val=1, MIN.val=0),
-    (BL0.val=1, BL1.val=0, BL2.val=0, BL3.val=0),
-    (CLK.val=0), (MIN.val=1),
-    (CLK.val=1, RIN.val=0, ROUT.val=0),
-    (BL0.val=1, BL1.val=0, BL2.val=1, BL3.val=0, BL4.val=1, BL5.val=0, BL6.val=0, BL7.val=1),
-    (CLK.val=0), (RIN.val=1),
-
-    (CLK.val=1, MIN.val=0),
-    (BL0.val=0, BL1.val=1, BL2.val=0, BL3.val=0),
-    (CLK.val=0), (MIN.val=1),
-    (CLK.val=1, RIN.val=0, ROUT.val=0),
-    (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=1, BL7.val=0),
-    (CLK.val=0), (RIN.val=1),
-
-    (CLK.val=1, MIN.val=0),
-    (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0),
-    (CLK.val=0), (MIN.val=1),
-    (CLK.val=1, RIN.val=0, ROUT.val=0),
-    (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0, BL4.val=1, BL5.val=0, BL6.val=1, BL7.val=1),
-    (CLK.val=0), (RIN.val=1),
-
-    (CLK.val=1, MIN.val=0),
-    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0),
-    (CLK.val=0), (MIN.val=1),
-    (CLK.val=1, ROUT.val=1),
-    (CLK.val=0), (ROUT.val=0),
-
-    (CLK.val=1, MIN.val=0),
-    (BL0.val=1, BL1.val=0, BL2.val=0, BL3.val=0),
-    (CLK.val=0), (MIN.val=1),
-    (CLK.val=1, ROUT.val=1),
-    (CLK.val=0), (ROUT.val=0),
-
-    (CLK.val=1, MIN.val=0),
-    (BL0.val=0, BL1.val=1, BL2.val=0, BL3.val=0),
-    (CLK.val=0), (MIN.val=1),
-    (CLK.val=1, ROUT.val=1),
-    (CLK.val=0), (ROUT.val=0),
-
-    (CLK.val=1, MIN.val=0),
-    (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0),
-    (CLK.val=0), (MIN.val=1),
-    (CLK.val=1, ROUT.val=1),
-    (CLK.val=0), (ROUT.val=0),
 
     (CLK.val=1),
     (CLK.val=0),
