@@ -1,0 +1,1353 @@
+/*
+    =========================================================
+    MAIN
+*/
+
+DEFINE CUSTOM BLOCK 4BITBUFFER (
+    IN IN1 IN2 IN3 IN4 EN
+    OUT OUT1 OUT2 OUT3 OUT4
+) {
+    INSERT BLOCKS
+        DTS_BUFFER BUF1,
+        DTS_BUFFER BUF2,
+        DTS_BUFFER BUF3,
+        DTS_BUFFER BUF4;
+
+    INSERT EDGES
+        BTWN BUF1.out AND THIS.OUT1,
+        BTWN BUF2.out AND THIS.OUT2,
+        BTWN BUF3.out AND THIS.OUT3,
+        BTWN BUF4.out AND THIS.OUT4,
+
+        BTWN THIS.IN1 AND BUF1.in,
+        BTWN THIS.IN2 AND BUF2.in,
+        BTWN THIS.IN3 AND BUF3.in,
+        BTWN THIS.IN4 AND BUF4.in,
+
+        BTWN THIS.EN AND ( BUF1.en, BUF2.en, BUF3.en, BUF4.en );
+};
+
+DEFINE CUSTOM BLOCK 8BITBUFFER (
+    IN IN0 IN1 IN2 IN3 IN4 IN5 IN6 IN7 EN
+    OUT OUT0 OUT1 OUT2 OUT3 OUT4 OUT5 OUT6 OUT7
+) {
+    INSERT BLOCKS
+        CUSTOM 4BITBUFFER buf1,
+        CUSTOM 4BITBUFFER buf2;
+    INSERT EDGES
+        BTWN THIS.EN AND buf1.EN,
+        BTWN THIS.EN AND buf2.EN,
+
+        BTWN THIS.IN0 AND buf1.IN1,
+        BTWN THIS.IN1 AND buf1.IN2,
+        BTWN THIS.IN2 AND buf1.IN3,
+        BTWN THIS.IN3 AND buf1.IN4,
+        BTWN THIS.IN4 AND buf2.IN1,
+        BTWN THIS.IN5 AND buf2.IN2,
+        BTWN THIS.IN6 AND buf2.IN3,
+        BTWN THIS.IN7 AND buf2.IN4,
+
+        BTWN buf1.OUT1 AND THIS.OUT0,
+        BTWN buf1.OUT2 AND THIS.OUT1,
+        BTWN buf1.OUT3 AND THIS.OUT2,
+        BTWN buf1.OUT4 AND THIS.OUT3,
+        BTWN buf2.OUT1 AND THIS.OUT4,
+        BTWN buf2.OUT2 AND THIS.OUT5,
+        BTWN buf2.OUT3 AND THIS.OUT6,
+        BTWN buf2.OUT4 AND THIS.OUT7;
+};
+
+INSERT BLOCKS
+    GND gnd,
+    STATE OUT CE,
+    STATE OUT CIN,
+    STATE OUT COUT,
+    STATE OUT CLK,
+    STATE OUT CLR
+    ;
+
+/*
+    =========================================================
+    Create the bus blocks
+*/
+INSERT BLOCKS
+    STATE OUT BL0,
+    STATE OUT BL1,
+    STATE OUT BL2,
+    STATE OUT BL3,
+    STATE OUT BL4,
+    STATE OUT BL5,
+    STATE OUT BL6,
+    STATE OUT BL7,
+
+    BUS b0 130,
+    BUS b1 130,
+    BUS b2 130,
+    BUS b3 130,
+    BUS b4 130,
+    BUS b5 130,
+    BUS b6 130,
+    BUS b7 130
+    ;
+
+INSERT EDGES
+    BTWN BL0.val AND b0.in,
+    BTWN BL1.val AND b1.in,
+    BTWN BL2.val AND b2.in,
+    BTWN BL3.val AND b3.in,
+    BTWN BL4.val AND b4.in,
+    BTWN BL5.val AND b5.in,
+    BTWN BL6.val AND b6.in,
+    BTWN BL7.val AND b7.in;
+
+DRAW BLOCK
+    b0 1:31,
+    b1 1:32,
+    b2 1:33,
+    b3 1:34,
+    b4 1:35,
+    b5 1:36,
+    b6 1:37,
+    b7 1:38;
+/*
+    =========================================================
+    START Register
+*/
+/* Inside of teh 74LS173 are 4 latch handlers connected in order to store 4 bits of data */
+DEFINE CUSTOM BLOCK latchHandler (IN d de nde clk clr en OUT q) {
+    INSERT BLOCKS
+        AND a1 Q nde o,
+        AND a2 d de o,
+        OR or a1o a2o D,
+        D_LATCH latch,
+        NOT q i o,
+        DTS_BUFFER buf
+        ;
+    INSERT EDGES
+        BTWN latch.Q AND a1.Q,
+        BTWN THIS.nde AND a1.nde,
+        BTWN THIS.d AND a2.d,
+        BTWN THIS.de AND a2.de,
+        BTWN THIS.clk AND latch.C,
+        BTWN THIS.clr AND latch.R,
+        BTWN a1.o AND or.a1o,
+        BTWN a2.o AND or.a2o,
+        BTWN or.D AND latch.D,
+        BTWN latch.NQ AND q.i,
+        BTWN q.o AND buf.in,
+        BTWN THIS.en AND buf.en,
+        BTWN buf.out AND THIS.q;
+};
+
+DEFINE CUSTOM BLOCK 74LS173 (IN m n ng1 ng2 clk clr 1d 2d 3d 4d OUT 1q 2q 3q 4q) {
+    /* the output control pins */
+    INSERT BLOCKS
+        NOT notm i o,
+        NOT notn i o,
+        AND oc m n o;
+    INSERT EDGES
+        BTWN THIS.m AND notm.i,
+        BTWN THIS.n AND notn.i,
+        BTWN notm.o AND oc.m,
+        BTWN notn.o AND oc.n;
+
+    /* the data enable pins */
+    INSERT BLOCKS
+        NOT notng1 i o,
+        NOT notng2 i o,
+        AND de g1 g2 o,
+        NOT nde i o;
+    INSERT EDGES
+        BTWN THIS.ng1 AND notng1.i,
+        BTWN THIS.ng2 AND notng2.i,
+        BTWN notng1.o AND de.g1,
+        BTWN notng2.o AND de.g2,
+        BTWN de.o AND nde.i;
+
+    /* the blocks where the d latches are located */
+    INSERT BLOCKS
+        CUSTOM latchHandler h1;
+    INSERT EDGES
+        BTWN THIS.1d AND h1.d,
+        BTWN de.o AND h1.de,
+        BTWN nde.o AND h1.nde,
+        BTWN THIS.clk AND h1.clk,
+        BTWN THIS.clr AND h1.clr,
+        BTWN oc.o AND h1.en,
+        BTWN h1.q AND THIS.1q;
+    INSERT BLOCKS
+        CUSTOM latchHandler h2;
+    INSERT EDGES
+        BTWN THIS.2d AND h2.d,
+        BTWN de.o AND h2.de,
+        BTWN nde.o AND h2.nde,
+        BTWN THIS.clk AND h2.clk,
+        BTWN THIS.clr AND h2.clr,
+        BTWN oc.o AND h2.en,
+        BTWN h2.q AND THIS.2q;
+    INSERT BLOCKS
+        CUSTOM latchHandler h3;
+    INSERT EDGES
+        BTWN THIS.3d AND h3.d,
+        BTWN de.o AND h3.de,
+        BTWN nde.o AND h3.nde,
+        BTWN THIS.clk AND h3.clk,
+        BTWN THIS.clr AND h3.clr,
+        BTWN oc.o AND h3.en,
+        BTWN h3.q AND THIS.3q;
+    INSERT BLOCKS
+        CUSTOM latchHandler h4;
+    INSERT EDGES
+        BTWN THIS.4d AND h4.d,
+        BTWN de.o AND h4.de,
+        BTWN nde.o AND h4.nde,
+        BTWN THIS.clk AND h4.clk,
+        BTWN THIS.clr AND h4.clr,
+        BTWN oc.o AND h4.en,
+        BTWN h4.q AND THIS.4q;
+};
+
+/*
+    LOAD - load data in the IN* pins
+        0 - off
+        1 - ON
+    ENABLE - output data to the OUT* pins
+        0 - off
+        1 - ON
+    CLR -
+        0 - off
+        1 - ON
+*/
+DEFINE CUSTOM BLOCK REGISTER (
+    IN
+    0D 1D 2D 3D 4D 5D 6D 7D
+    CLK CLR LOAD ENABLE
+    OUT
+    0Q 1Q 2Q 3Q 4Q 5Q 6Q 7Q
+    0AQ 1AQ 2AQ 3AQ 4AQ 5AQ 6AQ 7AQ
+) {
+    INSERT BLOCKS
+        CUSTOM 4BITBUFFER buf1,
+        CUSTOM 4BITBUFFER buf2,
+        CUSTOM 74LS173 l1,
+        CUSTOM 74LS173 l2,
+        NOT NOTCLR i o,
+        NOT NOTCLK i o,
+        GND gnd;
+    INSERT EDGES
+        BTWN gnd.val AND (l1.m, l1.n, l2.m, l2.n),
+        BTWN THIS.LOAD AND (l1.ng1, l1.ng2, l2.ng1, l2.ng2),
+        BTWN THIS.CLR AND NOTCLR.i,
+        BTWN NOTCLR.o AND (l1.clr, l2.clr),
+        BTWN THIS.CLK AND NOTCLK.i,
+        BTWN NOTCLK.o AND (l1.clk, l2.clk),
+        BTWN THIS.ENABLE AND (buf1.EN, buf2.EN),
+        BTWN l1.1q AND buf1.IN1,
+        BTWN l1.2q AND buf1.IN2,
+        BTWN l1.3q AND buf1.IN3,
+        BTWN l1.4q AND buf1.IN4,
+        BTWN l2.1q AND buf2.IN1,
+        BTWN l2.2q AND buf2.IN2,
+        BTWN l2.3q AND buf2.IN3,
+        BTWN l2.4q AND buf2.IN4,
+        BTWN buf1.OUT1 AND THIS.0Q,
+        BTWN buf1.OUT2 AND THIS.1Q,
+        BTWN buf1.OUT3 AND THIS.2Q,
+        BTWN buf1.OUT4 AND THIS.3Q,
+        BTWN buf2.OUT1 AND THIS.4Q,
+        BTWN buf2.OUT2 AND THIS.5Q,
+        BTWN buf2.OUT3 AND THIS.6Q,
+        BTWN buf2.OUT4 AND THIS.7Q,
+
+        BTWN l1.1q AND THIS.0AQ,
+        BTWN l1.2q AND THIS.1AQ,
+        BTWN l1.3q AND THIS.2AQ,
+        BTWN l1.4q AND THIS.3AQ,
+        BTWN l2.1q AND THIS.4AQ,
+        BTWN l2.2q AND THIS.5AQ,
+        BTWN l2.3q AND THIS.6AQ,
+        BTWN l2.4q AND THIS.7AQ,
+
+        BTWN THIS.0D AND l1.1d,
+        BTWN THIS.1D AND l1.2d,
+        BTWN THIS.2D AND l1.3d,
+        BTWN THIS.3D AND l1.4d,
+        BTWN THIS.4D AND l2.1d,
+        BTWN THIS.5D AND l2.2d,
+        BTWN THIS.6D AND l2.3d,
+        BTWN THIS.7D AND l2.4d;
+};
+
+/* Generate A REGISTER */
+INSERT BLOCKS
+    STATE OUT AIN,
+    STATE OUT AOUT;
+INSERT BLOCKS
+    CUSTOM REGISTER regA;
+INSERT EDGES
+    BTWN AIN.val AND regA.LOAD,
+    BTWN AOUT.val AND regA.ENABLE,
+    BTWN CLR.val AND regA.CLR,
+    BTWN CLK.val AND regA.CLK,
+    BTWN regA.0Q AND b0.in,
+    BTWN regA.1Q AND b1.in,
+    BTWN regA.2Q AND b2.in,
+    BTWN regA.3Q AND b3.in,
+    BTWN regA.4Q AND b4.in,
+    BTWN regA.5Q AND b5.in,
+    BTWN regA.6Q AND b6.in,
+    BTWN regA.7Q AND b7.in,
+    BTWN b0.out AND regA.0D,
+    BTWN b1.out AND regA.1D,
+    BTWN b2.out AND regA.2D,
+    BTWN b3.out AND regA.3D,
+    BTWN b4.out AND regA.4D,
+    BTWN b5.out AND regA.5D,
+    BTWN b6.out AND regA.6D,
+    BTWN b7.out AND regA.7D;
+DRAW BLOCK
+    regA 9:39;
+DRAW EDGES
+    SNAKE regA.0Q (UP 2, LEFT 4),
+    SNAKE regA.1Q (RIGHT 1, UP 5, LEFT 5),
+    SNAKE regA.2Q (RIGHT 2, UP 8, LEFT 6),
+    SNAKE regA.3Q (RIGHT 3, UP 11, LEFT 7),
+    SNAKE regA.4Q (RIGHT 4, UP 14, LEFT 8),
+    SNAKE regA.5Q (RIGHT 5, UP 17, LEFT 9),
+    SNAKE regA.6Q (RIGHT 6, UP 20, LEFT 10),
+    SNAKE regA.7Q (RIGHT 7, UP 23, LEFT 11);
+/* END Generate A REGISTER */
+
+/* Generate B REGISTER */
+INSERT BLOCKS
+    STATE OUT BIN,
+    STATE OUT BOUT;
+INSERT BLOCKS
+    CUSTOM REGISTER regB;
+INSERT EDGES
+    BTWN BIN.val AND regB.LOAD,
+    BTWN BOUT.val AND regB.ENABLE,
+    BTWN CLR.val AND regB.CLR,
+    BTWN CLK.val AND regB.CLK,
+    BTWN regB.0Q AND b0.in,
+    BTWN regB.1Q AND b1.in,
+    BTWN regB.2Q AND b2.in,
+    BTWN regB.3Q AND b3.in,
+    BTWN regB.4Q AND b4.in,
+    BTWN regB.5Q AND b5.in,
+    BTWN regB.6Q AND b6.in,
+    BTWN regB.7Q AND b7.in,
+    BTWN b0.out AND regB.0D,
+    BTWN b1.out AND regB.1D,
+    BTWN b2.out AND regB.2D,
+    BTWN b3.out AND regB.3D,
+    BTWN b4.out AND regB.4D,
+    BTWN b5.out AND regB.5D,
+    BTWN b6.out AND regB.6D,
+    BTWN b7.out AND regB.7D;
+DRAW BLOCK
+    regB 45:39 MIRROR;
+DRAW EDGES
+    SNAKE regB.0Q (DOWN 2, LEFT 4),
+    SNAKE regB.1Q (RIGHT 1, DOWN 5, LEFT 5),
+    SNAKE regB.2Q (RIGHT 2, DOWN 8, LEFT 6),
+    SNAKE regB.3Q (RIGHT 3, DOWN 11, LEFT 7),
+    SNAKE regB.4Q (RIGHT 4, DOWN 14, LEFT 8),
+    SNAKE regB.5Q (RIGHT 5, DOWN 17, LEFT 9),
+    SNAKE regB.6Q (RIGHT 6, DOWN 20, LEFT 10),
+    SNAKE regB.7Q (RIGHT 7, DOWN 23, LEFT 11);
+/* END Generate B REGISTER */
+
+
+/*
+    END Register
+    =========================================================
+    START Program Counter
+    CIN - read data from IN* pins
+        0 - ON
+        1 - off
+    COUT - output data to the OUT* pins
+        0 - off
+        1 - ON
+    CE - increment the pc
+        0 - off
+        1 - ON
+    CLR - set pins to 1111
+        0 - off
+        1 - ON
+*/
+
+DEFINE CUSTOM BLOCK DM74LS163Ajk (
+    IN 0PQ 0NPQ 1PQ 2PQ 3PQ NPTNALC NALC DATA CLEAR CLK
+    OUT Q NQ
+) {
+    INSERT BLOCKS
+        JK_LATCH l,
+        AND and1 Q 1PQ 2PQ 3PQ NPTNALC o,
+        AND and2 NALC NJ o,
+        AND and3 DATA CLEAR NALC o,
+        AND and4 NPTNALC 1PQ 2PQ 3PQ NQ o,
+        OR or1 A1 A2 o,
+        OR or2 A3 A4 o,
+        NOT nq i o,
+        VCC vcc
+    ;
+    INSERT EDGES
+        BTWN vcc.val AND (l.PR, l.CLR),
+
+        BTWN and1.o AND or1.A1,
+        BTWN and2.o AND or1.A2,
+        BTWN and3.o AND or2.A3,
+        BTWN and4.o AND or2.A4,
+        BTWN or1.o AND l.K,
+        BTWN or2.o AND (l.J, nq.i),
+        BTWN nq.o AND and2.NJ,
+
+        BTWN THIS.CLK AND l.CLK,
+        BTWN THIS.DATA AND and3.DATA,
+        BTWN THIS.CLEAR AND and3.CLEAR,
+
+        BTWN THIS.0PQ AND and1.Q,
+        BTWN THIS.0NPQ AND and4.NQ,
+        BTWN l.Q AND ( THIS.Q),
+        BTWN l.NQ AND ( THIS.NQ),
+
+        BTWN THIS.NALC AND (and2.NALC, and3.NALC),
+
+        BTWN THIS.NPTNALC AND (and1.NPTNALC, and4.NPTNALC),
+
+        BTWN THIS.1PQ AND (and1.1PQ, and4.1PQ),
+        BTWN THIS.2PQ AND (and1.2PQ, and4.2PQ),
+        BTWN THIS.3PQ AND (and1.3PQ, and4.3PQ)
+    ;
+};
+
+DEFINE CUSTOM BLOCK DM74LS163Awrapper (
+    IN DATA ENP ENT LD CLR CLK 1PQ 2PQ 3PQ
+    OUT RESULT
+) {
+INSERT BLOCKS
+    CUSTOM DM74LS163Ajk interior,
+    NOT NENP i o,
+    NOT NENT i o,
+    NAND NALC CLR LD o,
+    NOR NPTNALC NALC NENP NENT o
+;
+
+INSERT EDGES
+    BTWN THIS.1PQ AND interior.1PQ,
+    BTWN THIS.2PQ AND interior.2PQ,
+    BTWN THIS.3PQ AND interior.3PQ,
+
+    BTWN interior.Q AND interior.0PQ,
+    BTWN interior.NQ AND interior.0NPQ,
+    BTWN NPTNALC.o AND interior.NPTNALC,
+    BTWN NALC.o AND interior.NALC,
+    BTWN interior.Q AND THIS.RESULT,
+    BTWN THIS.CLK AND interior.CLK,
+    BTWN THIS.CLR AND interior.CLEAR,
+    BTWN THIS.DATA AND interior.DATA,
+
+    BTWN THIS.CLR AND NALC.CLR,
+    BTWN THIS.LD AND NALC.LD,
+    BTWN NALC.o AND NPTNALC.NALC,
+
+    BTWN THIS.ENP AND NENP.i,
+    BTWN THIS.ENT AND NENT.i,
+    BTWN NENP.o AND NPTNALC.NENP,
+    BTWN NENT.o AND NPTNALC.NENT
+    ;
+};
+
+DEFINE CUSTOM BLOCK DM74LS163A (
+    IN
+        DATAA DATAB DATAC DATAD
+        CLK CLR LD ENP ENT
+    OUT
+        QA QB QC QD
+) {
+    INSERT BLOCKS
+        CUSTOM DM74LS163Awrapper dm1,
+        CUSTOM DM74LS163Awrapper dm2,
+        CUSTOM DM74LS163Awrapper dm3,
+        CUSTOM DM74LS163Awrapper dm4,
+        NOT ndmi1 i o,
+        NOT ndmi2 i o,
+        NOT ndmi3 i o,
+        NOT ndmi4 i o,
+        NOT ndmo1 i o,
+        NOT ndmo2 i o,
+        NOT ndmo3 i o,
+        NOT ndmo4 i o,
+        VCC vcc;
+    INSERT EDGES
+        BTWN THIS.DATAA AND ndmi1.i,
+        BTWN THIS.DATAB AND ndmi2.i,
+        BTWN THIS.DATAC AND ndmi3.i,
+        BTWN THIS.DATAD AND ndmi4.i,
+        BTWN ndmi1.o AND dm1.DATA,
+        BTWN ndmi2.o AND dm2.DATA,
+        BTWN ndmi3.o AND dm3.DATA,
+        BTWN ndmi4.o AND dm4.DATA,
+
+        BTWN dm1.RESULT AND dm4.1PQ,
+        BTWN dm2.RESULT AND dm4.2PQ,
+        BTWN dm3.RESULT AND dm4.3PQ,
+        BTWN THIS.CLK AND dm4.CLK,
+        BTWN THIS.CLR AND dm4.CLR,
+        BTWN THIS.ENP AND dm4.ENP,
+        BTWN THIS.ENT AND dm4.ENT,
+        BTWN THIS.LD AND dm4.LD,
+
+        BTWN dm1.RESULT AND dm3.1PQ,
+        BTWN dm2.RESULT AND dm3.2PQ,
+        BTWN vcc.val AND dm3.3PQ,
+        BTWN THIS.CLK AND dm3.CLK,
+        BTWN THIS.CLR AND dm3.CLR,
+        BTWN THIS.ENP AND dm3.ENP,
+        BTWN THIS.ENT AND dm3.ENT,
+        BTWN THIS.LD AND dm3.LD,
+
+        BTWN dm1.RESULT AND dm2.1PQ,
+        BTWN vcc.val AND dm2.2PQ,
+        BTWN vcc.val AND dm2.3PQ,
+        BTWN THIS.CLK AND dm2.CLK,
+        BTWN THIS.CLR AND dm2.CLR,
+        BTWN THIS.ENP AND dm2.ENP,
+        BTWN THIS.ENT AND dm2.ENT,
+        BTWN THIS.LD AND dm2.LD,
+
+        BTWN vcc.val AND dm1.1PQ,
+        BTWN vcc.val AND dm1.2PQ,
+        BTWN vcc.val AND dm1.3PQ,
+        BTWN THIS.CLK AND dm1.CLK,
+        BTWN THIS.CLR AND dm1.CLR,
+        BTWN THIS.ENP AND dm1.ENP,
+        BTWN THIS.ENT AND dm1.ENT,
+        BTWN THIS.LD AND dm1.LD,
+
+        BTWN dm1.RESULT AND ndmo1.i,
+        BTWN dm2.RESULT AND ndmo2.i,
+        BTWN dm3.RESULT AND ndmo3.i,
+        BTWN dm4.RESULT AND ndmo4.i,
+        BTWN ndmo1.o AND THIS.QA,
+        BTWN ndmo2.o AND THIS.QB,
+        BTWN ndmo3.o AND THIS.QC,
+        BTWN ndmo4.o AND THIS.QD
+        ;
+};
+
+INSERT BLOCKS
+
+    CUSTOM 4BITBUFFER PC_out,
+    CUSTOM DM74LS163A PC
+    ;
+
+INSERT EDGES
+    BTWN CE.val AND (PC.ENT, PC.ENP),
+    BTWN CLK.val AND PC.CLK,
+    BTWN CLR.val AND PC.CLR,
+    BTWN CIN.val AND PC.LD,
+    BTWN COUT.val AND PC_out.EN,
+
+    BTWN b0.out AND PC.DATAA,
+    BTWN b1.out AND PC.DATAB,
+    BTWN b2.out AND PC.DATAC,
+    BTWN b3.out AND PC.DATAD,
+
+    BTWN PC.QA AND PC_out.IN1,
+    BTWN PC.QB AND PC_out.IN2,
+    BTWN PC.QC AND PC_out.IN3,
+    BTWN PC.QD AND PC_out.IN4,
+
+    BTWN PC_out.OUT1 AND b0.in,
+    BTWN PC_out.OUT2 AND b1.in,
+    BTWN PC_out.OUT3 AND b2.in,
+    BTWN PC_out.OUT4 AND b3.in
+    ;
+
+DRAW BLOCKS
+    PC_out 25:26,
+    PC 25:21;
+DRAW EDGES
+    SNAKE PC.DATAA (LEFT 0, UP 2, RIGHT 4, RIGHT 5),
+    SNAKE PC.DATAB (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
+    SNAKE PC.DATAC (LEFT 2, UP 8, RIGHT 6, RIGHT 5),
+    SNAKE PC.DATAD (LEFT 3, UP 11, RIGHT 7, RIGHT 5),
+    SNAKE PC.QA (RIGHT),
+    SNAKE PC.QB (RIGHT),
+    SNAKE PC.QC (RIGHT),
+    SNAKE PC.QD (RIGHT);
+
+/*
+    END Program Counter
+    =========================================================
+    Create the ALU block
+*/
+
+DEFINE CUSTOM BLOCK 1BITFULLADDER (
+    IN CIN A B
+    OUT S COUT
+) {
+    INSERT BLOCKS
+        XOR X1 A B O,
+        XOR X2 X CIN O,
+        AND A1 X CIN O,
+        AND A2 A B O,
+        OR O A1 A2 O;
+    INSERT EDGES
+        BTWN THIS.A AND X1.A,
+        BTWN THIS.B AND X1.B,
+        BTWN X1.O AND X2.X,
+        BTWN THIS.CIN AND X2.CIN,
+        BTWN X2.O AND THIS.S,
+        BTWN X1.O AND A1.X,
+        BTWN THIS.CIN AND A1.CIN,
+        BTWN THIS.A AND A2.A,
+        BTWN THIS.B AND A2.B,
+        BTWN A1.O AND O.A1,
+        BTWN A2.O AND O.A2,
+        BTWN O.O AND THIS.COUT
+        ;
+};
+
+DEFINE CUSTOM BLOCK 1BITALU (
+    IN CIN A B SO
+    OUT R COUT
+) {
+    INSERT BLOCKS
+        CUSTOM 1BITFULLADDER 1BFA,
+        XOR X SO B O;
+    INSERT EDGES
+        BTWN THIS.SO AND X.SO,
+        BTWN THIS.B AND X.B,
+        BTWN THIS.A AND 1BFA.A,
+        BTWN X.O AND 1BFA.B,
+        BTWN THIS.CIN AND 1BFA.CIN,
+        BTWN 1BFA.S AND THIS.R,
+        BTWN 1BFA.COUT AND THIS.COUT
+    ;
+};
+
+DEFINE CUSTOM BLOCK ALU (
+    IN
+    A0 A1 A2 A3 A4 A5 A6 A7
+    SO EO
+    B7 B6 B5 B4 B3 B2 B1 B0
+    OUT E0 E1 E2 E3 E4 E5 E6 E7 CY
+) {
+INSERT BLOCKS
+    CUSTOM 8BITBUFFER BUF,
+    CUSTOM 1BITALU ALU0,
+    CUSTOM 1BITALU ALU1,
+    CUSTOM 1BITALU ALU2,
+    CUSTOM 1BITALU ALU3,
+    CUSTOM 1BITALU ALU4,
+    CUSTOM 1BITALU ALU5,
+    CUSTOM 1BITALU ALU6,
+    CUSTOM 1BITALU ALU7;
+INSERT EDGES
+    BTWN THIS.EO AND BUF.EN,
+
+    BTWN THIS.SO AND ALU0.CIN,
+    BTWN ALU0.COUT AND ALU1.CIN,
+    BTWN ALU1.COUT AND ALU2.CIN,
+    BTWN ALU2.COUT AND ALU3.CIN,
+    BTWN ALU3.COUT AND ALU4.CIN,
+    BTWN ALU4.COUT AND ALU5.CIN,
+    BTWN ALU5.COUT AND ALU6.CIN,
+    BTWN ALU6.COUT AND ALU7.CIN,
+    BTWN ALU7.COUT AND THIS.CY,
+
+    BTWN THIS.SO AND ALU0.SO,
+    BTWN THIS.SO AND ALU1.SO,
+    BTWN THIS.SO AND ALU2.SO,
+    BTWN THIS.SO AND ALU3.SO,
+    BTWN THIS.SO AND ALU4.SO,
+    BTWN THIS.SO AND ALU5.SO,
+    BTWN THIS.SO AND ALU6.SO,
+    BTWN THIS.SO AND ALU7.SO,
+
+    BTWN THIS.A0 AND ALU0.A,
+    BTWN THIS.A1 AND ALU1.A,
+    BTWN THIS.A2 AND ALU2.A,
+    BTWN THIS.A3 AND ALU3.A,
+    BTWN THIS.A4 AND ALU4.A,
+    BTWN THIS.A5 AND ALU5.A,
+    BTWN THIS.A6 AND ALU6.A,
+    BTWN THIS.A7 AND ALU7.A,
+
+    BTWN THIS.B0 AND ALU0.B,
+    BTWN THIS.B1 AND ALU1.B,
+    BTWN THIS.B2 AND ALU2.B,
+    BTWN THIS.B3 AND ALU3.B,
+    BTWN THIS.B4 AND ALU4.B,
+    BTWN THIS.B5 AND ALU5.B,
+    BTWN THIS.B6 AND ALU6.B,
+    BTWN THIS.B7 AND ALU7.B,
+
+    BTWN BUF.IN0 AND ALU0.R,
+    BTWN BUF.IN1 AND ALU1.R,
+    BTWN BUF.IN2 AND ALU2.R,
+    BTWN BUF.IN3 AND ALU3.R,
+    BTWN BUF.IN4 AND ALU4.R,
+    BTWN BUF.IN5 AND ALU5.R,
+    BTWN BUF.IN6 AND ALU6.R,
+    BTWN BUF.IN7 AND ALU7.R,
+
+    BTWN THIS.E0 AND BUF.OUT0,
+    BTWN THIS.E1 AND BUF.OUT1,
+    BTWN THIS.E2 AND BUF.OUT2,
+    BTWN THIS.E3 AND BUF.OUT3,
+    BTWN THIS.E4 AND BUF.OUT4,
+    BTWN THIS.E5 AND BUF.OUT5,
+    BTWN THIS.E6 AND BUF.OUT6,
+    BTWN THIS.E7 AND BUF.OUT7;
+
+};
+
+INSERT BLOCKS
+    STATE OUT SO,
+    STATE OUT EO,
+    CUSTOM ALU ALU;
+INSERT EDGES
+    BTWN SO.val AND ALU.SO,
+    BTWN EO.val AND ALU.EO,
+
+    BTWN ALU.E0 AND b0.in,
+    BTWN ALU.E1 AND b1.in,
+    BTWN ALU.E2 AND b2.in,
+    BTWN ALU.E3 AND b3.in,
+    BTWN ALU.E4 AND b4.in,
+    BTWN ALU.E5 AND b5.in,
+    BTWN ALU.E6 AND b6.in,
+    BTWN ALU.E7 AND b7.in,
+
+    BTWN ALU.B0 AND regB.0AQ,
+    BTWN ALU.B1 AND regB.1AQ,
+    BTWN ALU.B2 AND regB.2AQ,
+    BTWN ALU.B3 AND regB.3AQ,
+    BTWN ALU.B4 AND regB.4AQ,
+    BTWN ALU.B5 AND regB.5AQ,
+    BTWN ALU.B6 AND regB.6AQ,
+    BTWN ALU.B7 AND regB.7AQ,
+
+    BTWN ALU.A0 AND regA.0AQ,
+    BTWN ALU.A1 AND regA.1AQ,
+    BTWN ALU.A2 AND regA.2AQ,
+    BTWN ALU.A3 AND regA.3AQ,
+    BTWN ALU.A4 AND regA.4AQ,
+    BTWN ALU.A5 AND regA.5AQ,
+    BTWN ALU.A6 AND regA.6AQ,
+    BTWN ALU.A7 AND regA.7AQ;
+
+DRAW BLOCKS
+    ALU 25:52;
+DRAW EDGES
+    SNAKE ALU.B0 (LEFT 9),
+    SNAKE ALU.B1 (LEFT 9),
+    SNAKE ALU.B2 (LEFT 9),
+    SNAKE ALU.B3 (LEFT 9),
+    SNAKE ALU.B4 (LEFT 9),
+    SNAKE ALU.B5 (LEFT 9),
+    SNAKE ALU.B6 (LEFT 9),
+    SNAKE ALU.B7 (LEFT 9),
+
+    SNAKE ALU.A0 (LEFT 9),
+    SNAKE ALU.A1 (LEFT 9),
+    SNAKE ALU.A2 (LEFT 9),
+    SNAKE ALU.A3 (LEFT 9),
+    SNAKE ALU.A4 (LEFT 9),
+    SNAKE ALU.A5 (LEFT 9),
+    SNAKE ALU.A6 (LEFT 9),
+    SNAKE ALU.A7 (LEFT 9);
+
+/*
+    END ALU
+    =================================================
+    START RAM
+*/
+
+
+DEFINE CUSTOM BLOCK 1BITDECODER (
+    IN ADDR
+    OUT DATA0 DATA1
+) {
+    INSERT BLOCKS
+        NOT NOTADDR I O;
+    INSERT EDGES
+        BTWN THIS.ADDR AND NOTADDR.I,
+        BTWN NOTADDR.O AND THIS.DATA0,
+        BTWN THIS.ADDR AND THIS.DATA1;
+};
+
+DEFINE CUSTOM BLOCK ENLD_RAM(
+    IN ENABLE LOAD ADDR
+    OUT EN0 EN1 LD0 LD1
+) {
+    INSERT BLOCKS
+        NAND ALD0 LD ADDR O,
+        NAND ALD1 LD ADDR O,
+        NOT NLOAD I O,
+        AND AEN0 EN ADDR O,
+        AND AEN1 EN ADDR O,
+        CUSTOM 1BITDECODER DEC;
+    INSERT EDGES
+        BTWN DEC.DATA0 AND (ALD0.ADDR, AEN0.ADDR),
+        BTWN DEC.DATA1 AND (ALD1.ADDR, AEN1.ADDR),
+        BTWN THIS.LOAD AND NLOAD.I,
+        BTWN THIS.ENABLE AND AEN0.EN,
+        BTWN THIS.ENABLE AND AEN1.EN,
+        BTWN NLOAD.O AND ALD0.LD,
+        BTWN NLOAD.O AND ALD1.LD,
+        BTWN AEN0.O AND THIS.EN0,
+        BTWN AEN1.O AND THIS.EN1,
+        BTWN ALD0.O AND THIS.LD0,
+        BTWN ALD1.O AND THIS.LD1,
+        BTWN THIS.ADDR AND DEC.ADDR;
+};
+
+DEFINE CUSTOM BLOCK 2BITRAM (
+    IN
+    0D 1D 2D 3D 4D 5D 6D 7D
+    CLK CLR LOAD ENABLE
+    ADDR0
+    OUT
+    0Q 1Q 2Q 3Q 4Q 5Q 6Q 7Q
+) {
+    INSERT BLOCK
+        CUSTOM ENLD_RAM SEL,
+        CUSTOM REGISTER REG0,
+        CUSTOM REGISTER REG1;
+    INSERT EDGES
+        BTWN THIS.0Q AND REG0.0Q,
+        BTWN THIS.1Q AND REG0.1Q,
+        BTWN THIS.2Q AND REG0.2Q,
+        BTWN THIS.3Q AND REG0.3Q,
+        BTWN THIS.4Q AND REG0.4Q,
+        BTWN THIS.5Q AND REG0.5Q,
+        BTWN THIS.6Q AND REG0.6Q,
+        BTWN THIS.7Q AND REG0.7Q,
+
+        BTWN THIS.0Q AND REG1.0Q,
+        BTWN THIS.1Q AND REG1.1Q,
+        BTWN THIS.2Q AND REG1.2Q,
+        BTWN THIS.3Q AND REG1.3Q,
+        BTWN THIS.4Q AND REG1.4Q,
+        BTWN THIS.5Q AND REG1.5Q,
+        BTWN THIS.6Q AND REG1.6Q,
+        BTWN THIS.7Q AND REG1.7Q,
+
+        BTWN THIS.0D AND REG0.0D,
+        BTWN THIS.1D AND REG0.1D,
+        BTWN THIS.2D AND REG0.2D,
+        BTWN THIS.3D AND REG0.3D,
+        BTWN THIS.4D AND REG0.4D,
+        BTWN THIS.5D AND REG0.5D,
+        BTWN THIS.6D AND REG0.6D,
+        BTWN THIS.7D AND REG0.7D,
+
+        BTWN THIS.0D AND REG1.0D,
+        BTWN THIS.1D AND REG1.1D,
+        BTWN THIS.2D AND REG1.2D,
+        BTWN THIS.3D AND REG1.3D,
+        BTWN THIS.4D AND REG1.4D,
+        BTWN THIS.5D AND REG1.5D,
+        BTWN THIS.6D AND REG1.6D,
+        BTWN THIS.7D AND REG1.7D,
+
+        BTWN THIS.CLK AND (REG0.CLK, REG1.CLK),
+        BTWN THIS.CLR AND (REG0.CLR, REG1.CLR),
+
+        BTWN THIS.ADDR0 AND SEL.ADDR,
+        BTWN THIS.ENABLE AND SEL.ENABLE,
+        BTWN THIS.LOAD AND SEL.LOAD,
+
+        BTWN SEL.EN0 AND REG0.ENABLE,
+        BTWN SEL.EN1 AND REG1.ENABLE,
+        BTWN SEL.LD0 AND REG0.LOAD,
+        BTWN SEL.LD1 AND REG1.LOAD;
+};
+
+DEFINE CUSTOM BLOCK 4BITRAM (
+    IN
+    0D 1D 2D 3D 4D 5D 6D 7D
+    CLK CLR LOAD ENABLE
+    ADDR0 ADDR1
+    OUT
+    0Q 1Q 2Q 3Q 4Q 5Q 6Q 7Q
+) {
+    INSERT BLOCK
+        CUSTOM ENLD_RAM SEL,
+        CUSTOM 2BITRAM REG0,
+        CUSTOM 2BITRAM REG1;
+    INSERT EDGES
+        BTWN THIS.0Q AND REG0.0Q,
+        BTWN THIS.1Q AND REG0.1Q,
+        BTWN THIS.2Q AND REG0.2Q,
+        BTWN THIS.3Q AND REG0.3Q,
+        BTWN THIS.4Q AND REG0.4Q,
+        BTWN THIS.5Q AND REG0.5Q,
+        BTWN THIS.6Q AND REG0.6Q,
+        BTWN THIS.7Q AND REG0.7Q,
+
+        BTWN THIS.0Q AND REG1.0Q,
+        BTWN THIS.1Q AND REG1.1Q,
+        BTWN THIS.2Q AND REG1.2Q,
+        BTWN THIS.3Q AND REG1.3Q,
+        BTWN THIS.4Q AND REG1.4Q,
+        BTWN THIS.5Q AND REG1.5Q,
+        BTWN THIS.6Q AND REG1.6Q,
+        BTWN THIS.7Q AND REG1.7Q,
+
+        BTWN THIS.0D AND REG0.0D,
+        BTWN THIS.1D AND REG0.1D,
+        BTWN THIS.2D AND REG0.2D,
+        BTWN THIS.3D AND REG0.3D,
+        BTWN THIS.4D AND REG0.4D,
+        BTWN THIS.5D AND REG0.5D,
+        BTWN THIS.6D AND REG0.6D,
+        BTWN THIS.7D AND REG0.7D,
+
+        BTWN THIS.0D AND REG1.0D,
+        BTWN THIS.1D AND REG1.1D,
+        BTWN THIS.2D AND REG1.2D,
+        BTWN THIS.3D AND REG1.3D,
+        BTWN THIS.4D AND REG1.4D,
+        BTWN THIS.5D AND REG1.5D,
+        BTWN THIS.6D AND REG1.6D,
+        BTWN THIS.7D AND REG1.7D,
+
+        BTWN THIS.CLK AND (REG0.CLK, REG1.CLK),
+        BTWN THIS.CLR AND (REG0.CLR, REG1.CLR),
+
+        BTWN THIS.ADDR1 AND SEL.ADDR,
+        BTWN THIS.ADDR0 AND REG0.ADDR0,
+        BTWN THIS.ADDR0 AND REG1.ADDR0,
+
+        BTWN THIS.ENABLE AND SEL.ENABLE,
+        BTWN THIS.LOAD AND SEL.LOAD,
+
+        BTWN SEL.EN0 AND REG0.ENABLE,
+        BTWN SEL.EN1 AND REG1.ENABLE,
+        BTWN SEL.LD0 AND REG0.LOAD,
+        BTWN SEL.LD1 AND REG1.LOAD;
+};
+
+DEFINE CUSTOM BLOCK 8BITRAM (
+    IN
+    0D 1D 2D 3D 4D 5D 6D 7D
+    CLK CLR LOAD ENABLE
+    ADDR0 ADDR1 ADDR2
+    OUT
+    0Q 1Q 2Q 3Q 4Q 5Q 6Q 7Q
+) {
+    INSERT BLOCK
+        CUSTOM ENLD_RAM SEL,
+        CUSTOM 4BITRAM REG0,
+        CUSTOM 4BITRAM REG1;
+    INSERT EDGES
+        BTWN THIS.0Q AND REG0.0Q,
+        BTWN THIS.1Q AND REG0.1Q,
+        BTWN THIS.2Q AND REG0.2Q,
+        BTWN THIS.3Q AND REG0.3Q,
+        BTWN THIS.4Q AND REG0.4Q,
+        BTWN THIS.5Q AND REG0.5Q,
+        BTWN THIS.6Q AND REG0.6Q,
+        BTWN THIS.7Q AND REG0.7Q,
+
+        BTWN THIS.0Q AND REG1.0Q,
+        BTWN THIS.1Q AND REG1.1Q,
+        BTWN THIS.2Q AND REG1.2Q,
+        BTWN THIS.3Q AND REG1.3Q,
+        BTWN THIS.4Q AND REG1.4Q,
+        BTWN THIS.5Q AND REG1.5Q,
+        BTWN THIS.6Q AND REG1.6Q,
+        BTWN THIS.7Q AND REG1.7Q,
+
+        BTWN THIS.0D AND REG0.0D,
+        BTWN THIS.1D AND REG0.1D,
+        BTWN THIS.2D AND REG0.2D,
+        BTWN THIS.3D AND REG0.3D,
+        BTWN THIS.4D AND REG0.4D,
+        BTWN THIS.5D AND REG0.5D,
+        BTWN THIS.6D AND REG0.6D,
+        BTWN THIS.7D AND REG0.7D,
+
+        BTWN THIS.0D AND REG1.0D,
+        BTWN THIS.1D AND REG1.1D,
+        BTWN THIS.2D AND REG1.2D,
+        BTWN THIS.3D AND REG1.3D,
+        BTWN THIS.4D AND REG1.4D,
+        BTWN THIS.5D AND REG1.5D,
+        BTWN THIS.6D AND REG1.6D,
+        BTWN THIS.7D AND REG1.7D,
+
+        BTWN THIS.CLK AND (REG0.CLK, REG1.CLK),
+        BTWN THIS.CLR AND (REG0.CLR, REG1.CLR),
+
+        BTWN THIS.ADDR2 AND SEL.ADDR,
+        BTWN THIS.ADDR1 AND REG0.ADDR1,
+        BTWN THIS.ADDR1 AND REG1.ADDR1,
+        BTWN THIS.ADDR0 AND REG0.ADDR0,
+        BTWN THIS.ADDR0 AND REG1.ADDR0,
+
+        BTWN THIS.ENABLE AND SEL.ENABLE,
+        BTWN THIS.LOAD AND SEL.LOAD,
+
+        BTWN SEL.EN0 AND REG0.ENABLE,
+        BTWN SEL.EN1 AND REG1.ENABLE,
+        BTWN SEL.LD0 AND REG0.LOAD,
+        BTWN SEL.LD1 AND REG1.LOAD;
+};
+
+DEFINE CUSTOM BLOCK 16BITRAM (
+    IN
+    ADDR0 ADDR1 ADDR2 ADDR3
+    CLK CLR LOAD ENABLE
+    0D 1D 2D 3D 4D 5D 6D 7D
+    OUT
+    0Q 1Q 2Q 3Q 4Q 5Q 6Q 7Q
+) {
+    INSERT BLOCK
+        CUSTOM ENLD_RAM SEL,
+        CUSTOM 8BITRAM REG0,
+        CUSTOM 8BITRAM REG1;
+    INSERT EDGES
+        BTWN THIS.0Q AND REG0.0Q,
+        BTWN THIS.1Q AND REG0.1Q,
+        BTWN THIS.2Q AND REG0.2Q,
+        BTWN THIS.3Q AND REG0.3Q,
+        BTWN THIS.4Q AND REG0.4Q,
+        BTWN THIS.5Q AND REG0.5Q,
+        BTWN THIS.6Q AND REG0.6Q,
+        BTWN THIS.7Q AND REG0.7Q,
+
+        BTWN THIS.0Q AND REG1.0Q,
+        BTWN THIS.1Q AND REG1.1Q,
+        BTWN THIS.2Q AND REG1.2Q,
+        BTWN THIS.3Q AND REG1.3Q,
+        BTWN THIS.4Q AND REG1.4Q,
+        BTWN THIS.5Q AND REG1.5Q,
+        BTWN THIS.6Q AND REG1.6Q,
+        BTWN THIS.7Q AND REG1.7Q,
+
+        BTWN THIS.0D AND REG0.0D,
+        BTWN THIS.1D AND REG0.1D,
+        BTWN THIS.2D AND REG0.2D,
+        BTWN THIS.3D AND REG0.3D,
+        BTWN THIS.4D AND REG0.4D,
+        BTWN THIS.5D AND REG0.5D,
+        BTWN THIS.6D AND REG0.6D,
+        BTWN THIS.7D AND REG0.7D,
+
+        BTWN THIS.0D AND REG1.0D,
+        BTWN THIS.1D AND REG1.1D,
+        BTWN THIS.2D AND REG1.2D,
+        BTWN THIS.3D AND REG1.3D,
+        BTWN THIS.4D AND REG1.4D,
+        BTWN THIS.5D AND REG1.5D,
+        BTWN THIS.6D AND REG1.6D,
+        BTWN THIS.7D AND REG1.7D,
+
+        BTWN THIS.CLK AND (REG0.CLK, REG1.CLK),
+        BTWN THIS.CLR AND (REG0.CLR, REG1.CLR),
+
+        BTWN THIS.ADDR3 AND SEL.ADDR,
+        BTWN THIS.ADDR2 AND REG0.ADDR2,
+        BTWN THIS.ADDR2 AND REG1.ADDR2,
+        BTWN THIS.ADDR1 AND REG0.ADDR1,
+        BTWN THIS.ADDR1 AND REG1.ADDR1,
+        BTWN THIS.ADDR0 AND REG0.ADDR0,
+        BTWN THIS.ADDR0 AND REG1.ADDR0,
+
+        BTWN THIS.ENABLE AND SEL.ENABLE,
+        BTWN THIS.LOAD AND SEL.LOAD,
+
+        BTWN SEL.EN0 AND REG0.ENABLE,
+        BTWN SEL.EN1 AND REG1.ENABLE,
+        BTWN SEL.LD0 AND REG0.LOAD,
+        BTWN SEL.LD1 AND REG1.LOAD;
+};
+
+INSERT BLOCKS
+    STATE OUT MIN,
+    STATE OUT RIN,
+    STATE OUT ROUT,
+    CUSTOM REGISTER MAR,
+    CUSTOM 16BITRAM RAM;
+
+INSERT EDGES
+    BTWN CLK.val AND MAR.CLK,
+    BTWN CLK.val AND RAM.CLK,
+    BTWN CLR.val AND MAR.CLR,
+    BTWN CLR.val AND RAM.CLR,
+
+    BTWN MIN.val AND MAR.LOAD,
+    BTWN gnd.val AND MAR.ENABLE,
+    BTWN RIN.val AND RAM.LOAD,
+    BTWN ROUT.val AND RAM.ENABLE,
+
+    /* connect MAR to bus */
+    BTWN b0.out AND MAR.0D,
+    BTWN b1.out AND MAR.1D,
+    BTWN b2.out AND MAR.2D,
+    BTWN b3.out AND MAR.3D,
+    BTWN gnd.val AND MAR.4D,
+    BTWN gnd.val AND MAR.5D,
+    BTWN gnd.val AND MAR.6D,
+    BTWN gnd.val AND MAR.7D,
+
+    /* connect RAM to bus */
+    BTWN b0.in AND RAM.0Q,
+    BTWN b1.in AND RAM.1Q,
+    BTWN b2.in AND RAM.2Q,
+    BTWN b3.in AND RAM.3Q,
+    BTWN b4.in AND RAM.4Q,
+    BTWN b5.in AND RAM.5Q,
+    BTWN b6.in AND RAM.6Q,
+    BTWN b7.in AND RAM.7Q,
+    BTWN b0.out AND RAM.0D,
+    BTWN b1.out AND RAM.1D,
+    BTWN b2.out AND RAM.2D,
+    BTWN b3.out AND RAM.3D,
+    BTWN b4.out AND RAM.4D,
+    BTWN b5.out AND RAM.5D,
+    BTWN b6.out AND RAM.6D,
+    BTWN b7.out AND RAM.7D,
+
+    /* connect memory address register with RAM */
+    BTWN MAR.0AQ AND RAM.ADDR0,
+    BTWN MAR.1AQ AND RAM.ADDR1,
+    BTWN MAR.2AQ AND RAM.ADDR2,
+    BTWN MAR.3AQ AND RAM.ADDR3;
+
+DRAW BLOCKS
+    MAR 52:21,
+    RAM 68:26;
+
+DRAW EDGES
+    SNAKE MAR.0D (LEFT 0, UP 2, RIGHT 5, RIGHT 4),
+    SNAKE MAR.1D (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
+    SNAKE MAR.2D (LEFT 2, UP 8, RIGHT 6, RIGHT 5),
+    SNAKE MAR.3D (LEFT 3, UP 11, RIGHT 7, RIGHT 5),
+    SNAKE MAR.4D (LEFT 4, UP 14, RIGHT 8, RIGHT 5),
+    SNAKE MAR.5D (LEFT 5, UP 17, RIGHT 9, RIGHT 5),
+    SNAKE MAR.6D (LEFT 6, UP 20, RIGHT 10, RIGHT 5),
+    SNAKE MAR.7D (LEFT 7, UP 23, RIGHT 11, RIGHT 5),
+
+    SNAKE RAM.7D (DOWN 2, RIGHT 4),
+    SNAKE RAM.6D (LEFT 1, DOWN 5, RIGHT 5),
+    SNAKE RAM.5D (LEFT 2, DOWN 8, RIGHT 6),
+    SNAKE RAM.4D (LEFT 3, DOWN 11, RIGHT 7),
+    SNAKE RAM.3D (LEFT 4, DOWN 14, RIGHT 8),
+    SNAKE RAM.2D (LEFT 5, DOWN 17, RIGHT 9),
+    SNAKE RAM.1D (LEFT 6, DOWN 20, RIGHT 10),
+    SNAKE RAM.0D (LEFT 7, DOWN 23, RIGHT 11),
+
+    SNAKE MAR.0AQ (RIGHT),
+    SNAKE MAR.1AQ (RIGHT),
+    SNAKE MAR.2AQ (RIGHT),
+    SNAKE MAR.3AQ (RIGHT);
+
+/*
+    END RAM
+    =================================================
+    START INSTRUCTION REGISTER
+*/
+
+INSERT BLOCK
+    STATE OUT IIN,
+    STATE OUT IOUT,
+    CUSTOM REGISTER regI;
+INSERT EDGES
+    BTWN IIN.val AND regI.LOAD,
+    BTWN IOUT.val AND regI.ENABLE,
+    BTWN CLR.val AND regI.CLR,
+    BTWN CLK.val AND regI.CLK,
+
+    BTWN regI.0Q AND b0.in,
+    BTWN regI.1Q AND b1.in,
+    BTWN regI.2Q AND b2.in,
+    BTWN regI.3Q AND b3.in,
+
+    BTWN b0.out AND regI.0D,
+    BTWN b1.out AND regI.1D,
+    BTWN b2.out AND regI.2D,
+    BTWN b3.out AND regI.3D,
+    BTWN b4.out AND regI.4D,
+    BTWN b5.out AND regI.5D,
+    BTWN b6.out AND regI.6D,
+    BTWN b7.out AND regI.7D;
+DRAW BLOCK
+    regI 117:26;
+DRAW EDGES
+    SNAKE regI.0D (LEFT 0, UP 2, RIGHT 4),
+    SNAKE regI.1D (LEFT 1, UP 5, RIGHT 5),
+    SNAKE regI.2D (LEFT 2, UP 8, RIGHT 6),
+    SNAKE regI.3D (LEFT 3, UP 11, RIGHT 7),
+    SNAKE regI.4D (LEFT 4, UP 14, RIGHT 8),
+    SNAKE regI.5D (LEFT 5, UP 17, RIGHT 9),
+    SNAKE regI.6D (LEFT 6, UP 20, RIGHT 10),
+    SNAKE regI.7D (LEFT 7, UP 23, RIGHT 11);
+/*
+    END INSTRUCTION REGISTER
+    =================================================
+    START OUTPUT REGISTER
+*/
+
+INSERT BLOCK
+    BUS D0 10,
+    BUS D1 10,
+    BUS D2 10,
+    BUS D3 10,
+    BUS D4 10,
+    BUS D5 10,
+    BUS D6 10,
+    BUS D7 10,
+    STATE OUT OIN,
+    CUSTOM REGISTER regO;
+
+INSERT EDGES
+    BTWN OIN.val AND regO.LOAD,
+    BTWN gnd.val AND regO.ENABLE,
+    BTWN CLR.val AND regO.CLR,
+    BTWN CLK.val AND regO.CLK,
+
+    BTWN regO.0AQ AND D0.in,
+    BTWN regO.1AQ AND D1.in,
+    BTWN regO.2AQ AND D2.in,
+    BTWN regO.3AQ AND D3.in,
+    BTWN regO.4AQ AND D4.in,
+    BTWN regO.5AQ AND D5.in,
+    BTWN regO.6AQ AND D6.in,
+    BTWN regO.7AQ AND D7.in,
+
+    BTWN b0.out AND regO.0D,
+    BTWN b1.out AND regO.1D,
+    BTWN b2.out AND regO.2D,
+    BTWN b3.out AND regO.3D,
+    BTWN b4.out AND regO.4D,
+    BTWN b5.out AND regO.5D,
+    BTWN b6.out AND regO.6D,
+    BTWN b7.out AND regO.7D;
+DRAW BLOCK
+    D0 87:44,
+    D1 87:45,
+    D2 87:46,
+    D3 87:47,
+    D4 87:48,
+    D5 87:49,
+    D6 87:50,
+    D7 87:51,
+    regO 87:39;
+
+/*
+    END OUTPUT REGISTER
+    =================================================
+    START CONTROL LOGIC
+*/
+
+DEFINE CUSTOM BLOCK CONTROL_LOGIC (
+    IN
+        B0 B1 B2 B3
+        CLK CLR
+    OUT
+        J COUT HLT
+        AIN AOUT
+        BIN BOUT
+        EO SO CY
+        OIN
+        MIN
+        RIN ROUT
+        IIN IOUT
+        CE
+) {
+    INSERT BLOCK
+        ROM rom NUM_ADDR 7 NUM_DATA 15 CONTENTS {
+        /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
+        0 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        /* LDA */
+        /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
+        8 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+        9 : {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+        10: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
+        11: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        12: {0, 0, 0, 1, 0, 0, 1, 0,  0, 0, 0, 0, 0, 0, 0},
+        13: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
+        /* ADD */
+        /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
+        16: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+        17: {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+        18: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
+        19: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        20: {0, 0, 0, 1, 0, 0, 0, 0,  0, 0, 1, 0, 0, 0, 0},
+        21: {0, 0, 0, 0, 0, 0, 1, 0,  1, 0, 0, 0, 0, 0, 0},
+
+        /* OUT */
+        /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
+       112: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+       113: {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+       114: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
+       115: {0, 0, 0, 0, 0, 0, 0, 1,  0, 0, 0, 1, 0, 0, 0},
+       116: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+       117: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0}
+        }
+        ;
+    INSERT EDGES
+
+        BTWN rom.D0 AND THIS.HLT,
+        BTWN rom.D1 AND THIS.MIN,
+        BTWN rom.D2 AND THIS.RIN,
+        BTWN rom.D3 AND THIS.ROUT,
+        BTWN rom.D4 AND THIS.IOUT,
+        BTWN rom.D5 AND THIS.IIN,
+        BTWN rom.D6 AND THIS.AIN,
+        BTWN rom.D7 AND THIS.AOUT,
+        BTWN rom.D8 AND THIS.EO,
+        BTWN rom.D9 AND THIS.SO,
+        BTWN rom.D10 AND THIS.BIN,
+        BTWN rom.D11 AND THIS.OIN,
+        BTWN rom.D12 AND THIS.CE,
+        BTWN rom.D13 AND THIS.COUT,
+        BTWN rom.D14 AND THIS.J;
+};
+
+INSERT BLOCK
+    CUSTOM CONTROL_LOGIC CL;
+
+
+/*
+    END CONTROL LOGIC
+    =================================================
+    INITIAL CONDITIONS AND RUN
+*/
+/*
+INSERT INIT COND
+    (
+    BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=0,
+    CE.val=0, CIN.val=1, COUT.val=0,
+    IIN.val=1, IOUT.val=0,
+    OIN.val=1,
+    BIN.val=1, BOUT.val=0,
+    AIN.val=1, AOUT.val=0,
+    MIN.val=1,
+    RIN.val=1, ROUT.val=0,
+    EO.val=0, SO.val=0,
+    CLK.val=0, CLR.val=0
+    ),
+
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0)
+    ;
+
+RUN;
+*/
+
+DISPLAY 80:40 ;

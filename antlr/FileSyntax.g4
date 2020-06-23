@@ -73,8 +73,8 @@ create_block : create_state_block
 
 create_rom_block:
     ROM_KWD block_name num_rom_address num_rom_data rom_contents;
-num_rom_address: 'ADDR' UINT;
-num_rom_data: 'DATA' UINT;
+num_rom_address: 'NUM_ADDR' UINT;
+num_rom_data: 'NUM_DATA' UINT;
 rom_contents: 'CONTENTS' rom_matrix;
 rom_matrix: '{' rom_row (',' rom_row)* '}';
 rom_row: row_index ':' '{' rom_value (',' rom_value)* '}';
