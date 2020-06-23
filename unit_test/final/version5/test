@@ -80,14 +80,14 @@ INSERT BLOCKS
     STATE OUT BL6,
     STATE OUT BL7,
 
-    BUS b0 90,
-    BUS b1 90,
-    BUS b2 90,
-    BUS b3 90,
-    BUS b4 90,
-    BUS b5 90,
-    BUS b6 90,
-    BUS b7 90
+    BUS b0 110,
+    BUS b1 110,
+    BUS b2 110,
+    BUS b3 110,
+    BUS b4 110,
+    BUS b5 110,
+    BUS b6 110,
+    BUS b7 110
     ;
 
 INSERT EDGES
@@ -1122,10 +1122,28 @@ INSERT EDGES
     BTWN MAR.3AQ AND RAM.ADDR3;
 
 DRAW BLOCKS
-    MAR 47:21,
-    RAM 63:26;
+    MAR 52:21,
+    RAM 68:26;
 
 DRAW EDGES
+    SNAKE MAR.0D (LEFT 0, UP 2, RIGHT 5, RIGHT 4),
+    SNAKE MAR.1D (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
+    SNAKE MAR.2D (LEFT 2, UP 8, RIGHT 6, RIGHT 5),
+    SNAKE MAR.3D (LEFT 3, UP 11, RIGHT 7, RIGHT 5),
+    SNAKE MAR.4D (LEFT 4, UP 14, RIGHT 8, RIGHT 5),
+    SNAKE MAR.5D (LEFT 5, UP 17, RIGHT 9, RIGHT 5),
+    SNAKE MAR.6D (LEFT 6, UP 20, RIGHT 10, RIGHT 5),
+    SNAKE MAR.7D (LEFT 7, UP 23, RIGHT 11, RIGHT 5),
+
+    SNAKE RAM.7D (DOWN 2, RIGHT 4),
+    SNAKE RAM.6D (LEFT 1, DOWN 5, RIGHT 5),
+    SNAKE RAM.5D (LEFT 2, DOWN 8, RIGHT 6),
+    SNAKE RAM.4D (LEFT 3, DOWN 11, RIGHT 7),
+    SNAKE RAM.3D (LEFT 4, DOWN 14, RIGHT 8),
+    SNAKE RAM.2D (LEFT 5, DOWN 17, RIGHT 9),
+    SNAKE RAM.1D (LEFT 6, DOWN 20, RIGHT 10),
+    SNAKE RAM.0D (LEFT 7, DOWN 23, RIGHT 11),
+
     SNAKE MAR.0AQ (RIGHT),
     SNAKE MAR.1AQ (RIGHT),
     SNAKE MAR.2AQ (RIGHT),
@@ -1137,6 +1155,7 @@ DRAW EDGES
     INITIAL CONDITIONS AND RUN
 */
 
+/*
 INSERT INIT COND
     (
     BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=0,
@@ -1152,43 +1171,37 @@ INSERT INIT COND
     (CLK.val=1, CLR.val=1),
     (CLK.val=0),
 
-    /* load address in mar */
+    // load address in mar
     (CLK.val=1, MIN.val=0),
     (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0),
     (CLK.val=0), (MIN.val=1),
-    /* load the data at the specified address */
+    // load the data at the specified address
     (CLK.val=1, RIN.val=0, ROUT.val=0),
     (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=1),
     (CLK.val=0), (RIN.val=1),
 
-    /* load address in mar */
     (CLK.val=1, MIN.val=0),
     (BL0.val=1, BL1.val=0, BL2.val=0, BL3.val=0),
     (CLK.val=0), (MIN.val=1),
-    /* load the data at the specified address */
     (CLK.val=1, RIN.val=0, ROUT.val=0),
     (BL0.val=1, BL1.val=0, BL2.val=1, BL3.val=0, BL4.val=1, BL5.val=0, BL6.val=0, BL7.val=1),
     (CLK.val=0), (RIN.val=1),
 
-    /* load address in mar */
     (CLK.val=1, MIN.val=0),
     (BL0.val=0, BL1.val=1, BL2.val=0, BL3.val=0),
     (CLK.val=0), (MIN.val=1),
-    /* load the data at the specified address */
     (CLK.val=1, RIN.val=0, ROUT.val=0),
     (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=1, BL7.val=0),
     (CLK.val=0), (RIN.val=1),
 
-    /* load address in mar */
     (CLK.val=1, MIN.val=0),
     (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0),
     (CLK.val=0), (MIN.val=1),
-    /* load the data at the specified address */
     (CLK.val=1, RIN.val=0, ROUT.val=0),
     (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0, BL4.val=1, BL5.val=0, BL6.val=1, BL7.val=1),
     (CLK.val=0), (RIN.val=1),
 
-    /* show data from ram */
+    // show data from ram
     (CLK.val=1, MIN.val=0),
     (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0),
     (CLK.val=0), (MIN.val=1),
@@ -1221,5 +1234,5 @@ INSERT INIT COND
 
 RUN;
 
-/* DRAW DISPLAY ANIMATE */
-DISPLAY 25:18 ANIMATE;
+*/
+DISPLAY 25:18 ;
