@@ -13,7 +13,7 @@ def main():
 
 def parse_test():
     # used for updating and checking test results
-    test = "final/final_ram"
+    test = "final/version5"
     FileInterpreter(
         "unit_test/%s/test" % test,
         #"unit_test/%s/answer" % test,
