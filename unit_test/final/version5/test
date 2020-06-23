@@ -71,14 +71,14 @@ INSERT BLOCKS
     Create the bus blocks
 */
 INSERT BLOCKS
-    STATE OUT BUSLOAD0,
-    STATE OUT BUSLOAD1,
-    STATE OUT BUSLOAD2,
-    STATE OUT BUSLOAD3,
-    STATE OUT BUSLOAD4,
-    STATE OUT BUSLOAD5,
-    STATE OUT BUSLOAD6,
-    STATE OUT BUSLOAD7,
+    STATE OUT BL0,
+    STATE OUT BL1,
+    STATE OUT BL2,
+    STATE OUT BL3,
+    STATE OUT BL4,
+    STATE OUT BL5,
+    STATE OUT BL6,
+    STATE OUT BL7,
 
     BUS b0 90,
     BUS b1 90,
@@ -91,14 +91,14 @@ INSERT BLOCKS
     ;
 
 INSERT EDGES
-    BTWN BUSLOAD0.val AND b0.in,
-    BTWN BUSLOAD1.val AND b1.in,
-    BTWN BUSLOAD2.val AND b2.in,
-    BTWN BUSLOAD3.val AND b3.in,
-    BTWN BUSLOAD4.val AND b4.in,
-    BTWN BUSLOAD5.val AND b5.in,
-    BTWN BUSLOAD6.val AND b6.in,
-    BTWN BUSLOAD7.val AND b7.in;
+    BTWN BL0.val AND b0.in,
+    BTWN BL1.val AND b1.in,
+    BTWN BL2.val AND b2.in,
+    BTWN BL3.val AND b3.in,
+    BTWN BL4.val AND b4.in,
+    BTWN BL5.val AND b5.in,
+    BTWN BL6.val AND b6.in,
+    BTWN BL7.val AND b7.in;
 
 DRAW BLOCK
     b0 1:31,
@@ -1137,33 +1137,89 @@ DRAW EDGES
     INITIAL CONDITIONS AND RUN
 */
 
-/*
 INSERT INIT COND
-    (CLK.val=0, CE.val=0, CIN.val=1, COUT.val=0, CLR.val=0, BIN.val=1, BOUT.val=0, AIN.val=1, AOUT.val=0, EO.val=0, SO.val=0),
+    (
+    BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=0,
+    CE.val=0, CIN.val=1, COUT.val=0,
+    BIN.val=1, BOUT.val=0,
+    AIN.val=1, AOUT.val=0,
+    MIN.val=1,
+    RIN.val=1, ROUT.val=0,
+    EO.val=0, SO.val=0,
+    CLK.val=0, CLR.val=0
+    ),
+
+    (CLK.val=1, CLR.val=1),
+    (CLK.val=0),
+
+    /* load address in mar */
+    (CLK.val=1, MIN.val=0),
+    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0),
+    (CLK.val=0), (MIN.val=1),
+    /* load the data at the specified address */
+    (CLK.val=1, RIN.val=0, ROUT.val=0),
+    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=1),
+    (CLK.val=0), (RIN.val=1),
+
+    /* load address in mar */
+    (CLK.val=1, MIN.val=0),
+    (BL0.val=1, BL1.val=0, BL2.val=0, BL3.val=0),
+    (CLK.val=0), (MIN.val=1),
+    /* load the data at the specified address */
+    (CLK.val=1, RIN.val=0, ROUT.val=0),
+    (BL0.val=1, BL1.val=0, BL2.val=1, BL3.val=0, BL4.val=1, BL5.val=0, BL6.val=0, BL7.val=1),
+    (CLK.val=0), (RIN.val=1),
+
+    /* load address in mar */
+    (CLK.val=1, MIN.val=0),
+    (BL0.val=0, BL1.val=1, BL2.val=0, BL3.val=0),
+    (CLK.val=0), (MIN.val=1),
+    /* load the data at the specified address */
+    (CLK.val=1, RIN.val=0, ROUT.val=0),
+    (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=1, BL7.val=0),
+    (CLK.val=0), (RIN.val=1),
+
+    /* load address in mar */
+    (CLK.val=1, MIN.val=0),
+    (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0),
+    (CLK.val=0), (MIN.val=1),
+    /* load the data at the specified address */
+    (CLK.val=1, RIN.val=0, ROUT.val=0),
+    (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0, BL4.val=1, BL5.val=0, BL6.val=1, BL7.val=1),
+    (CLK.val=0), (RIN.val=1),
+
+    /* show data from ram */
+    (CLK.val=1, MIN.val=0),
+    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0),
+    (CLK.val=0), (MIN.val=1),
+    (CLK.val=1, ROUT.val=1),
+    (CLK.val=0), (ROUT.val=0),
+
+    (CLK.val=1, MIN.val=0),
+    (BL0.val=1, BL1.val=0, BL2.val=0, BL3.val=0),
+    (CLK.val=0), (MIN.val=1),
+    (CLK.val=1, ROUT.val=1),
+    (CLK.val=0), (ROUT.val=0),
+
+    (CLK.val=1, MIN.val=0),
+    (BL0.val=0, BL1.val=1, BL2.val=0, BL3.val=0),
+    (CLK.val=0), (MIN.val=1),
+    (CLK.val=1, ROUT.val=1),
+    (CLK.val=0), (ROUT.val=0),
+
+    (CLK.val=1, MIN.val=0),
+    (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0),
+    (CLK.val=0), (MIN.val=1),
+    (CLK.val=1, ROUT.val=1),
+    (CLK.val=0), (ROUT.val=0),
+
     (CLK.val=1),
     (CLK.val=0),
-    (CLK.val=1, CLR.val=1, CE.val=1),
-    (CLK.val=0),
     (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1, COUT.val=1, BIN.val=0),
-    (CLK.val=0),
-    (CLK.val=1, COUT.val=0, BIN.val=1),
-    (CLK.val=0),
-    (CLK.val=1),
-    (CLK.val=0),
-    (CLK.val=1, COUT.val=1, AIN.val=0),
-    (CLK.val=0),
-    (CLK.val=1, CE.val=0, COUT.val=0, AIN.val=1),
-    (CLK.val=0),
-    (CLK.val=1, EO.val=1),
-    (CLK.val=0),
-    (CLK.val=1, SO.val=1),
     (CLK.val=0)
     ;
 
 RUN;
-*/
 
 /* DRAW DISPLAY ANIMATE */
-DISPLAY 25:18;
+DISPLAY 25:18 ANIMATE;
