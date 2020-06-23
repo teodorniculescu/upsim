@@ -1148,7 +1148,8 @@ INSERT EDGES
     BTWN b6.out AND regI.6D,
     BTWN b7.out AND regI.7D;
 DRAW BLOCK
-    regI 117:26;
+    regI 10:1;
+    /*
 DRAW EDGES
     SNAKE regI.0D (LEFT 0, UP 2, RIGHT 4),
     SNAKE regI.1D (LEFT 1, UP 5, RIGHT 5),
@@ -1158,6 +1159,7 @@ DRAW EDGES
     SNAKE regI.5D (LEFT 5, UP 17, RIGHT 9),
     SNAKE regI.6D (LEFT 6, UP 20, RIGHT 10),
     SNAKE regI.7D (LEFT 7, UP 23, RIGHT 11);
+    */
 /*
     END INSTRUCTION REGISTER
     =================================================
@@ -1231,6 +1233,7 @@ DEFINE CUSTOM BLOCK CONTROL_LOGIC (
     INSERT BLOCK
         CUSTOM DM74LS163A counter,
         ROM rom NUM_ADDR 7 NUM_DATA 15 CONTENTS {
+        /* NOP */
         /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
         0 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
         1 : {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
@@ -1244,7 +1247,6 @@ DEFINE CUSTOM BLOCK CONTROL_LOGIC (
 
         11: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
         12: {0, 0, 0, 1, 0, 0, 1, 0,  0, 0, 0, 0, 0, 0, 0},
-        13: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
 
         /* ADD */
         /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
@@ -1262,9 +1264,7 @@ DEFINE CUSTOM BLOCK CONTROL_LOGIC (
        113: {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
        114: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
 
-       115: {0, 0, 0, 0, 0, 0, 0, 1,  0, 0, 0, 1, 0, 0, 0},
-       116: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
-       117: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0}
+       115: {0, 0, 0, 0, 0, 0, 0, 1,  0, 0, 0, 1, 0, 0, 0}
         },
         VCC vcc,
         NOT NOTCLK I O
@@ -1413,7 +1413,7 @@ DRAW BLOCK
     _CO_ 1:13,
     _J_ 1:14,
     _HLT_ 1:15,
-    CL 10:1;
+    CL 10:8;
 
 INSERT BLOCK
     STATE OUT M_MI,
@@ -1525,12 +1525,19 @@ INSERT EDGE
     BTWN _MA2_.in AND MAR.2AQ,
     BTWN _MA3_.in AND MAR.3AQ;
 
+
+DRAW EDGES
+    SNAKE CL.B0 (LEFT 1),
+    SNAKE CL.B1 (LEFT 1),
+    SNAKE CL.B2 (LEFT 1),
+    SNAKE CL.B3 (LEFT 1);
 /*
     END CONTROL LOGIC
     =================================================
     INITIAL CONDITIONS AND RUN
 */
-/*
+
+
 INSERT INIT COND
     // INSERT DATA IN RAM
     (CLK.val=1, CLR.val=1, CL_CLK_EN.val=1),
@@ -1603,8 +1610,7 @@ INSERT INIT COND
     (CLK.val=1),
     (CLK.val=0)
     ;
-    */
 
 RUN;
 
-DISPLAY 0:0;
+DISPLAY 0:0 ANIMATE;
