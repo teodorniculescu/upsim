@@ -98,14 +98,14 @@ INSERT EDGES
     BTWN BL7.val AND b7.in;
 
 DRAW BLOCK
-    b0 1:31,
-    b1 1:32,
-    b2 1:33,
-    b3 1:34,
-    b4 1:35,
-    b5 1:36,
-    b6 1:37,
-    b7 1:38;
+    b0 0:31,
+    b1 0:32,
+    b2 0:33,
+    b3 0:34,
+    b4 0:35,
+    b5 0:36,
+    b6 0:37,
+    b7 0:38;
 /*
     =========================================================
     START Register
@@ -551,8 +551,8 @@ INSERT EDGES
     ;
 
 DRAW BLOCKS
-    PC_out 25:26,
-    PC 25:21;
+    PC_out 5:26,
+    PC 5:21;
 DRAW EDGES
     SNAKE PC.DATAA (LEFT 0, UP 2, RIGHT 4, RIGHT 5),
     SNAKE PC.DATAB (LEFT 1, UP 5, RIGHT 5, RIGHT 5),
@@ -1095,8 +1095,8 @@ INSERT EDGES
     BTWN MAR.3AQ AND RAM.ADDR3;
 
 DRAW BLOCKS
-    MAR 52:21,
-    RAM 68:26;
+    MAR 33:21,
+    RAM 49:26;
 
 DRAW EDGES
     SNAKE MAR.0D (LEFT 0, UP 2, RIGHT 5, RIGHT 4),
@@ -1165,14 +1165,14 @@ DRAW EDGES
 */
 
 INSERT BLOCK
-    BUS D0 10,
-    BUS D1 10,
-    BUS D2 10,
-    BUS D3 10,
-    BUS D4 10,
-    BUS D5 10,
-    BUS D6 10,
-    BUS D7 10,
+    BUS D0 3,
+    BUS D1 3,
+    BUS D2 3,
+    BUS D3 3,
+    BUS D4 3,
+    BUS D5 3,
+    BUS D6 3,
+    BUS D7 3,
     CUSTOM REGISTER regO;
 
 INSERT EDGES
@@ -1197,15 +1197,15 @@ INSERT EDGES
     BTWN b6.out AND regO.6D,
     BTWN b7.out AND regO.7D;
 DRAW BLOCK
-    D0 87:44,
-    D1 87:45,
-    D2 87:46,
-    D3 87:47,
-    D4 87:48,
-    D5 87:49,
-    D6 87:50,
-    D7 87:51,
-    regO 87:39;
+    D0 1:70,
+    D1 1:71,
+    D2 1:72,
+    D3 1:73,
+    D4 1:74,
+    D5 1:75,
+    D6 1:76,
+    D7 1:77,
+    regO 1:60;
 
 /*
     END OUTPUT REGISTER
@@ -1308,21 +1308,21 @@ DEFINE CUSTOM BLOCK CONTROL_LOGIC (
 INSERT BLOCK
     STATE OUT CL_CLK_EN,
     AND AND_CL_CLK CLK EN O,
-    BUS _HLT_ 2,
-    BUS _MI_ 2,
-    BUS _RI_ 2,
-    BUS _RO_ 2,
-    BUS _IO_ 2,
-    BUS _II_ 2,
-    BUS _AI_ 2,
-    BUS _AO_ 2,
-    BUS _EO_ 2,
-    BUS _SO_ 2,
-    BUS _BI_ 2,
-    BUS _OI_ 2,
-    BUS _CE_ 2,
-    BUS _CO_ 2,
-    BUS _J_ 2,
+    BUS _HLT_ 3,
+    BUS _MI_ 3,
+    BUS _RI_ 3,
+    BUS _RO_ 3,
+    BUS _IO_ 3,
+    BUS _II_ 3,
+    BUS _AI_ 3,
+    BUS _AO_ 3,
+    BUS _EO_ 3,
+    BUS _SO_ 3,
+    BUS _BI_ 3,
+    BUS _OI_ 3,
+    BUS _CE_ 3,
+    BUS _CO_ 3,
+    BUS _J_ 3,
 
     NOT N_MI_ I O,
     NOT N_RI_ I O,
@@ -1398,22 +1398,22 @@ INSERT EDGE
     BTWN regI.7AQ AND CL.B3;
 
 DRAW BLOCK
-    _HLT_ 70:5,
-    _MI_ 70:6,
-    _RI_ 70:7,
-    _RO_ 70:8,
-    _IO_ 70:9,
-    _II_ 70:10,
-    _AI_ 70:11,
-    _AO_ 70:12,
-    _EO_ 70:13,
-    _SO_ 70:14,
-    _BI_ 70:15,
-    _OI_ 70:16,
-    _CE_ 70:17,
-    _CO_ 70:18,
-    _J_ 70:19,
-    CL 70:0;
+    _MI_ 1:1,
+    _RI_ 1:2,
+    _RO_ 1:3,
+    _IO_ 1:4,
+    _II_ 1:5,
+    _AI_ 1:6,
+    _AO_ 1:7,
+    _EO_ 1:8,
+    _SO_ 1:9,
+    _BI_ 1:10,
+    _OI_ 1:11,
+    _CE_ 1:12,
+    _CO_ 1:13,
+    _J_ 1:14,
+    _HLT_ 1:15,
+    CL 10:1;
 
 INSERT BLOCK
     STATE OUT M_MI,
@@ -1424,20 +1424,119 @@ INSERT EDGE
     BTWN M_RI.val AND RAM.LOAD,
     BTWN M_RO.val AND RAM.ENABLE;
 
+
+INSERT BLOCK
+    BUS _A0_ 3,
+    BUS _A1_ 3,
+    BUS _A2_ 3,
+    BUS _A3_ 3,
+    BUS _A4_ 3,
+    BUS _A5_ 3,
+    BUS _A6_ 3,
+    BUS _A7_ 3;
+DRAW BLOCK
+    _A0_ 5:70,
+    _A1_ 5:71,
+    _A2_ 5:72,
+    _A3_ 5:73,
+    _A4_ 5:74,
+    _A5_ 5:75,
+    _A6_ 5:76,
+    _A7_ 5:77;
+INSERT EDGE
+    BTWN _A0_.in AND regA.0AQ,
+    BTWN _A1_.in AND regA.1AQ,
+    BTWN _A2_.in AND regA.2AQ,
+    BTWN _A3_.in AND regA.3AQ,
+    BTWN _A4_.in AND regA.4AQ,
+    BTWN _A5_.in AND regA.5AQ,
+    BTWN _A6_.in AND regA.6AQ,
+    BTWN _A7_.in AND regA.7AQ;
+
+INSERT BLOCK
+    BUS _B0_ 3,
+    BUS _B1_ 3,
+    BUS _B2_ 3,
+    BUS _B3_ 3,
+    BUS _B4_ 3,
+    BUS _B5_ 3,
+    BUS _B6_ 3,
+    BUS _B7_ 3;
+DRAW BLOCK
+    _B0_ 9:70,
+    _B1_ 9:71,
+    _B2_ 9:72,
+    _B3_ 9:73,
+    _B4_ 9:74,
+    _B5_ 9:75,
+    _B6_ 9:76,
+    _B7_ 9:77;
+INSERT EDGE
+    BTWN _B0_.in AND regB.0AQ,
+    BTWN _B1_.in AND regB.1AQ,
+    BTWN _B2_.in AND regB.2AQ,
+    BTWN _B3_.in AND regB.3AQ,
+    BTWN _B4_.in AND regB.4AQ,
+    BTWN _B5_.in AND regB.5AQ,
+    BTWN _B6_.in AND regB.6AQ,
+    BTWN _B7_.in AND regB.7AQ;
+
+INSERT BLOCK
+    BUS _E0_ 3,
+    BUS _E1_ 3,
+    BUS _E2_ 3,
+    BUS _E3_ 3,
+    BUS _E4_ 3,
+    BUS _E5_ 3,
+    BUS _E6_ 3,
+    BUS _E7_ 3;
+DRAW BLOCK
+    _E0_ 13:70,
+    _E1_ 13:71,
+    _E2_ 13:72,
+    _E3_ 13:73,
+    _E4_ 13:74,
+    _E5_ 13:75,
+    _E6_ 13:76,
+    _E7_ 13:77;
+INSERT EDGE
+    BTWN _E0_.in AND ALU.E0,
+    BTWN _E1_.in AND ALU.E1,
+    BTWN _E2_.in AND ALU.E2,
+    BTWN _E3_.in AND ALU.E3,
+    BTWN _E4_.in AND ALU.E4,
+    BTWN _E5_.in AND ALU.E5,
+    BTWN _E6_.in AND ALU.E6,
+    BTWN _E7_.in AND ALU.E7;
+
+INSERT BLOCK
+    BUS _MA0_ 3,
+    BUS _MA1_ 3,
+    BUS _MA2_ 3,
+    BUS _MA3_ 3;
+DRAW BLOCK
+    _MA0_ 5:7,
+    _MA1_ 5:8,
+    _MA2_ 5:9,
+    _MA3_ 5:10;
+INSERT EDGE
+    BTWN _MA0_.in AND MAR.0AQ,
+    BTWN _MA1_.in AND MAR.1AQ,
+    BTWN _MA2_.in AND MAR.2AQ,
+    BTWN _MA3_.in AND MAR.3AQ;
+
 /*
     END CONTROL LOGIC
     =================================================
     INITIAL CONDITIONS AND RUN
 */
 /*
-*/
 INSERT INIT COND
     // INSERT DATA IN RAM
     (CLK.val=1, CLR.val=1, CL_CLK_EN.val=1),
     (CLK.val=0),
     (CLK.val=1, CLR.val=0),
-    (CL_CLK_EN.val=0),
-    (CLR.val=1),
+    (CLK.val=0), (CL_CLK_EN.val=0), (CLR.val=1),
 
     (CLK.val=1, M_MI.val=0), (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
     (BL0.val=0, BL1.val=1, BL2.val=1, BL3.val=1, BL4.val=1, BL5.val=0, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
@@ -1504,7 +1603,8 @@ INSERT INIT COND
     (CLK.val=1),
     (CLK.val=0)
     ;
+    */
 
 RUN;
 
-DISPLAY 70:0 ANIMATE;
+DISPLAY 0:0;
