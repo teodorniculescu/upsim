@@ -67,8 +67,19 @@ create_block : create_state_block
              | create_custom_block
              | create_ground_block
              | create_vcc_block
+             | create_rom_block
              | create_bus_line
              ;
+
+create_rom_block:
+    ROM_KWD block_name num_rom_address num_rom_data rom_contents;
+num_rom_address: 'ADDR' UINT;
+num_rom_data: 'DATA' UINT;
+rom_contents: 'CONTENTS' rom_matrix;
+rom_matrix: '{' rom_row (',' rom_row)* '}';
+rom_row: row_index ':' '{' rom_value (',' rom_value)* '}';
+row_index : UINT;
+rom_value: UINT;
 
 create_ground_block :
     GROUND_KWD block_name
@@ -224,6 +235,7 @@ RIGHT_KWD: 'RIGHT';
 UP_KWD: 'UP';
 DOWN_KWD: 'DOWN';
 ANIMATE_KWD: 'ANIMATE';
+ROM_KWD : 'ROM';
 
 VERBOSE_PRM : '-' ('VERBOSE' | 'V');
 

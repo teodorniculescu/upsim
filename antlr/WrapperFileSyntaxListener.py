@@ -4,7 +4,7 @@ from gen.FileSyntaxParser import FileSyntaxParser
 from simulation.Simulation import Simulation
 from blocks.store.LogicGates import *
 from blocks.store.Latch import D_LATCH, JK_LATCH
-from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER, BUS_TRANSMITTER_RECEIVER, BUFFER, BUS
+from blocks.store.Buffer import DIGITAL_TRI_STATE_BUFFER, BUS_TRANSMITTER_RECEIVER, BUFFER, BUS, ROM
 from blocks.CustomBlock import CustomBlockTemplate
 from antlr4.Token import *
 
@@ -491,6 +491,41 @@ class WrapperFileSyntaxListener(FileSyntaxListener):
     def exitDirection_snake(self, ctx:FileSyntaxParser.Direction_snakeContext):
         ctx.text = str(ctx.getText())
 
+    def exitCreate_rom_block(self, ctx:FileSyntaxParser.Create_rom_blockContext):
+        num_addr = ctx.num_rom_address().num
+        num_data = ctx.num_rom_data().num
+        content = ctx.rom_contents().matrix_dict
+        block_name = ctx.block_name().text
+        try:
+            ctx.block = ROM(block_name, num_addr, num_data, content)
+        except Exception as e:
+            self.__set_error(ctx, e)
 
+    def exitNum_rom_address(self, ctx:FileSyntaxParser.Num_rom_addressContext):
+        ctx.num = int(str(ctx.UINT()))
 
+    def exitNum_rom_data(self, ctx:FileSyntaxParser.Num_rom_dataContext):
+        ctx.num = int(str(ctx.UINT()))
 
+    def exitRom_contents(self, ctx:FileSyntaxParser.Rom_contentsContext):
+        ctx.matrix_dict = ctx.rom_matrix().matrix_dict
+
+    def exitRom_matrix(self, ctx:FileSyntaxParser.Rom_matrixContext):
+        matrix_dict = {}
+        for context in ctx.rom_row():
+            (index, row) = context.row
+            matrix_dict[index] = row
+        ctx.matrix_dict = matrix_dict
+
+    def exitRow_index(self, ctx:FileSyntaxParser.Row_indexContext):
+        ctx.val = int(str(ctx.UINT()))
+
+    def exitRom_row(self, ctx:FileSyntaxParser.Rom_rowContext):
+        row = []
+        index = ctx.row_index().val
+        for context in ctx.rom_value():
+            row.append(context.value)
+        ctx.row = (index ,row)
+
+    def exitRom_value(self, ctx:FileSyntaxParser.Rom_valueContext):
+        ctx.value = int(str(ctx.UINT()))

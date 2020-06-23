@@ -1,0 +1,103 @@
+DEFINE CUSTOM BLOCK CONTROL_LOGIC (
+    IN
+    B0 B1 B2 B3
+    CLK CLR
+    OUT
+    CIN COUT CE
+    AIN AOUT
+    BIN BOUT
+    EO SO CY
+    OIN
+    MIN
+    RIN ROUT
+    IIN IOUT
+) {
+    INSERT BLOCK
+        GND gnd;
+};
+
+INSERT BLOCK
+    STATE OUT A0,
+    STATE OUT A1,
+    STATE OUT A2,
+    STATE OUT A3,
+    STATE OUT A4,
+    STATE OUT A5,
+    STATE OUT A6,
+
+    /*
+    STATE IN D0,
+    STATE IN D1,
+    STATE IN D2,
+    STATE IN D3,
+    STATE IN D4,
+    STATE IN D5,
+    STATE IN D6,
+    STATE IN D7,
+    STATE IN D8,
+    STATE IN D9,
+    STATE IN D10,
+    STATE IN D11,
+    STATE IN D12,
+    STATE IN D13,
+    STATE IN D14,
+    STATE IN D15,
+    */
+    ROM rom ADDR 7 DATA 15 CONTENTS {
+    /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
+    0 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+    /* LDA */
+    /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
+    8 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+    9 : {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+    10: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
+    11: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+    12: {0, 0, 0, 1, 0, 0, 1, 0,  0, 0, 0, 0, 0, 0, 0},
+    13: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
+    /* ADD */
+    /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
+    16: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+    17: {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+    18: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
+    19: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+    20: {0, 0, 0, 1, 0, 0, 0, 0,  0, 0, 1, 0, 0, 0, 0},
+    21: {0, 0, 0, 0, 0, 0, 1, 0,  1, 0, 0, 0, 0, 0, 0},
+
+    /* OUT */
+    /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
+   112: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+   113: {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+   114: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
+   115: {0, 0, 0, 0, 0, 0, 0, 1,  0, 0, 0, 1, 0, 0, 0},
+   116: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+   117: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0}
+    },
+    CUSTOM CONTROL_LOGIC CL;
+
+INSERT EDGES
+    BTWN A0.val AND rom.A0,
+    BTWN A1.val AND rom.A1,
+    BTWN A2.val AND rom.A2,
+    BTWN A3.val AND rom.A3,
+    BTWN A4.val AND rom.A4,
+    BTWN A5.val AND rom.A5,
+    BTWN A6.val AND rom.A6;
+
+INSERT INIT COND
+    ( A0.val=0, A1.val=0, A2.val=0, A3.val=0, A4.val=0, A5.val=0, A6.val=0 ),
+    ( A0.val=1, A1.val=0, A2.val=0, A3.val=0, A4.val=0, A5.val=0, A6.val=0 ),
+    ( A0.val=0, A1.val=1, A2.val=0, A3.val=0, A4.val=0, A5.val=0, A6.val=0 ),
+    ( A0.val=1, A1.val=1, A2.val=0, A3.val=0, A4.val=0, A5.val=0, A6.val=0 ),
+    ( A0.val=0, A1.val=0, A2.val=1, A3.val=0, A4.val=0, A5.val=0, A6.val=0 );
+
+DRAW BLOCKS
+    rom 0:0;
+
+RUN;
+
+DISPLAY ANIMATE;
+

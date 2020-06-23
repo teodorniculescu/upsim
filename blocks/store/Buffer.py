@@ -2,6 +2,7 @@ from blocks.LogicalBlock import LogicalBlock
 from values.BaseValue import BaseValue, PIN_TYPE_INPUT, PIN_TYPE_OUTPUT, PIN_TYPE_IO
 from user_interface.PanelHandler import CODE
 from user_interface.DataStructure import ParamGridElem, ParamGridRow, ParamGrid, ParamElem
+from typing import List, Dict
 
 
 class DIGITAL_TRI_STATE_BUFFER(LogicalBlock):
@@ -94,3 +95,43 @@ class BUS_TRANSMITTER_RECEIVER(LogicalBlock):
                 b.set_value(a.get_value())
             elif enable_btoa.is_high() and b.is_set():
                 a.set_value(b.get_value())
+
+class ROM(LogicalBlock):
+    def __init__(self,
+                 block_name: str,
+                 num_addr: int,
+                 num_data: int,
+                 content: Dict[int, List[int]]
+                 ):
+        super().__init__(block_name)
+        self._num_addr = num_addr
+        self._num_data = num_data
+        # the first list contains the address in memory
+        # the list inside of it has the data
+        self._content= content
+        for addr in range(num_addr):
+            super().add_pin(BaseValue("A" + str(addr), PIN_TYPE_INPUT))
+        for data in range(num_data):
+            super().add_pin(BaseValue("D" + str(data), PIN_TYPE_OUTPUT))
+
+    def calculate(self) -> None:
+        binary_string: str = ''
+        for addr in range(self._num_addr):
+            pin_name = 'A' + str(addr)
+            pin = self.get_pin_with_name(pin_name)
+            if not pin.is_set():
+                return
+            binary_string += str(pin.get_value())
+        binary_string = '0b' + binary_string[::-1]
+        list_addr = int(binary_string, 2)
+        if list_addr in self._content:
+            val_list = self._content[list_addr]
+        else:
+            val_list = [0] * self._num_data
+        for data in range(self._num_data):
+            pin = self.get_pin_with_name('D' + str(data))
+            pin.set_value(val_list[data])
+
+
+
+
