@@ -1134,10 +1134,10 @@ INSERT EDGES
     BTWN CLR.val AND regI.CLR,
     BTWN CLK.val AND regI.CLK,
 
-    BTWN regI.0Q AND b0.in,
-    BTWN regI.1Q AND b1.in,
-    BTWN regI.2Q AND b2.in,
-    BTWN regI.3Q AND b3.in,
+    BTWN regI.4Q AND b0.in,
+    BTWN regI.5Q AND b1.in,
+    BTWN regI.6Q AND b2.in,
+    BTWN regI.7Q AND b3.in,
 
     BTWN b0.out AND regI.0D,
     BTWN b1.out AND regI.1D,
@@ -1241,22 +1241,23 @@ DEFINE CUSTOM BLOCK CONTROL_LOGIC (
 
         /* LDA */
         /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
-        8 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
-        9 : {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
-        10: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        64 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+        65 : {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+        66: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
 
-        11: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
-        12: {0, 0, 0, 1, 0, 0, 1, 0,  0, 0, 0, 0, 0, 0, 0},
+        67: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        68: {0, 0, 0, 1, 0, 0, 1, 0,  0, 0, 0, 0, 0, 0, 0},
 
         /* ADD */
         /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
-        16: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
-        17: {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
-        18: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        32: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+        33: {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+        34: {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
 
-        19: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
-        20: {0, 0, 0, 1, 0, 0, 0, 0,  0, 0, 1, 0, 0, 0, 0},
-        21: {0, 0, 0, 0, 0, 0, 1, 0,  1, 0, 0, 0, 0, 0, 0},
+        35: {0, 1, 0, 0, 1, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        36: {0, 0, 0, 1, 0, 0, 0, 0,  0, 0, 1, 0, 0, 0, 0},
+        37: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        38: {0, 0, 0, 0, 0, 0, 1, 0,  1, 0, 0, 0, 0, 0, 0},
 
         /* OUT */
         /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
@@ -1392,10 +1393,10 @@ INSERT EDGE
     BTWN AND_CL_CLK.EN AND CL_CLK_EN.val,
     BTWN CLR.val AND CL.CLR,
 
-    BTWN regI.4AQ AND CL.B0,
-    BTWN regI.5AQ AND CL.B1,
-    BTWN regI.6AQ AND CL.B2,
-    BTWN regI.7AQ AND CL.B3;
+    BTWN regI.0AQ AND CL.B0,
+    BTWN regI.1AQ AND CL.B1,
+    BTWN regI.2AQ AND CL.B2,
+    BTWN regI.3AQ AND CL.B3;
 
 DRAW BLOCK
     _MI_ 1:1,
@@ -1546,16 +1547,23 @@ INSERT INIT COND
     (CLK.val=0), (CL_CLK_EN.val=0), (CLR.val=1),
 
     (CLK.val=1, M_MI.val=0), (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
-    (BL0.val=0, BL1.val=1, BL2.val=1, BL3.val=1, BL4.val=1, BL5.val=0, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
+    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=1, BL4.val=1, BL5.val=1, BL6.val=1, BL7.val=0), (CLK.val=0), (M_RI.val=1),
 
     (CLK.val=1, M_MI.val=0), (BL0.val=1, BL1.val=0, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
-    (BL0.val=1, BL1.val=1, BL2.val=1, BL3.val=1, BL4.val=0, BL5.val=1, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
+    (BL0.val=0, BL1.val=0, BL2.val=1, BL3.val=0, BL4.val=1, BL5.val=1, BL6.val=0, BL7.val=1), (CLK.val=0), (M_RI.val=1),
 
     (CLK.val=1, M_MI.val=0), (BL0.val=0, BL1.val=1, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
-    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=1, BL6.val=1, BL7.val=1), (CLK.val=0), (M_RI.val=1),
+    (BL0.val=1, BL1.val=1, BL2.val=1, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
 
     (CLK.val=1, M_MI.val=0), (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
-    (BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=1, BL5.val=1, BL6.val=1, BL7.val=1), (CLK.val=0), (M_RI.val=1),
+    (BL0.val=1, BL1.val=1, BL2.val=1, BL3.val=1, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
+
+    /* date pentru adunare */
+    (CLK.val=1, M_MI.val=0), (BL0.val=1, BL1.val=1, BL2.val=1, BL3.val=0), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
+    (BL0.val=0, BL1.val=0, BL2.val=1, BL3.val=1, BL4.val=1, BL5.val=0, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
+
+    (CLK.val=1, M_MI.val=0), (BL0.val=1, BL1.val=1, BL2.val=0, BL3.val=1), (CLK.val=0), (M_MI.val=1), (CLK.val=1, M_RI.val=0, M_RO.val=0),
+    (BL0.val=0, BL1.val=1, BL2.val=1, BL3.val=1, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=0), (CLK.val=0), (M_RI.val=1),
 
     // start execution by setting the CL_CLK_EN pin to 1
     // the microinstruction counter is automatically set to 0
