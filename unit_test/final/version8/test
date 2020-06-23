@@ -59,9 +59,6 @@ DEFINE CUSTOM BLOCK 8BITBUFFER (
 
 INSERT BLOCKS
     GND gnd,
-    STATE OUT CE,
-    STATE OUT CIN,
-    STATE OUT COUT,
     STATE OUT CLK,
     STATE OUT CLR
     ;
@@ -280,13 +277,8 @@ DEFINE CUSTOM BLOCK REGISTER (
 
 /* Generate A REGISTER */
 INSERT BLOCKS
-    STATE OUT AIN,
-    STATE OUT AOUT;
-INSERT BLOCKS
     CUSTOM REGISTER regA;
 INSERT EDGES
-    BTWN AIN.val AND regA.LOAD,
-    BTWN AOUT.val AND regA.ENABLE,
     BTWN CLR.val AND regA.CLR,
     BTWN CLK.val AND regA.CLK,
     BTWN regA.0Q AND b0.in,
@@ -320,13 +312,8 @@ DRAW EDGES
 
 /* Generate B REGISTER */
 INSERT BLOCKS
-    STATE OUT BIN,
-    STATE OUT BOUT;
-INSERT BLOCKS
     CUSTOM REGISTER regB;
 INSERT EDGES
-    BTWN BIN.val AND regB.LOAD,
-    BTWN BOUT.val AND regB.ENABLE,
     BTWN CLR.val AND regB.CLR,
     BTWN CLK.val AND regB.CLK,
     BTWN regB.0Q AND b0.in,
@@ -544,11 +531,8 @@ INSERT BLOCKS
     ;
 
 INSERT EDGES
-    BTWN CE.val AND (PC.ENT, PC.ENP),
     BTWN CLK.val AND PC.CLK,
     BTWN CLR.val AND PC.CLR,
-    BTWN CIN.val AND PC.LD,
-    BTWN COUT.val AND PC_out.EN,
 
     BTWN b0.out AND PC.DATAA,
     BTWN b1.out AND PC.DATAB,
@@ -707,12 +691,8 @@ INSERT EDGES
 };
 
 INSERT BLOCKS
-    STATE OUT SO,
-    STATE OUT EO,
     CUSTOM ALU ALU;
 INSERT EDGES
-    BTWN SO.val AND ALU.SO,
-    BTWN EO.val AND ALU.EO,
 
     BTWN ALU.E0 AND b0.in,
     BTWN ALU.E1 AND b1.in,
@@ -1071,9 +1051,6 @@ DEFINE CUSTOM BLOCK 16BITRAM (
 };
 
 INSERT BLOCKS
-    STATE OUT MIN,
-    STATE OUT RIN,
-    STATE OUT ROUT,
     CUSTOM REGISTER MAR,
     CUSTOM 16BITRAM RAM;
 
@@ -1082,11 +1059,6 @@ INSERT EDGES
     BTWN CLK.val AND RAM.CLK,
     BTWN CLR.val AND MAR.CLR,
     BTWN CLR.val AND RAM.CLR,
-
-    BTWN MIN.val AND MAR.LOAD,
-    BTWN gnd.val AND MAR.ENABLE,
-    BTWN RIN.val AND RAM.LOAD,
-    BTWN ROUT.val AND RAM.ENABLE,
 
     /* connect MAR to bus */
     BTWN b0.out AND MAR.0D,
@@ -1157,12 +1129,8 @@ DRAW EDGES
 */
 
 INSERT BLOCK
-    STATE OUT IIN,
-    STATE OUT IOUT,
     CUSTOM REGISTER regI;
 INSERT EDGES
-    BTWN IIN.val AND regI.LOAD,
-    BTWN IOUT.val AND regI.ENABLE,
     BTWN CLR.val AND regI.CLR,
     BTWN CLK.val AND regI.CLK,
 
@@ -1205,12 +1173,9 @@ INSERT BLOCK
     BUS D5 10,
     BUS D6 10,
     BUS D7 10,
-    STATE OUT OIN,
     CUSTOM REGISTER regO;
 
 INSERT EDGES
-    BTWN OIN.val AND regO.LOAD,
-    BTWN gnd.val AND regO.ENABLE,
     BTWN CLR.val AND regO.CLR,
     BTWN CLK.val AND regO.CLK,
 
@@ -1253,20 +1218,24 @@ DEFINE CUSTOM BLOCK CONTROL_LOGIC (
         B0 B1 B2 B3
         CLK CLR
     OUT
-        J COUT HLT
-        AIN AOUT
-        BIN BOUT
-        EO SO CY
-        OIN
-        MIN
-        RIN ROUT
-        IIN IOUT
+        J CO HLT
+        AI AO
+        BI
+        EO SO
+        OI
+        MI
+        RI RO
+        II IO
         CE
 ) {
     INSERT BLOCK
+        CUSTOM DM74LS163A counter,
         ROM rom NUM_ADDR 7 NUM_DATA 15 CONTENTS {
         /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
-        0 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+        0 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
+        1 : {0, 1, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 1, 0},
+        2 : {0, 0, 0, 1, 0, 1, 0, 0,  0, 0, 0, 0, 0, 0, 0},
+
         /* LDA */
         /*   H  MI RI RO IO II AI AO  EO SO BI OI CE CO J */
         8 : {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 1, 0, 0},
@@ -1296,29 +1265,151 @@ DEFINE CUSTOM BLOCK CONTROL_LOGIC (
        115: {0, 0, 0, 0, 0, 0, 0, 1,  0, 0, 0, 1, 0, 0, 0},
        116: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0},
        117: {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0}
-        }
+        },
+        VCC vcc,
+        NOT NOTCLK I O
         ;
-    INSERT EDGES
+    INSERT EDGE
+        BTWN THIS.CLR AND counter.CLR,
+        BTWN vcc.val AND counter.LD,
+        BTWN vcc.val AND counter.ENP,
+        BTWN vcc.val AND counter.ENT,
+
+        BTWN THIS.CLK AND NOTCLK.I,
+        BTWN counter.CLK AND NOTCLK.O,
+
+        BTWN counter.QA AND rom.A0,
+        BTWN counter.QB AND rom.A1,
+        BTWN counter.QC AND rom.A2,
+
+        BTWN THIS.B0 AND rom.A3,
+        BTWN THIS.B1 AND rom.A4,
+        BTWN THIS.B2 AND rom.A5,
+        BTWN THIS.B3 AND rom.A6,
 
         BTWN rom.D0 AND THIS.HLT,
-        BTWN rom.D1 AND THIS.MIN,
-        BTWN rom.D2 AND THIS.RIN,
-        BTWN rom.D3 AND THIS.ROUT,
-        BTWN rom.D4 AND THIS.IOUT,
-        BTWN rom.D5 AND THIS.IIN,
-        BTWN rom.D6 AND THIS.AIN,
-        BTWN rom.D7 AND THIS.AOUT,
+        BTWN rom.D1 AND THIS.MI,
+        BTWN rom.D2 AND THIS.RI,
+        BTWN rom.D3 AND THIS.RO,
+        BTWN rom.D4 AND THIS.IO,
+        BTWN rom.D5 AND THIS.II,
+        BTWN rom.D6 AND THIS.AI,
+        BTWN rom.D7 AND THIS.AO,
         BTWN rom.D8 AND THIS.EO,
         BTWN rom.D9 AND THIS.SO,
-        BTWN rom.D10 AND THIS.BIN,
-        BTWN rom.D11 AND THIS.OIN,
+        BTWN rom.D10 AND THIS.BI,
+        BTWN rom.D11 AND THIS.OI,
         BTWN rom.D12 AND THIS.CE,
-        BTWN rom.D13 AND THIS.COUT,
+        BTWN rom.D13 AND THIS.CO,
         BTWN rom.D14 AND THIS.J;
 };
 
+/* any block that is H means that it is on */
 INSERT BLOCK
+    BUS _HLT_ 2,
+    BUS _MI_ 2,
+    BUS _RI_ 2,
+    BUS _RO_ 2,
+    BUS _IO_ 2,
+    BUS _II_ 2,
+    BUS _AI_ 2,
+    BUS _AO_ 2,
+    BUS _EO_ 2,
+    BUS _SO_ 2,
+    BUS _BI_ 2,
+    BUS _OI_ 2,
+    BUS _CE_ 2,
+    BUS _CO_ 2,
+    BUS _J_ 2,
+
+    NOT N_MI_ I O,
+    NOT N_RI_ I O,
+    NOT N_II_ I O,
+    NOT N_AI_ I O,
+    NOT N_BI_ I O,
+    NOT N_OI_ I O,
+    NOT N_J_ I O,
+
     CUSTOM CONTROL_LOGIC CL;
+
+INSERT EDGE
+
+
+    BTWN CL.HLT AND _HLT_.in,
+    BTWN CL.MI AND _MI_.in,
+    BTWN CL.RI AND _RI_.in,
+    BTWN CL.RO AND _RO_.in,
+    BTWN CL.IO AND _IO_.in,
+    BTWN CL.II AND _II_.in,
+    BTWN CL.AI AND _AI_.in,
+    BTWN CL.AO AND _AO_.in,
+    BTWN CL.EO AND _EO_.in,
+    BTWN CL.SO AND _SO_.in,
+    BTWN CL.BI AND _BI_.in,
+    BTWN CL.OI AND _OI_.in,
+    BTWN CL.CE AND _CE_.in,
+    BTWN CL.CO AND _CO_.in,
+    BTWN CL.J AND _J_.in,
+
+    BTWN _MI_.out AND N_MI_.I,
+    BTWN _RI_.out AND N_RI_.I,
+    BTWN _II_.out AND N_II_.I,
+    BTWN _AI_.out AND N_AI_.I,
+    BTWN _BI_.out AND N_BI_.I,
+    BTWN _OI_.out AND N_OI_.I,
+    BTWN _J_.out AND N_J_.I,
+
+    /* PROGRAM COUNTER */
+    BTWN N_J_.O AND PC.LD,
+    BTWN _CE_.out AND (PC.ENT, PC.ENP),
+    BTWN _CO_.out AND PC_out.EN,
+    /* A REG */
+    BTWN N_AI_.O AND regA.LOAD,
+    BTWN _AO_.out AND regA.ENABLE,
+    /* B REG */
+    BTWN N_BI_.O AND regB.LOAD,
+    BTWN gnd.val AND regB.ENABLE,
+    /* OUT REG */
+    BTWN N_OI_.O AND regO.LOAD,
+    BTWN gnd.val AND regO.ENABLE,
+    /* I REG */
+    BTWN N_II_.O AND regI.LOAD,
+    BTWN _IO_.out AND regI.ENABLE,
+    /* MEM REG */
+    BTWN N_MI_.O AND MAR.LOAD,
+    BTWN gnd.val AND MAR.ENABLE,
+    /* RAM */
+    BTWN N_RI_.O AND RAM.LOAD,
+    BTWN _RO_.out AND RAM.ENABLE,
+    /* ALU */
+    BTWN _SO_.out AND ALU.SO,
+    BTWN _EO_.out AND ALU.EO,
+
+    BTWN CLK.val AND CL.CLK,
+    BTWN CLR.val AND CL.CLR,
+
+    BTWN regI.4AQ AND CL.B0,
+    BTWN regI.5AQ AND CL.B1,
+    BTWN regI.6AQ AND CL.B2,
+    BTWN regI.7AQ AND CL.B3;
+
+DRAW BLOCK
+    _HLT_ 70:5,
+    _MI_ 70:6,
+    _RI_ 70:7,
+    _RO_ 70:8,
+    _IO_ 70:9,
+    _II_ 70:10,
+    _AI_ 70:11,
+    _AO_ 70:12,
+    _EO_ 70:13,
+    _SO_ 70:14,
+    _BI_ 70:15,
+    _OI_ 70:16,
+    _CE_ 70:17,
+    _CO_ 70:18,
+    _J_ 70:19,
+    CL 70:0;
 
 
 /*
@@ -1327,20 +1418,19 @@ INSERT BLOCK
     INITIAL CONDITIONS AND RUN
 */
 /*
+*/
 INSERT INIT COND
-    (
-    BL0.val=0, BL1.val=0, BL2.val=0, BL3.val=0, BL4.val=0, BL5.val=0, BL6.val=0, BL7.val=0,
-    CE.val=0, CIN.val=1, COUT.val=0,
-    IIN.val=1, IOUT.val=0,
-    OIN.val=1,
-    BIN.val=1, BOUT.val=0,
-    AIN.val=1, AOUT.val=0,
-    MIN.val=1,
-    RIN.val=1, ROUT.val=0,
-    EO.val=0, SO.val=0,
-    CLK.val=0, CLR.val=0
-    ),
+    ( CLK.val=0, CLR.val=0 ),
 
+    (CLK.val=1, CLR.val=1),
+    (CLK.val=0),
+
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
     (CLK.val=1),
     (CLK.val=0),
     (CLK.val=1),
@@ -1348,6 +1438,5 @@ INSERT INIT COND
     ;
 
 RUN;
-*/
 
-DISPLAY 80:40 ;
+DISPLAY 70:0 ANIMATE;

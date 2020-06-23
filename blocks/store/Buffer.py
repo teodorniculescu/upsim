@@ -113,14 +113,17 @@ class ROM(LogicalBlock):
             super().add_pin(BaseValue("A" + str(addr), PIN_TYPE_INPUT))
         for data in range(num_data):
             super().add_pin(BaseValue("D" + str(data), PIN_TYPE_OUTPUT))
+        print(self._content)
 
     def calculate(self) -> None:
         binary_string: str = ''
         for addr in range(self._num_addr):
             pin_name = 'A' + str(addr)
             pin = self.get_pin_with_name(pin_name)
+            """
             if not pin.is_set():
                 return
+            """
             binary_string += str(pin.get_value())
         binary_string = '0b' + binary_string[::-1]
         list_addr = int(binary_string, 2)
