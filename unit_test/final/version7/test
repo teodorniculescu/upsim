@@ -1245,13 +1245,33 @@ DRAW BLOCK
 /*
     END OUTPUT REGISTER
     =================================================
-    START SIGNALS DISPLAY
+    START CONTROL LOGIC
 */
 
+DEFINE CUSTOM BLOCK CONTROL_LOGIC (
+    IN
+    B0 B1 B2 B3
+    CLK CLR
+    OUT
+    CIN COUT CE
+    AIN AOUT
+    BIN BOUT
+    EO SO CY
+    OIN
+    MIN
+    RIN ROUT
+    IIN IOUT
+) {
+    INSERT BLOCK
+        GND gnd;
+};
+
+INSERT BLOCK
+    CUSTOM CONTROL_LOGIC CL;
 
 
 /*
-    END SIGNALS DISPLAY
+    END CONTROL LOGIC
     =================================================
     INITIAL CONDITIONS AND RUN
 */
