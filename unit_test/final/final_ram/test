@@ -343,6 +343,73 @@ DEFINE CUSTOM BLOCK 4BITRAM (
         BTWN SEL.LD1 AND REG1.LOAD;
 };
 
+DEFINE CUSTOM BLOCK 8BITRAM (
+    IN
+    0D 1D 2D 3D 4D 5D 6D 7D
+    CLK CLR LOAD ENABLE
+    ADDR0 ADDR1 ADDR2
+    OUT
+    0Q 1Q 2Q 3Q 4Q 5Q 6Q 7Q
+) {
+    INSERT BLOCK
+        CUSTOM ENLD_RAM SEL,
+        CUSTOM 4BITRAM REG0,
+        CUSTOM 4BITRAM REG1;
+    INSERT EDGES
+        BTWN THIS.0Q AND REG0.0Q,
+        BTWN THIS.1Q AND REG0.1Q,
+        BTWN THIS.2Q AND REG0.2Q,
+        BTWN THIS.3Q AND REG0.3Q,
+        BTWN THIS.4Q AND REG0.4Q,
+        BTWN THIS.5Q AND REG0.5Q,
+        BTWN THIS.6Q AND REG0.6Q,
+        BTWN THIS.7Q AND REG0.7Q,
+
+        BTWN THIS.0Q AND REG1.0Q,
+        BTWN THIS.1Q AND REG1.1Q,
+        BTWN THIS.2Q AND REG1.2Q,
+        BTWN THIS.3Q AND REG1.3Q,
+        BTWN THIS.4Q AND REG1.4Q,
+        BTWN THIS.5Q AND REG1.5Q,
+        BTWN THIS.6Q AND REG1.6Q,
+        BTWN THIS.7Q AND REG1.7Q,
+
+        BTWN THIS.0D AND REG0.0D,
+        BTWN THIS.1D AND REG0.1D,
+        BTWN THIS.2D AND REG0.2D,
+        BTWN THIS.3D AND REG0.3D,
+        BTWN THIS.4D AND REG0.4D,
+        BTWN THIS.5D AND REG0.5D,
+        BTWN THIS.6D AND REG0.6D,
+        BTWN THIS.7D AND REG0.7D,
+
+        BTWN THIS.0D AND REG1.0D,
+        BTWN THIS.1D AND REG1.1D,
+        BTWN THIS.2D AND REG1.2D,
+        BTWN THIS.3D AND REG1.3D,
+        BTWN THIS.4D AND REG1.4D,
+        BTWN THIS.5D AND REG1.5D,
+        BTWN THIS.6D AND REG1.6D,
+        BTWN THIS.7D AND REG1.7D,
+
+        BTWN THIS.CLK AND (REG0.CLK, REG1.CLK),
+        BTWN THIS.CLR AND (REG0.CLR, REG1.CLR),
+
+        BTWN THIS.ADDR2 AND SEL.ADDR,
+        BTWN THIS.ADDR1 AND REG0.ADDR1,
+        BTWN THIS.ADDR1 AND REG1.ADDR1,
+        BTWN THIS.ADDR0 AND REG0.ADDR0,
+        BTWN THIS.ADDR0 AND REG1.ADDR0,
+
+        BTWN THIS.ENABLE AND SEL.ENABLE,
+        BTWN THIS.LOAD AND SEL.LOAD,
+
+        BTWN SEL.EN0 AND REG0.ENABLE,
+        BTWN SEL.EN1 AND REG1.ENABLE,
+        BTWN SEL.LD0 AND REG0.LOAD,
+        BTWN SEL.LD1 AND REG1.LOAD;
+};
+
 INSERT BLOCKS
     STATE OUT 0D,
     STATE OUT 1D,
@@ -366,16 +433,15 @@ INSERT BLOCKS
     STATE OUT LOAD,
     STATE OUT ADDR0,
     STATE OUT ADDR1,
-    /*
     STATE OUT ADDR2,
     STATE OUT ADDR3,
-    */
-    CUSTOM 4BITRAM RAM;
+    CUSTOM 8BITRAM RAM;
 
 
 INSERT EDGES
     BTWN ADDR0.val AND RAM.ADDR0,
     BTWN ADDR1.val AND RAM.ADDR1,
+    BTWN ADDR2.val AND RAM.ADDR2,
 
     BTWN CLK.val AND RAM.CLK,
     BTWN CLR.val AND RAM.CLR,
@@ -402,51 +468,88 @@ INSERT EDGES
 
 INSERT INIT COND
     (CLK.val=0, CLR.val=0, ENABLE.val=0, LOAD.val=1,
-    ADDR0.val=0, ADDR1.val=0,
+    ADDR0.val=0, ADDR1.val=0, ADDR2.val=0, ADDR3.val=0,
     0D.val=1, 1D.val=1, 2D.val=1, 3D.val=1, 4D.val=0, 5D.val=0, 6D.val=1, 7D.val=0),
 
     (CLK.val=1, CLR.val=1),
     (CLK.val=0),
 
+    /* start assign */
     (CLK.val=1, LOAD.val=1, ENABLE.val=0),
     (CLK.val=1, LOAD.val=0,
-    ADDR0.val=0, ADDR1.val=0,
+    ADDR0.val=0, ADDR1.val=0, ADDR2.val=0, ADDR3.val=0,
     0D.val=1, 1D.val=1, 2D.val=1, 3D.val=1, 4D.val=1, 5D.val=0, 6D.val=1, 7D.val=0),
     (CLK.val=0),
 
     (CLK.val=1, LOAD.val=1, ENABLE.val=0),
     (CLK.val=1, LOAD.val=0,
-    ADDR0.val=1, ADDR1.val=0,
+    ADDR0.val=1, ADDR1.val=0, ADDR2.val=0, ADDR3.val=0,
     0D.val=1, 1D.val=0, 2D.val=1, 3D.val=1, 4D.val=0, 5D.val=1, 6D.val=1, 7D.val=1),
     (CLK.val=0),
 
     (CLK.val=1, LOAD.val=1, ENABLE.val=0),
     (CLK.val=1, LOAD.val=0,
-    ADDR0.val=0, ADDR1.val=1,
+    ADDR0.val=0, ADDR1.val=1, ADDR2.val=0, ADDR3.val=0,
     0D.val=0, 1D.val=0, 2D.val=1, 3D.val=1, 4D.val=1, 5D.val=1, 6D.val=1, 7D.val=1),
     (CLK.val=0),
 
     (CLK.val=1, LOAD.val=1, ENABLE.val=0),
     (CLK.val=1, LOAD.val=0,
-    ADDR0.val=1, ADDR1.val=1,
+    ADDR0.val=1, ADDR1.val=1, ADDR2.val=0, ADDR3.val=0,
     0D.val=1, 1D.val=1, 2D.val=0, 3D.val=0, 4D.val=0, 5D.val=0, 6D.val=0, 7D.val=0),
     (CLK.val=0),
 
     (CLK.val=1, LOAD.val=1, ENABLE.val=0),
-    (CLK.val=1, ENABLE.val=1, ADDR0.val=0, ADDR1.val=0),
+    (CLK.val=1, LOAD.val=0,
+    ADDR0.val=0, ADDR1.val=0, ADDR2.val=1, ADDR3.val=0,
+    0D.val=1, 1D.val=1, 2D.val=1, 3D.val=1, 4D.val=1, 5D.val=1, 6D.val=1, 7D.val=1),
     (CLK.val=0),
 
     (CLK.val=1, LOAD.val=1, ENABLE.val=0),
-    (CLK.val=1, ENABLE.val=1, ADDR0.val=1, ADDR1.val=0),
+    (CLK.val=1, LOAD.val=0,
+    ADDR0.val=1, ADDR1.val=0, ADDR2.val=1, ADDR3.val=0,
+    0D.val=1, 1D.val=1, 2D.val=1, 3D.val=1, 4D.val=0, 5D.val=1, 6D.val=1, 7D.val=1),
     (CLK.val=0),
 
     (CLK.val=1, LOAD.val=1, ENABLE.val=0),
-    (CLK.val=1, ENABLE.val=1, ADDR0.val=0, ADDR1.val=1),
+    (CLK.val=1, LOAD.val=0,
+    ADDR0.val=0, ADDR1.val=1, ADDR2.val=1, ADDR3.val=0,
+    0D.val=1, 1D.val=1, 2D.val=1, 3D.val=1, 4D.val=1, 5D.val=1, 6D.val=1, 7D.val=1),
     (CLK.val=0),
 
     (CLK.val=1, LOAD.val=1, ENABLE.val=0),
-    (CLK.val=1, ENABLE.val=1, ADDR0.val=1, ADDR1.val=1),
+    (CLK.val=1, LOAD.val=0,
+    ADDR0.val=1, ADDR1.val=1, ADDR2.val=1, ADDR3.val=0,
+    0D.val=1, 1D.val=1, 2D.val=0, 3D.val=1, 4D.val=1, 5D.val=0, 6D.val=0, 7D.val=0),
     (CLK.val=0),
+
+
+    /* read stage */
+    (CLK.val=1, LOAD.val=1, ENABLE.val=0),
+    (CLK.val=1, ENABLE.val=1, ADDR0.val=0, ADDR1.val=0, ADDR2.val=0, ADDR3.val=0),
+    (CLK.val=0),
+    (CLK.val=1, LOAD.val=1, ENABLE.val=0),
+    (CLK.val=1, ENABLE.val=1, ADDR0.val=1, ADDR1.val=0, ADDR2.val=0, ADDR3.val=0),
+    (CLK.val=0),
+    (CLK.val=1, LOAD.val=1, ENABLE.val=0),
+    (CLK.val=1, ENABLE.val=1, ADDR0.val=0, ADDR1.val=1, ADDR2.val=0, ADDR3.val=0),
+    (CLK.val=0),
+    (CLK.val=1, LOAD.val=1, ENABLE.val=0),
+    (CLK.val=1, ENABLE.val=1, ADDR0.val=1, ADDR1.val=1, ADDR2.val=0, ADDR3.val=0),
+    (CLK.val=0),
+    (CLK.val=1, LOAD.val=1, ENABLE.val=0),
+    (CLK.val=1, ENABLE.val=1, ADDR0.val=0, ADDR1.val=0, ADDR2.val=1, ADDR3.val=0),
+    (CLK.val=0),
+    (CLK.val=1, LOAD.val=1, ENABLE.val=0),
+    (CLK.val=1, ENABLE.val=1, ADDR0.val=1, ADDR1.val=0, ADDR2.val=1, ADDR3.val=0),
+    (CLK.val=0),
+    (CLK.val=1, LOAD.val=1, ENABLE.val=0),
+    (CLK.val=1, ENABLE.val=1, ADDR0.val=0, ADDR1.val=1, ADDR2.val=1, ADDR3.val=0),
+    (CLK.val=0),
+    (CLK.val=1, LOAD.val=1, ENABLE.val=0),
+    (CLK.val=1, ENABLE.val=1, ADDR0.val=1, ADDR1.val=1, ADDR2.val=1, ADDR3.val=0),
+    (CLK.val=0),
+
 
     (CLK.val=1)
     ;
