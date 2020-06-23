@@ -1242,9 +1242,16 @@ DRAW BLOCK
     D7 87:51,
     regO 87:39;
 
-
 /*
     END OUTPUT REGISTER
+    =================================================
+    START SIGNALS DISPLAY
+*/
+
+
+
+/*
+    END SIGNALS DISPLAY
     =================================================
     INITIAL CONDITIONS AND RUN
 */
