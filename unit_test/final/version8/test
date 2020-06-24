@@ -1616,6 +1616,23 @@ INSERT INIT COND
     (CLK.val=1),
     (CLK.val=0),
     (CLK.val=1),
+    (CLK.val=0),
+
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
+    (CLK.val=0),
+    (CLK.val=1),
     (CLK.val=0)
     ;
 
